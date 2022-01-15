@@ -212,6 +212,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 408826667}
+  - component: {fileID: 408826668}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -233,6 +234,18 @@ Transform:
   m_Father: {fileID: 1294157948}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &408826668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408826666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44c073748885df64887d98f01c0657a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &440469028
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,6 +287,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 631111478}
+  - component: {fileID: 631111479}
   m_Layer: 0
   m_Name: DataManager
   m_TagString: Untagged
@@ -295,6 +309,18 @@ Transform:
   m_Father: {fileID: 1294157948}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &631111479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 631111477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bbda44627cf3e94cb6204ae2f780038, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &635066051
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,6 +330,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 635066052}
+  - component: {fileID: 635066053}
   m_Layer: 0
   m_Name: BigTileManager
   m_TagString: Untagged
@@ -325,6 +352,18 @@ Transform:
   m_Father: {fileID: 1294157948}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &635066053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 635066051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6f6a5678d0065f4990ef7e647ee7354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &845821775
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,6 +456,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 906422277}
+  - component: {fileID: 906422278}
   m_Layer: 0
   m_Name: PlayerManager
   m_TagString: Untagged
@@ -438,6 +478,18 @@ Transform:
   m_Father: {fileID: 1294157948}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &906422278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 906422276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10a6d7888d6cfbe4fb253a744fb3e70d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1102974570
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,6 +596,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1293049519}
+  - component: {fileID: 1293049520}
   m_Layer: 0
   m_Name: ColorThemeManager
   m_TagString: Untagged
@@ -565,6 +618,18 @@ Transform:
   m_Father: {fileID: 1294157948}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1293049520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293049518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3521679368f4964aab2efe5f8e756e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1294157947
 GameObject:
   m_ObjectHideFlags: 0
@@ -612,6 +677,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1305305132}
+  - component: {fileID: 1305305133}
   m_Layer: 0
   m_Name: TileBoardManager
   m_TagString: Untagged
@@ -633,6 +699,18 @@ Transform:
   m_Father: {fileID: 1294157948}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1305305133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305305131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1dd800d2f612e94eba979e2e7dedec9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1415234816
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,6 +720,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1415234817}
+  - component: {fileID: 1415234818}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -663,6 +742,18 @@ Transform:
   m_Father: {fileID: 1294157948}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1415234818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1415234816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99f2e8215855b6e4ebeadfb84ef013da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1662190594
 GameObject:
   m_ObjectHideFlags: 0
@@ -672,6 +763,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1662190595}
+  - component: {fileID: 1662190596}
   m_Layer: 0
   m_Name: InitalizationManager
   m_TagString: Untagged
@@ -693,6 +785,18 @@ Transform:
   m_Father: {fileID: 1294157948}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1662190596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1662190594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19a0c6f544f38704b8f7944ca1596512, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1718404451
 GameObject:
   m_ObjectHideFlags: 0
