@@ -4,33 +4,84 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [Header("KeyCodes")]
+    [SerializeField] private char upKeycode = 'W';
+    [SerializeField] private char downKeycode = 'S';
+    [SerializeField] private char leftKeycode = 'A';
+    [SerializeField] private char rightKeycode = 'D';
+
+    /// <summary>
+    /// Initialize this class's default values here
+    /// </summary>
+    public void Setup()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetKeycodes(char up, char down, char left, char right)
     {
-        if (Input.GetKey(KeyCode.W))
+        upKeycode = up;
+        downKeycode = down;
+        leftKeycode = left;
+        rightKeycode = right;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(GetKeyCode(upKeycode)))
         {
-            print("You pressed W");
+            //Debug.Log("You pressed " + upKeycode);
+            OnPressKey("up");
         }
 
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKeyDown(GetKeyCode(downKeycode)))
         {
-            print("You pressed S");
+            //Debug.Log("You pressed " + downKeycode);
+            OnPressKey("down");
         }
 
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKeyDown(GetKeyCode(leftKeycode)))
         {
-            print("You pressed A");
+            //Debug.Log("You pressed " + leftKeycode);
+            OnPressKey("left");
         }
 
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKeyDown(GetKeyCode(rightKeycode)))
         {
-            print("You pressed D");
+            //Debug.Log("You pressed " + rightKeycode);
+            OnPressKey("right");
         }
+    }
+
+    private void OnPressKey(string direction)
+    {
+        // Call the stuff here
+    }
+
+    /// <summary>
+    /// Takes in a char and returns the corresponding KeyCodes.
+    /// </summary>
+    /// <param name="letter">The char to be converted into a KeyCode</param>
+    /// <returns></returns>
+    private KeyCode GetKeyCode(char letter)
+    {
+        switch (letter)
+        {
+            case 'W':
+                return KeyCode.W;
+            case 'A':
+                return KeyCode.A;
+            case 'S':
+                return KeyCode.S;
+            case 'D':
+                return KeyCode.D;
+
+            // TODO: More Keys
+            
+            default:
+                break;
+        }
+
+        return KeyCode.None;
     }
 }
