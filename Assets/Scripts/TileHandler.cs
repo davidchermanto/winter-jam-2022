@@ -10,11 +10,11 @@ public class TileHandler : MonoBehaviour
     [SerializeField] private SpriteRenderer tilePart_right;
 
     [Header("Link to the tileboard")]
-    private GameObject nextTile;
-    private GameObject previousTile;
+    private string correctDirection;
 
-    private string directionFromPreviousTile;
-    private string directionToNextTile;
+    private int biasX;
+    private int biasY;
+    private int biasZ;
 
     [Header("Identification")]
     [SerializeField] private int tileNumber;

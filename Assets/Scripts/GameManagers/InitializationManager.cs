@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class InitializationManager : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private InputManager inputManager;
+    [SerializeField] private TileBoardManager tileBoardManager;
+    [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private ColorThemeManager colorThemeManager;
+
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        inputManager.Setup();
+        tileBoardManager.Setup();
     }
 }
