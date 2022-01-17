@@ -13,6 +13,6 @@ public class InitializationManager : MonoBehaviour
     void Start()
     {
         inputManager.Setup();
-        tileBoardManager.Setup();
+        //tileBoardManager.Setup();
     }
 }

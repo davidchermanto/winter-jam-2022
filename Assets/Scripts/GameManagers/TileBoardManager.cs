@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class TileBoardManager : MonoBehaviour
 {
+    [Header("Game Settings")]
+    [SerializeField] private Difficulty difficulty;
+
     [Header("Prefab")]
     [SerializeField] private GameObject tile;
 
@@ -16,9 +19,9 @@ public class TileBoardManager : MonoBehaviour
     [SerializeField] private List<TileHandler> activeTiles;
     [SerializeField] private List<TileHandler> deadTiles;
 
-    public void Setup()
+    public void Setup(Difficulty difficulty)
     {
-
+        this.difficulty = difficulty;
     }
 
     /// <summary>
@@ -31,6 +34,8 @@ public class TileBoardManager : MonoBehaviour
 
         for(int i = 0; i < Constants.initialTileSpawnCount; i++)
         {
+            tileNumber++;
+
             GameObject tile = Instantiate(this.tile);
             TileHandler tileHandler = tile.GetComponent<TileHandler>();
 
@@ -39,13 +44,14 @@ public class TileBoardManager : MonoBehaviour
             // TODO: Set the color of the tile
 
             // Picks a direction for the tile to connect to the previous tile
-            // TODO: Give bias to previous travelled direction (If before = front, then more likely next to be front)
-            string direction = Directions.Instance.GetRandomDirectionWeighed(new DirectionBias(100, 0, 20, 20));
+            string newDirection = Directions.Instance.GetRandomDirectionWeighed(previousTile.GetDirectionBias());
+
+            DirectionBias newDirectionBias = Directions.Instance.ReduceDirectionBias(previousTile, newDirection, difficulty);
 
             float distanceX = Constants.tileDistanceX;
             float distanceY = Constants.tileDistanceY;
 
-            switch (direction)
+            switch (newDirection)
             {
                 case "up":
                     break;
@@ -64,7 +70,7 @@ public class TileBoardManager : MonoBehaviour
             }
 
             // Going up or left means that the new generated tile will be behind the old tile visually
-            if(direction.Equals("up") || direction.Equals("left"))
+            if(newDirection.Equals("up") || newDirection.Equals("left"))
             {
                 tileHandler.SetLayer(initialTileLayer - i * tileLayerSize);
             }
@@ -76,7 +82,12 @@ public class TileBoardManager : MonoBehaviour
             Vector3 oldPosition = previousTile.transform.position;
             tile.transform.position = new Vector3(oldPosition.x + distanceX, oldPosition.y + distanceY);
 
-            tileHandler = previousTile;
+            tileHandler.Setup(newDirection, tileNumber, newDirectionBias);
+
+            // Links the previous tile to this one like a LinkedList
+            previousTile.SetNextTile(tileHandler);
+
+            previousTile = tileHandler;
         }
     }
 
@@ -85,8 +96,17 @@ public class TileBoardManager : MonoBehaviour
     /// </summary>
     public void SpawnNextTile()
     {
-        
-
         tileNumber++;
+
+    }
+
+    /// <summary>
+    /// When player moves to a new tile, do this to the board
+    /// </summary>
+    public void OnPlayerMove(string direction)
+    {
+
+
+        SpawnNextTile();
     }
 }

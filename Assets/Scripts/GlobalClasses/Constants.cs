@@ -21,4 +21,10 @@ public static class Constants
     // Initial game settings
     // Please make sure this is below 10
     public static int initialTileSpawnCount = 5;
+
+    public static int normalBias = 200;
+    public static int normalTurnBias = 20;
+
+    public static int normalBiasReduction = 5;
+    public static int normalTurnBiasIncrease = 5;
 }

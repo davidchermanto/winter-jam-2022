@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public struct DirectionBias
 {
     public int up;
@@ -16,4 +17,17 @@ public struct DirectionBias
         this.left = left;
         this.right = right;
     }
+}
+
+[System.Serializable]
+public struct Difficulty
+{
+    public AudioClip theme;
+    public float bpm;
+
+    // How many beats before an item appears
+    public int obstacleSpawnDelay;
+    
+    // Higher means more turning around 
+    public int biasModifier;
 }

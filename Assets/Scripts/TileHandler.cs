@@ -10,23 +10,31 @@ public class TileHandler : MonoBehaviour
     [SerializeField] private SpriteRenderer tilePart_right;
 
     [Header("Link to the tileboard")]
-    private string correctDirection;
+    [SerializeField] private TileHandler nextTile;
+    [SerializeField] private string correctDirection;
 
-    private int biasX;
-    private int biasY;
-    private int biasZ;
+    [SerializeField] private DirectionBias directionBias;
 
     [Header("Identification")]
     [SerializeField] private int tileNumber;
 
-    public void Setup()
+    public void Setup(string correctDirection, int tileNumber, DirectionBias directionBias)
     {
+        this.correctDirection = correctDirection;
+        this.directionBias = directionBias;
+        this.tileNumber = tileNumber;
+    }
 
+    public void SetNextTile(TileHandler nextTile)
+    {
+        this.nextTile = nextTile;
     }
 
     public void SetColors(Color top, Color left, Color right)
     {
-
+        tilePart_top.color = top;
+        tilePart_left.color = left;
+        tilePart_right.color = right;
     }
 
     public void SetLayer(int layer)
@@ -39,8 +47,28 @@ public class TileHandler : MonoBehaviour
     /// <summary>
     /// Moves this tile out of sight, down, and deletes this after.
     /// </summary>
-    public void MoveDown()
+    public void OnDie()
     {
+        StartCoroutine(DieAnimation());
+    }
 
+    private IEnumerator DieAnimation()
+    {
+        yield return new WaitForSeconds(0.016f);
+    }
+
+    public DirectionBias GetDirectionBias()
+    {
+        return directionBias;
+    }
+
+    public string GetCorrectDirection()
+    {
+        return correctDirection;
+    }
+
+    public int GetTileNumber()
+    {
+        return tileNumber;
     }
 }
