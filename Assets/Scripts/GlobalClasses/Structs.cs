@@ -22,8 +22,10 @@ public struct DirectionBias
 [System.Serializable]
 public struct Difficulty
 {
+    public string name;
+
     public AudioClip theme;
-    public float bpm;
+    public float timing;
 
     // How many beats before an item appears
     public int obstacleSpawnDelay;

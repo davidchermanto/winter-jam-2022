@@ -23,6 +23,8 @@ public class TileHandler : MonoBehaviour
         this.correctDirection = correctDirection;
         this.directionBias = directionBias;
         this.tileNumber = tileNumber;
+
+        StartCoroutine(SpawnAnimation());
     }
 
     public void SetNextTile(TileHandler nextTile)
@@ -44,6 +46,11 @@ public class TileHandler : MonoBehaviour
         tilePart_right.sortingLayerID = layer + Constants.tileRightOffset;
     }
 
+    private IEnumerator SpawnAnimation(float duration = 0.5f)
+    {
+        yield return new WaitForSeconds(0.016f);
+    }
+
     /// <summary>
     /// Moves this tile out of sight, down, and deletes this after.
     /// </summary>
@@ -52,7 +59,7 @@ public class TileHandler : MonoBehaviour
         StartCoroutine(DieAnimation());
     }
 
-    private IEnumerator DieAnimation()
+    private IEnumerator DieAnimation(float duration = 0.5f)
     {
         yield return new WaitForSeconds(0.016f);
     }

@@ -19,9 +19,17 @@ public class TileBoardManager : MonoBehaviour
     [SerializeField] private List<TileHandler> activeTiles;
     [SerializeField] private List<TileHandler> deadTiles;
 
-    public void Setup(Difficulty difficulty)
+    [Header("Constants")]
+    [SerializeField] private GameObject tilesFolder;
+
+    public void Setup()
     {
-        this.difficulty = difficulty;
+
+    }
+
+    public void StartGenerate()
+    {
+        SpawnFirstTiles();
     }
 
     /// <summary>
@@ -81,11 +89,14 @@ public class TileBoardManager : MonoBehaviour
 
             Vector3 oldPosition = previousTile.transform.position;
             tile.transform.position = new Vector3(oldPosition.x + distanceX, oldPosition.y + distanceY);
+            tile.transform.SetParent(tilesFolder.transform);
 
             tileHandler.Setup(newDirection, tileNumber, newDirectionBias);
 
             // Links the previous tile to this one like a LinkedList
             previousTile.SetNextTile(tileHandler);
+
+            Debug.Log("Generated tile number " + tileNumber + ", facing direction "+newDirection);
 
             previousTile = tileHandler;
         }
@@ -108,5 +119,10 @@ public class TileBoardManager : MonoBehaviour
 
 
         SpawnNextTile();
+    }
+
+    public void SetDifficulty(Difficulty difficulty)
+    {
+        this.difficulty = difficulty;
     }
 }
