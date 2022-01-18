@@ -33,3 +33,32 @@ public struct Difficulty
     // Higher means more turning around 
     public int biasModifier;
 }
+
+[System.Serializable]
+public struct HSVColor
+{
+    public float hue;
+    public float saturation;
+    public float value;
+}
+
+[System.Serializable]
+public struct ColorPack
+{
+    public Color brightOne;
+    public Color brightTwo;
+    public Color darkOne;
+    public Color darkTwo;
+    public Color antaOne;
+    public Color antaTwo;
+
+    public ColorPack(Color brightOne, Color brightTwo, Color darkOne, Color darkTwo, Color antaOne, Color antaTwo)
+    {
+        this.brightOne = brightOne;
+        this.brightTwo = brightTwo;
+        this.darkOne = darkOne;
+        this.darkTwo = darkTwo;
+        this.antaOne = antaOne;
+        this.antaTwo = antaTwo;
+    }
+}
