@@ -1553,7 +1553,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6672278519612515637, guid: a947682d7f65c084eb2182714f2fdc3b, type: 3}
       propertyPath: m_SortingOrder
-      value: 303
+      value: 514
       objectReference: {fileID: 0}
     - target: {fileID: 6672278519656533888, guid: a947682d7f65c084eb2182714f2fdc3b, type: 3}
       propertyPath: directionBias.up
@@ -1569,7 +1569,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6672278519656533890, guid: a947682d7f65c084eb2182714f2fdc3b, type: 3}
       propertyPath: m_Name
-      value: IsometricTile_1
+      value: IsometricTile_0
       objectReference: {fileID: 0}
     - target: {fileID: 6672278519656533891, guid: a947682d7f65c084eb2182714f2fdc3b, type: 3}
       propertyPath: m_RootOrder
@@ -1629,7 +1629,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6672278519714940582, guid: a947682d7f65c084eb2182714f2fdc3b, type: 3}
       propertyPath: m_SortingOrder
-      value: 304
+      value: 513
       objectReference: {fileID: 0}
     - target: {fileID: 6672278520115113992, guid: a947682d7f65c084eb2182714f2fdc3b, type: 3}
       propertyPath: m_Color.b
@@ -1645,7 +1645,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6672278520115113992, guid: a947682d7f65c084eb2182714f2fdc3b, type: 3}
       propertyPath: m_SortingOrder
-      value: 305
+      value: 515
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a947682d7f65c084eb2182714f2fdc3b, type: 3}

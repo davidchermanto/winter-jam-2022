@@ -41,9 +41,9 @@ public class TileHandler : MonoBehaviour
 
     public void SetLayer(int layer)
     {
-        tilePart_top.sortingLayerID = layer + Constants.tileTopOffset;
-        tilePart_left.sortingLayerID = layer + Constants.tileLeftOffset;
-        tilePart_right.sortingLayerID = layer + Constants.tileRightOffset;
+        tilePart_top.sortingOrder = layer + Constants.tileTopOffset;
+        tilePart_left.sortingOrder = layer + Constants.tileLeftOffset;
+        tilePart_right.sortingOrder = layer + Constants.tileRightOffset;
     }
 
     private IEnumerator SpawnAnimation(float duration = 0.5f)

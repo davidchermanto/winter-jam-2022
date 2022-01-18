@@ -66,7 +66,7 @@ public class InitializationManager : MonoBehaviour
             name = "HARD",
             //theme = 
             //timing = 90;
-            biasModifier = 20,
+            biasModifier = 40,
             obstacleSpawnDelay = 10
         };
     }

@@ -45,6 +45,8 @@ public class TileBoardManager : MonoBehaviour
             tileNumber++;
 
             GameObject tile = Instantiate(this.tile);
+            tile.name = "IsometricTile_" + tileNumber;
+
             TileHandler tileHandler = tile.GetComponent<TileHandler>();
 
             activeTiles.Add(tileHandler);
@@ -96,7 +98,7 @@ public class TileBoardManager : MonoBehaviour
             // Links the previous tile to this one like a LinkedList
             previousTile.SetNextTile(tileHandler);
 
-            Debug.Log("Generated tile number " + tileNumber + ", facing direction "+newDirection);
+            //Debug.Log("Generated tile number " + tileNumber + ", facing direction "+newDirection);
 
             previousTile = tileHandler;
         }

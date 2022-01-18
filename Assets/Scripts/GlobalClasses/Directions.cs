@@ -121,6 +121,8 @@ public class Directions : MonoBehaviour
             {
                 Debug.LogError("Something went wrong, this isn't a direction: " + newDirection);
             }
+
+            return newDirectionBias;
         }
         else
         {
@@ -155,12 +157,12 @@ public class Directions : MonoBehaviour
                 newDirectionBias.left = 0;
                 newDirectionBias.right = Constants.normalBias;
             }
+            else
+            {
+                Debug.LogError("Something went wrong, this isn't a direction: " + newDirection);
+            }
 
             return newDirectionBias;
         }
-
-        Debug.LogError("Failed direction bias check!");
-
-        return new DirectionBias();
     }
 }
