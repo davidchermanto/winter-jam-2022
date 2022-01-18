@@ -48,7 +48,7 @@ public class InitializationManager : MonoBehaviour
             name = "EASY",
             //easy.theme = 
             //easy.timing = 90;
-            biasModifier = 0,
+            biasModifier = 5,
             obstacleSpawnDelay = 200
         };
 
@@ -57,7 +57,7 @@ public class InitializationManager : MonoBehaviour
             name = "NORMAL",
             //theme = 
             //timing = 90;
-            biasModifier = 10,
+            biasModifier = 20,
             obstacleSpawnDelay = 25
         };
 
@@ -66,7 +66,7 @@ public class InitializationManager : MonoBehaviour
             name = "HARD",
             //theme = 
             //timing = 90;
-            biasModifier = 40,
+            biasModifier = 60,
             obstacleSpawnDelay = 10
         };
     }

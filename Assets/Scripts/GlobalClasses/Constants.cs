@@ -19,11 +19,15 @@ public static class Constants
     public static float tileDistanceY = 1f;
 
     // Initial game settings
-    public static int initialTileSpawnCount = 50;
+    public static int initialTileSpawnCount = 5;
 
     public static int normalBias = 200;
     public static int normalTurnBias = 20;
 
     public static int normalBiasReduction = 5;
     public static int normalTurnBiasIncrease = 5;
+
+    // Animation settings of the tile
+    public static float enterDistance = 3f;
+    public static float exitDistance = 2f;
 }
