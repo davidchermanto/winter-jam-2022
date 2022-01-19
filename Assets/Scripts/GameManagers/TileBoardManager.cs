@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class TileBoardManager : MonoBehaviour
 {
+    [Header("Dependency")]
+    [SerializeField] private PlayerManager playerManager;
+
     [Header("Game Settings")]
     [SerializeField] private Difficulty difficulty;
 
@@ -12,6 +15,9 @@ public class TileBoardManager : MonoBehaviour
 
     [Header("Dynamic Variables")]
     [SerializeField] private int tileNumber;
+
+    // The tile where the player is on
+    [SerializeField] private TileHandler playerTile;
 
     // Will contain the last tile generated
     [SerializeField] private TileHandler previousTile;
@@ -81,8 +87,6 @@ public class TileBoardManager : MonoBehaviour
 
         activeTiles.Add(tileHandler);
 
-        // TODO: Set the color of the tile
-
         // Picks a direction for the tile to connect to the previous tile
         string newDirection = Directions.Instance.GetRandomDirectionWeighed(previousTile.GetDirectionBias());
 
@@ -125,6 +129,9 @@ public class TileBoardManager : MonoBehaviour
 
         tileHandler.Setup(newDirection, tileNumber, newDirectionBias, new Vector3(oldPosition.x + distanceX, oldPosition.y + distanceY));
 
+        ColorPack colorPack = ColorThemeManager.Instance.GetColorPack();
+        tileHandler.SetColors(colorPack.brightOne, colorPack.brightTwo, colorPack.darkOne);
+
         // Links the previous tile to this one like a LinkedList
         previousTile.SetNextTile(tileHandler);
 
@@ -138,7 +145,7 @@ public class TileBoardManager : MonoBehaviour
     /// </summary>
     public void OnPlayerMove(string direction)
     {
-
+        
 
         SpawnNextTile();
     }

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ColorThemeManager : MonoBehaviour
 {
+    // Yes
+    public static ColorThemeManager Instance;
+
     // Anologous Color palette formula, but very subtle
     // For the purposes of this I'll generate an 2 antagonist (?) extra colors
     [Header("Helper Variables")]
@@ -11,22 +14,30 @@ public class ColorThemeManager : MonoBehaviour
     private Color secondBright = new Color(0.6627f, 0.498f, 0.705f);
     private Color mainDark = new Color(0.4235f, 0.27f, 0.4941f);
     private Color secondDark = new Color(0.5764f, 0.4f, 0.639f);
-
     private Color antaDark = new Color(0.317f, 0.3f, 0.568f);
     private Color antaLight = new Color(0.572f, 1f, 1f);
 
     private ColorPack vanillaColorPack;
 
-    private float easyHueShift = 0f;
-    private float easyHueRandomFactor = 0.1f;
+    [Header("Settings Variables")]
+    private const float easyHueShift = 0f;
+    private const float easyHueRandomFactor = 0.1f;
 
-    private float normalHueShift = 0.4f;
-    private float normalHueRandomFactor = 0.2f;
+    private const float normalHueShift = 0.25f;
+    private const float normalHueRandomFactor = 0.2f;
 
-    private float hardHueShift = -0.25f;
-    private float hardHueRandomFactor = 0.05f;
+    private const float hardHueShift = -0.25f;
+    private const float hardHueRandomFactor = 0.05f;
 
-    private void Setup()
+    [Header("Dynamic Variables")]
+    private ColorPack ingameColorPack;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    public void Setup()
     {
         vanillaColorPack = new ColorPack(mainBright, secondBright, mainDark, secondDark, antaDark, antaLight);
     }
@@ -42,21 +53,58 @@ public class ColorThemeManager : MonoBehaviour
         switch (difficulty.name)
         {
             case "EASY":
+                ingameColorPack = ShiftColorPack(vanillaColorPack, easyHueShift, easyHueRandomFactor);
                 break;
             case "NORMAL":
+                ingameColorPack = ShiftColorPack(vanillaColorPack, normalHueShift, normalHueRandomFactor);
                 break;
             case "HARD":
+                ingameColorPack = ShiftColorPack(vanillaColorPack, hardHueShift, hardHueRandomFactor);
                 break;
             default:
+                Debug.LogError("Tried to access unknown difficulty : "+difficulty.name);
+                ingameColorPack = vanillaColorPack;
                 break;
         }
     }
 
+    public ColorPack GetColorPack()
+    {
+        return ingameColorPack;
+    }
+
     private ColorPack ShiftColorPack(ColorPack colorPack, float hueShift, float hueRandomFactor)
     {
-        // TODO: Shift
+        float hueRandomConstant = hueShift + Random.Range(0, hueRandomFactor);
+
+        colorPack.brightOne = ShiftColor(colorPack.brightOne, hueRandomConstant);
+        colorPack.brightTwo = ShiftColor(colorPack.brightTwo, hueRandomConstant);
+        colorPack.darkOne = ShiftColor(colorPack.darkOne, hueRandomConstant);
+        colorPack.darkTwo = ShiftColor(colorPack.darkTwo, hueRandomConstant);
+        colorPack.antaOne = ShiftColor(colorPack.antaOne, hueRandomConstant);
+        colorPack.antaTwo = ShiftColor(colorPack.antaTwo, hueRandomConstant);
 
         return colorPack;
+    }
+
+    private Color ShiftColor(Color color, float hueShift)
+    {
+        HSVColor newColor = RGBToHSV(color);
+
+        newColor.hue += hueShift;
+
+        if(newColor.hue > 1)
+        {
+            newColor.hue -= 1;
+        }
+        else if(newColor.hue < 0)
+        {
+            newColor.hue += 1;
+        }
+
+        Color finalColor = HSVToRGB(newColor);
+
+        return finalColor;
     }
 
     private HSVColor RGBToHSV(Color color)

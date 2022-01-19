@@ -19,26 +19,36 @@ public class InitializationManager : MonoBehaviour
     {
         SetupDifficulties();
 
+        colorThemeManager.Setup();
         inputManager.Setup();
         tileBoardManager.Setup();
     }
 
     public void PlayEasy()
     {
+        colorThemeManager.GenerateColorForDifficulty(easy);
         tileBoardManager.SetDifficulty(easy);
         tileBoardManager.StartGenerate();
+
+
     }
 
     public void PlayNormal()
     {
+        colorThemeManager.GenerateColorForDifficulty(normal);
         tileBoardManager.SetDifficulty(normal);
         tileBoardManager.StartGenerate();
+
+
     }
 
     public void PlayHard()
     {
+        colorThemeManager.GenerateColorForDifficulty(hard);
         tileBoardManager.SetDifficulty(hard);
         tileBoardManager.StartGenerate();
+
+
     }
 
     private void SetupDifficulties()

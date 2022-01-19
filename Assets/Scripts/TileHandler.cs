@@ -71,6 +71,11 @@ public class TileHandler : MonoBehaviour
         yield return new WaitForSeconds(0.016f);
     }
 
+    public TileHandler GetNextTile()
+    {
+        return nextTile;
+    }
+
     public void SetNextTile(TileHandler nextTile)
     {
         this.nextTile = nextTile;

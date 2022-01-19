@@ -24,7 +24,17 @@ public class GameState : MonoBehaviour
         this.isPaused = isPaused;
     }
 
-    public bool CanPlayerMove()
+    public bool IsPlaying()
+    {
+        return isPlaying;
+    }
+
+    public bool IsPaused()
+    {
+        return isPaused;
+    }
+
+    public bool IsGameActive()
     {
         return isPlaying && !isPaused;
     }
