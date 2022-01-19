@@ -32,15 +32,12 @@ public class InputManager : MonoBehaviour
         {
             //Debug.Log("You pressed " + upKeycode);
             OnPressKey("up");
-            DataManager.instance.AddScore();
         }
 
         if (Input.GetKeyDown(GetKeyCode(downKeycode)))
         {
             //Debug.Log("You pressed " + downKeycode);
             OnPressKey("down");
-
-            DataManager.instance.ResetScore();
             
         }
 
