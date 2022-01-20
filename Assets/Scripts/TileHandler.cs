@@ -20,8 +20,9 @@ public class TileHandler : MonoBehaviour
 
     [Header("Identification")]
     [SerializeField] private int tileNumber;
+    [SerializeField] private TileTrace tileTrace;
 
-    public void Setup(string correctDirection, int tileNumber, DirectionBias directionBias, Vector3 correctPosition)
+    public void Setup(string correctDirection, int tileNumber, DirectionBias directionBias, Vector3 correctPosition, TileTrace tileTrace)
     {
         this.correctDirection = correctDirection;
         this.directionBias = directionBias;
@@ -29,6 +30,8 @@ public class TileHandler : MonoBehaviour
 
         this.correctPosition = correctPosition;
         transform.position = correctPosition;
+
+        this.tileTrace = tileTrace;
 
         StartCoroutine(SpawnAnimation());
     }
@@ -79,6 +82,11 @@ public class TileHandler : MonoBehaviour
     public void SetNextTile(TileHandler nextTile)
     {
         this.nextTile = nextTile;
+    }
+
+    public TileTrace GetTrace()
+    {
+        return tileTrace;
     }
 
     public void SetColors(Color top, Color left, Color right)

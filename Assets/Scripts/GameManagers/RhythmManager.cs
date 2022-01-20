@@ -16,6 +16,9 @@ public class RhythmManager : MonoBehaviour
 
     private float secondsPerBeat;
 
+    [Header("Dependencies")]
+    [SerializeField] private TileBoardManager tileBoardManager;
+
     private void Awake()
     {
         Instance = this;
@@ -31,7 +34,7 @@ public class RhythmManager : MonoBehaviour
     /// </summary>
     /// <param name="bps">Beats per second</param>
     /// <param name="beatDelay">How many beats before the timer actually starts</param>
-    public void StartCount(float bps, int beatDelay)
+    public void StartCount(float bps, float beatDelay)
     {
         // 60 in music tempo equals to 1 second, use this to normalize BPS
         secondsPerBeat = 60 / bps;
@@ -39,9 +42,13 @@ public class RhythmManager : MonoBehaviour
         StartCoroutine(Count(beatDelay));
     }
 
-    private IEnumerator Count(int beatDelay)
+    private IEnumerator Count(float beatDelay)
     {
         yield return new WaitForSeconds(secondsPerBeat * beatDelay);
+
+        // The game starts here
+        // Putting this code here is pretty yuck but eh its a game jam
+        GameState.Instance.SetPlaying(true);
 
         while (GameState.Instance.IsPlaying())
         {

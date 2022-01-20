@@ -17,8 +17,6 @@ public class InitializationManager : MonoBehaviour
 
     void Start()
     {
-        SetupDifficulties();
-
         colorThemeManager.Setup();
         inputManager.Setup();
         tileBoardManager.Setup();
@@ -30,7 +28,7 @@ public class InitializationManager : MonoBehaviour
         tileBoardManager.SetDifficulty(easy);
         tileBoardManager.StartGenerate();
 
-
+        RhythmManager.Instance.StartCount(easy.tempo, 4);
     }
 
     public void PlayNormal()
@@ -39,7 +37,7 @@ public class InitializationManager : MonoBehaviour
         tileBoardManager.SetDifficulty(normal);
         tileBoardManager.StartGenerate();
 
-
+        RhythmManager.Instance.StartCount(normal.tempo, 4);
     }
 
     public void PlayHard()
@@ -48,36 +46,6 @@ public class InitializationManager : MonoBehaviour
         tileBoardManager.SetDifficulty(hard);
         tileBoardManager.StartGenerate();
 
-
-    }
-
-    private void SetupDifficulties()
-    {
-        easy = new Difficulty
-        {
-            name = "EASY",
-            //easy.theme = 
-            //easy.timing = 90;
-            biasModifier = 5,
-            obstacleSpawnDelay = 200
-        };
-
-        normal = new Difficulty
-        {
-            name = "NORMAL",
-            //theme = 
-            //timing = 90;
-            biasModifier = 20,
-            obstacleSpawnDelay = 25
-        };
-
-        hard = new Difficulty
-        {
-            name = "HARD",
-            //theme = 
-            //timing = 90;
-            biasModifier = 60,
-            obstacleSpawnDelay = 10
-        };
+        RhythmManager.Instance.StartCount(hard.tempo, 4);
     }
 }

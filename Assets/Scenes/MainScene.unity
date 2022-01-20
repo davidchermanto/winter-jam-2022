@@ -1125,10 +1125,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbda44627cf3e94cb6204ae2f780038, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
-  highscore: 0
-  scoreText: {fileID: 259105868}
-  highscoreText: {fileID: 199343533}
+  HighScoreEasy: 0
+  HighScoreNormal: 0
+  HighScoreHard: 0
+  CurrentScore: 0
+  CurrentCombo: 0
+  MaxCombo: 0
+  FurthestDistance: 0
+  CurrentDistance: 0
 --- !u!1 &635066051
 GameObject:
   m_ObjectHideFlags: 0
@@ -1567,6 +1571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10a6d7888d6cfbe4fb253a744fb3e70d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileBoardManager: {fileID: 0}
 --- !u!1 &1102974570
 GameObject:
   m_ObjectHideFlags: 0
@@ -1759,6 +1764,7 @@ GameObject:
   - component: {fileID: 1245772058}
   - component: {fileID: 1245772060}
   - component: {fileID: 1245772059}
+  - component: {fileID: 1245772061}
   m_Layer: 0
   m_Name: StaticManagers
   m_TagString: Untagged
@@ -1802,6 +1808,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d0f8a699bfb8be459686ed864a81a7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1245772061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245772057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673a2f87caf7ece4abaae84a67e6864b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1265636444
@@ -2136,17 +2154,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1dd800d2f612e94eba979e2e7dedec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerManager: {fileID: 0}
   difficulty:
     name: 
     theme: {fileID: 0}
-    timing: 0
+    tempo: 0
     obstacleSpawnDelay: 0
     biasModifier: 0
   tile: {fileID: 6672278519656533890, guid: a947682d7f65c084eb2182714f2fdc3b, type: 3}
   tileNumber: 0
+  playerTile: {fileID: 1265636446}
   previousTile: {fileID: 1265636446}
-  activeTiles: []
+  activeTiles:
+  - {fileID: 1265636446}
   deadTiles: []
+  tileTraces:
+  - x: 0
+    y: 0
   tilesFolder: {fileID: 609024135}
 --- !u!1 &1353618569
 GameObject:
@@ -2290,6 +2314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99f2e8215855b6e4ebeadfb84ef013da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerManager: {fileID: 0}
   upKeycode: 87
   downKeycode: 83
   leftKeycode: 65
@@ -2514,23 +2539,23 @@ MonoBehaviour:
   audioManager: {fileID: 408826668}
   colorThemeManager: {fileID: 1293049520}
   easy:
-    name: 
+    name: EASY
     theme: {fileID: 0}
-    timing: 0
-    obstacleSpawnDelay: 0
-    biasModifier: 0
+    tempo: 0
+    obstacleSpawnDelay: 50
+    biasModifier: 15
   normal:
-    name: 
+    name: NORMAL
     theme: {fileID: 0}
-    timing: 0
-    obstacleSpawnDelay: 0
-    biasModifier: 0
+    tempo: 144
+    obstacleSpawnDelay: 25
+    biasModifier: 30
   hard:
-    name: 
+    name: HARD
     theme: {fileID: 0}
-    timing: 0
-    obstacleSpawnDelay: 0
-    biasModifier: 0
+    tempo: 172
+    obstacleSpawnDelay: 10
+    biasModifier: 70
 --- !u!1 &1718404451
 GameObject:
   m_ObjectHideFlags: 0

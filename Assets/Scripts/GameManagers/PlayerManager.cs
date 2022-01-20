@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [Header("Dependencies")]
+    [SerializeField] private TileBoardManager tileBoardManager;
+
+    private void Setup()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnMove(string direction)
     {
-        
+
+        tileBoardManager.OnPlayerMove(direction);
+    }
+
+    private IEnumerator PlayJumpAnimation()
+    {
+        yield return new WaitForEndOfFrame();
     }
 }

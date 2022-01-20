@@ -25,7 +25,7 @@ public struct Difficulty
     public string name;
 
     public AudioClip theme;
-    public float timing;
+    public float tempo;
 
     // How many beats before an item appears
     public int obstacleSpawnDelay;
@@ -61,4 +61,11 @@ public struct ColorPack
         this.antaOne = antaOne;
         this.antaTwo = antaTwo;
     }
+}
+
+[System.Serializable]
+public struct TileTrace
+{
+    public int x;
+    public int y;
 }

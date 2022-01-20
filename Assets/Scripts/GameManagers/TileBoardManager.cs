@@ -25,12 +25,15 @@ public class TileBoardManager : MonoBehaviour
     [SerializeField] private List<TileHandler> activeTiles;
     [SerializeField] private List<TileHandler> deadTiles;
 
+    // Contains all list of X, Y where a tile once spawned and prevents them from spawning there again
+    [SerializeField] private List<TileTrace> tileTraces;
+
     [Header("Constants")]
     [SerializeField] private GameObject tilesFolder;
 
     public void Setup()
     {
-
+            
     }
 
     public void StartGenerate()
@@ -85,10 +88,58 @@ public class TileBoardManager : MonoBehaviour
 
         TileHandler tileHandler = tile.GetComponent<TileHandler>();
 
-        activeTiles.Add(tileHandler);
+        string newDirection = "";
+        int generationAttempt = 0;
 
-        // Picks a direction for the tile to connect to the previous tile
-        string newDirection = Directions.Instance.GetRandomDirectionWeighed(previousTile.GetDirectionBias());
+        TileTrace tileTrace = new TileTrace();
+
+        bool isValid;
+
+        do
+        {
+            // Picks a direction for the tile to connect to the previous tile
+            newDirection = Directions.Instance.GetRandomDirectionWeighed(previousTile.GetDirectionBias());
+
+            TileTrace previousTrace = previousTile.GetTrace();
+
+            TileTrace twoTilesForward = previousTrace;
+            tileTrace = previousTrace;
+
+            switch (newDirection)
+            {
+                case "up":
+                    tileTrace.y++;
+                    twoTilesForward.y += 2;
+                    break;
+                case "down":
+                    tileTrace.y--;
+                    twoTilesForward.y -= 2;
+                    break;
+                case "left":
+                    tileTrace.x--;
+                    twoTilesForward.x -= 2;
+                    break;
+                case "right":
+                    tileTrace.x++;
+                    twoTilesForward.x += 2;
+                    break;
+                default:
+                    break;
+            }
+
+            // Check 1: Has there been a tile here before?
+            // Check 2: Has there been a tile here 2 tiles in front before?
+            isValid = CheckTraceValidity(tileTrace) && CheckTraceValidity(twoTilesForward);
+
+            generationAttempt++;
+
+            if(generationAttempt > 30)
+            {
+                // Give up
+                break;
+            }
+        }
+        while (!isValid);
 
         DirectionBias newDirectionBias = Directions.Instance.ReduceDirectionBias(previousTile, newDirection, difficulty);
 
@@ -127,7 +178,10 @@ public class TileBoardManager : MonoBehaviour
 
         Vector3 oldPosition = previousTile.GetCorrectPosition();
 
-        tileHandler.Setup(newDirection, tileNumber, newDirectionBias, new Vector3(oldPosition.x + distanceX, oldPosition.y + distanceY));
+        tileHandler.Setup(newDirection, tileNumber, newDirectionBias, new Vector3(oldPosition.x + distanceX, oldPosition.y + distanceY), tileTrace);
+
+        activeTiles.Add(tileHandler);
+        tileTraces.Add(tileTrace);
 
         ColorPack colorPack = ColorThemeManager.Instance.GetColorPack();
         tileHandler.SetColors(colorPack.brightOne, colorPack.brightTwo, colorPack.darkOne);
@@ -138,6 +192,20 @@ public class TileBoardManager : MonoBehaviour
         //Debug.Log("Generated tile number " + tileNumber + ", facing direction "+newDirection);
 
         previousTile = tileHandler;
+    }
+
+    // If a tile has been there before, refuse to generate
+    private bool CheckTraceValidity(TileTrace tileTrace)
+    {
+        foreach(TileTrace existingTrace in tileTraces)
+        {
+            if(tileTrace.x == existingTrace.x && tileTrace.y == existingTrace.y)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /// <summary>
