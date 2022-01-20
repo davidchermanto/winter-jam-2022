@@ -50,9 +50,9 @@ public class Directions : MonoBehaviour
         // Picks a random number between 0 and 45
         // Gets 34
         //
-        // 20 < 34, its not up
-        // 20 + 5 < 34, its not down
-        // 20 + 5 + 10 > 35, its left
+        // 20 > 34, its not up
+        // 20 + 5 > 34, its not down
+        // 20 + 5 + 10 > 34, its left
 
         int up = directionBias.up;
         int down = directionBias.down;
@@ -76,9 +76,14 @@ public class Directions : MonoBehaviour
         {
             return "left";
         }
-        else
+        else if(up + down + left + right > random)
         {
             return "right";
+        }
+        else
+        {
+            Debug.LogError("Failed to choose a direction: "+random);
+            return null;
         }
     }
 

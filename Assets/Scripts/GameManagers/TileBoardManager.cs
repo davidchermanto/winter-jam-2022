@@ -31,6 +31,12 @@ public class TileBoardManager : MonoBehaviour
     [Header("Constants")]
     [SerializeField] private GameObject tilesFolder;
 
+    [Header("Debug")]
+    private int upCount;
+    private int downCount;
+    private int leftCount;
+    private int rightCount;
+
     public void Setup()
     {
             
@@ -92,48 +98,44 @@ public class TileBoardManager : MonoBehaviour
         int generationAttempt = 0;
 
         TileTrace tileTrace = new TileTrace();
+        TileTrace previousTrace = previousTile.GetTrace();
 
-        bool isValid;
+        bool isValid = true;
 
         do
         {
             // Picks a direction for the tile to connect to the previous tile
             newDirection = Directions.Instance.GetRandomDirectionWeighed(previousTile.GetDirectionBias());
 
-            TileTrace previousTrace = previousTile.GetTrace();
+            //Debug.Log(newDirection + "("+ previousTile.GetDirectionBias().up+","+previousTile.GetDirectionBias().down+","
+            //+ previousTile.GetDirectionBias().left+","+ previousTile.GetDirectionBias().right);
 
-            TileTrace twoTilesForward = previousTrace;
             tileTrace = previousTrace;
 
             switch (newDirection)
             {
                 case "up":
                     tileTrace.y++;
-                    twoTilesForward.y += 2;
                     break;
                 case "down":
                     tileTrace.y--;
-                    twoTilesForward.y -= 2;
                     break;
                 case "left":
                     tileTrace.x--;
-                    twoTilesForward.x -= 2;
                     break;
                 case "right":
                     tileTrace.x++;
-                    twoTilesForward.x += 2;
                     break;
                 default:
                     break;
             }
 
             // Check 1: Has there been a tile here before?
-            // Check 2: Has there been a tile here 2 tiles in front before?
-            isValid = CheckTraceValidity(tileTrace) && CheckTraceValidity(twoTilesForward);
+            isValid = CheckTraceValidity(tileTrace);
 
             generationAttempt++;
 
-            if(generationAttempt > 30)
+            if(generationAttempt > 100)
             {
                 // Give up
                 break;
@@ -149,15 +151,19 @@ public class TileBoardManager : MonoBehaviour
         switch (newDirection)
         {
             case "up":
+                upCount++;
                 break;
             case "down":
+                downCount++;
                 distanceX *= -1;
                 distanceY *= -1;
                 break;
             case "left":
+                leftCount++;
                 distanceX *= -1;
                 break;
             case "right":
+                rightCount++;
                 distanceY *= -1;
                 break;
             default:
@@ -183,11 +189,117 @@ public class TileBoardManager : MonoBehaviour
         activeTiles.Add(tileHandler);
         tileTraces.Add(tileTrace);
 
+        // So that it doesn't loop back in on itself
+        switch (newDirection)
+        {
+            case "up":
+                tileTraces.Add(new TileTrace(tileTrace.x + 1, tileTrace.y - 1));
+                tileTraces.Add(new TileTrace(tileTrace.x - 1, tileTrace.y - 1));
+                break;
+            case "down":
+                tileTraces.Add(new TileTrace(tileTrace.x + 1, tileTrace.y + 1));
+                tileTraces.Add(new TileTrace(tileTrace.x - 1, tileTrace.y + 1));
+                break;
+            case "left":
+                tileTraces.Add(new TileTrace(tileTrace.x + 1, tileTrace.y - 1));
+                tileTraces.Add(new TileTrace(tileTrace.x + 1, tileTrace.y + 1));
+                break;
+            case "right":
+                tileTraces.Add(new TileTrace(tileTrace.x - 1, tileTrace.y - 1));
+                tileTraces.Add(new TileTrace(tileTrace.x - 1, tileTrace.y + 1));
+                break;
+            default:
+                break;
+        }
+
         ColorPack colorPack = ColorThemeManager.Instance.GetColorPack();
         tileHandler.SetColors(colorPack.brightOne, colorPack.brightTwo, colorPack.darkOne);
 
         // Links the previous tile to this one like a LinkedList
         previousTile.SetNextTile(tileHandler);
+
+        // Try to scan the list of tiletraces to find the closest x and y to this tile that is blocked, and block all tiles then
+        int closestTileDistanceX = Constants.tileLimit;
+        int closestTileDistanceY = Constants.tileLimit;
+
+        TileTrace closestTraceX = new TileTrace();
+        TileTrace closestTraceY = new TileTrace();
+
+        foreach (TileTrace existingTrace in tileTraces)
+        {
+            if(existingTrace.x == tileTrace.x && existingTrace.y != tileTrace.y)
+            {
+                int range = Mathf.Abs(existingTrace.y - tileTrace.y);
+
+                if(range < closestTileDistanceY && range < Constants.rangeLimit)
+                {
+                    closestTileDistanceY = range;
+                    closestTraceY = existingTrace;
+                }
+            }
+
+            if (existingTrace.y == tileTrace.y && existingTrace.x != tileTrace.x)
+            {
+                int range = Mathf.Abs(existingTrace.x - tileTrace.x);
+
+                if (range < closestTileDistanceX && range < Constants.rangeLimit)
+                {
+                    closestTileDistanceX = range;
+                    closestTraceX = existingTrace;
+                }
+            }
+        }
+
+        //Debug.Log("Y: " + closestTileY);
+        //Debug.Log("X: " + closestTileX);
+
+        if (closestTileDistanceX != Constants.tileLimit)
+        {
+            for(int i = 0; i < closestTileDistanceX; i++)
+            {
+                TileTrace newTrace = new TileTrace
+                {
+                    y = tileTrace.y
+                };
+
+                if (tileTrace.x > closestTraceX.x)
+                {
+                    newTrace.x = closestTraceX.x + (i + 1);
+                }
+                else
+                {
+                    newTrace.x = closestTraceX.x - (i + 1);
+                }
+
+                tileTraces.Add(newTrace);
+                //Debug.Log("Added trace: " + newTrace.x + " / " + newTrace.y);
+            }
+        }
+
+        if (closestTileDistanceY != Constants.tileLimit)
+        {
+            for (int i = 0; i < closestTileDistanceY; i++)
+            {
+                TileTrace newTrace = new TileTrace
+                {
+                    x = tileTrace.x
+                };
+
+                if (tileTrace.y > closestTraceY.y)
+                {
+                    newTrace.y = closestTraceY.y + (i + 1);
+                }
+                else
+                {
+                    newTrace.y = closestTraceY.y - (i + 1);
+                }
+
+                tileTraces.Add(newTrace);
+                //Debug.Log("Added trace: " + newTrace.x + " / " + newTrace.y);
+            }
+        }
+
+        Debug.Log("UP: " + upCount + "  DOWN: " + downCount + "  LEFT: " + leftCount + "  RIGHT: " + rightCount);
 
         //Debug.Log("Generated tile number " + tileNumber + ", facing direction "+newDirection);
 
@@ -201,6 +313,7 @@ public class TileBoardManager : MonoBehaviour
         {
             if(tileTrace.x == existingTrace.x && tileTrace.y == existingTrace.y)
             {
+                //Debug.Log(tileTrace.x + "/" + tileTrace.y + " VS " + existingTrace.x + "/" + existingTrace.y);
                 return false;
             }
         }

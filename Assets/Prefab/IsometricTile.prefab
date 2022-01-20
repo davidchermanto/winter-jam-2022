@@ -137,10 +137,13 @@ MonoBehaviour:
   correctDirection: up
   directionBias:
     up: 200
-    down: 0
-    left: 20
-    right: 20
+    down: 200
+    left: 200
+    right: 200
   tileNumber: 0
+  tileTrace:
+    x: 0
+    y: 0
 --- !u!1 &6672278519714940584
 GameObject:
   m_ObjectHideFlags: 0

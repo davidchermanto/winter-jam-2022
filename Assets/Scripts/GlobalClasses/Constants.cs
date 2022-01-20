@@ -22,7 +22,7 @@ public static class Constants
     public static int initialTileSpawnCount = 5;
 
     public static int normalBias = 200;
-    public static int normalTurnBias = 0;
+    public static int normalTurnBias = 20;
 
     public static int normalBiasReduction = 5;
     public static int normalTurnBiasIncrease = 5;
@@ -30,4 +30,8 @@ public static class Constants
     // Animation settings of the tile
     public static float enterDistance = 3f;
     public static float exitDistance = 2f;
+
+    // 
+    public static int tileLimit = 10000000;
+    public static int rangeLimit = 20;
 }
