@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class InitializationManager : MonoBehaviour
 {
+    [SerializeField] private DataManager dataManager;
     [SerializeField] private InputManager inputManager;
     [SerializeField] private TileBoardManager tileBoardManager;
     [SerializeField] private PlayerManager playerManager;
@@ -17,6 +18,7 @@ public class InitializationManager : MonoBehaviour
 
     void Start()
     {
+        dataManager.Setup();
         colorThemeManager.Setup();
         inputManager.Setup();
         tileBoardManager.Setup();

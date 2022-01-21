@@ -14,7 +14,7 @@ public class PlayerManager : MonoBehaviour
 
     public void OnMove(string direction)
     {
-
+        
         tileBoardManager.OnPlayerMove(direction);
     }
 

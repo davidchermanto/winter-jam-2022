@@ -5,28 +5,32 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    public static DataManager instance;
+    public static DataManager Instance;
 
+    [Header("Dynamic Data")]
     [SerializeField] private int currentScore;
+    [SerializeField] private int currentDistance;
+    [SerializeField] private int currentCombo;
+
+    [Header("Saved Data")]
     [SerializeField] private int highScoreEasy;
     [SerializeField] private int highScoreNormal;
     [SerializeField] private int highScoreHard;
-   
 
-    [SerializeField] private int currentCombo;
     [SerializeField] private int maxCombo;
-
     [SerializeField] private int furthestDistance;
-    [SerializeField] private int currentDistance;
 
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     /// <summary>
     /// Checks if the player has a current highscore in any difficulty, maximum combos and its furthest distance
     /// </summary>
-    public void Awake()
+    public void Setup()
     {
-        instance = this;
-
         if (PlayerPrefs.HasKey("highScoreEasy"))
         {
             highScoreEasy = PlayerPrefs.GetInt("highScoreEasy", 0);
@@ -35,14 +39,12 @@ public class DataManager : MonoBehaviour
         if (PlayerPrefs.HasKey("highScoreNormal"))
         {
             highScoreNormal = PlayerPrefs.GetInt("highScoreNormal", 0);
-
         }
         
         if (PlayerPrefs.HasKey("highScoreHard"))
         {
             highScoreHard = PlayerPrefs.GetInt("highScoreHard", 0);
         }
-
 
         if (PlayerPrefs.HasKey("maxCombo"))
         {
@@ -55,29 +57,12 @@ public class DataManager : MonoBehaviour
         }
 
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public int HighScoreEasy
     {
         get
         {
             return highScoreEasy;
-        }
-
-        set
-        {
-            highScoreEasy = currentScore;
-            PlayerPrefs.SetInt("highScoreEasy", highScoreEasy);
         }
     }
 
@@ -87,12 +72,6 @@ public class DataManager : MonoBehaviour
         {
             return highScoreNormal;
         }
-
-        set
-        {
-            highScoreNormal = currentScore;
-            PlayerPrefs.SetInt("highScoreNormal", highScoreNormal);
-        }
     }
 
     public int HighScoreHard
@@ -100,12 +79,6 @@ public class DataManager : MonoBehaviour
         get
         {
             return highScoreHard;
-        }
-
-        set
-        {
-            highScoreHard = currentScore;
-            PlayerPrefs.SetInt("highScoreHard", highScoreHard);
         }
     }
 
@@ -116,12 +89,6 @@ public class DataManager : MonoBehaviour
         {
             return maxCombo;
         }
-
-        set
-        {
-            maxCombo = currentCombo;
-            PlayerPrefs.SetInt("maxCombo", maxCombo);
-        }
     }
 
 
@@ -131,32 +98,82 @@ public class DataManager : MonoBehaviour
         {
             return furthestDistance;
         }
+    }
 
-        set
+    /// <summary>
+    /// Evaluates whether the current score is the high score. If it is, saves it.
+    /// </summary>
+    /// <param name="difficulty">The current difficulty</param>
+    /// <returns></returns>
+    public bool EvaluateScore(Difficulty difficulty)
+    {
+        switch (difficulty.name)
+        {
+            case "EASY":
+                if(currentScore > highScoreEasy)
+                {
+                    highScoreEasy = currentScore;
+                    PlayerPrefs.SetInt("highScoreEasy", highScoreEasy);
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            case "NORMAL":
+                if (currentScore > highScoreNormal)
+                {
+                    highScoreNormal = currentScore;
+                    PlayerPrefs.SetInt("highScoreNormal", highScoreNormal);
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            case "HARD":
+                if (currentScore > highScoreHard)
+                {
+                    highScoreHard = currentScore;
+                    PlayerPrefs.SetInt("highScoreHard", highScoreHard);
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            default:
+                Debug.LogError("No difficulty found of the name: " + difficulty.name);
+
+                return false;
+        }
+    }
+
+    public void EvaluateMiscellaneous()
+    {
+        if(currentDistance > furthestDistance)
         {
             furthestDistance = currentDistance;
-            PlayerPrefs.SetInt("furthestDistance", furthestDistance);
+        }
+
+        if(currentCombo > maxCombo)
+        {
+            maxCombo = currentCombo;
         }
     }
 
-    public bool CheckHighScore(int score, int highscore)
+    public void AddScore(int addAmount)
     {
-        if (score > highscore)
-        {
-            highscore = score;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-        
+        currentScore += addAmount;
     }
 
-    public int AddScores(int currentScore, int addAmount)
+    public void ResetStageVariables()
     {
-        int newScore = currentScore + addAmount;
-
-        return newScore;
+        currentScore = 0;
+        currentCombo = 0;
+        currentDistance = 0;
     }
 }
