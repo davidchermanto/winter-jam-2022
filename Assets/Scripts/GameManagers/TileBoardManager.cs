@@ -335,4 +335,19 @@ public class TileBoardManager : MonoBehaviour
     {
         this.difficulty = difficulty;
     }
+
+    public void SetPlayerTile(TileHandler tileHandler)
+    {
+        playerTile = tileHandler;
+    }
+
+    public TileHandler GetPlayerTile()
+    {
+        return playerTile;
+    }
+
+    public TileHandler GetPreviousTile()
+    {
+        return previousTile;
+    }
 }

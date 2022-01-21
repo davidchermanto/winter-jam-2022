@@ -18,7 +18,8 @@ public class PlayerManager : MonoBehaviour
 
     public void OnMove(string direction)
     {
-        
+        Debug.Log(direction);
+
         tileBoardManager.OnPlayerMove(direction);
     }
 
