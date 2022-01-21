@@ -11,13 +11,17 @@ public class RhythmManager : MonoBehaviour
     /// Get this value to determine how far in a beat are you
     /// If you call
     /// </summary>
-    private float timer;
-    private int beatCount;
+    [SerializeField] private float timer;
+    [SerializeField] private int beatCount;
 
-    private float secondsPerBeat;
+    [SerializeField] private float secondsPerBeat;
 
     [Header("Dependencies")]
     [SerializeField] private TileBoardManager tileBoardManager;
+
+    [Header("Helpers")]
+    // If a beat is marked, the player cannot move again on this beat.
+    [SerializeField] private bool beatMarked;
 
     private void Awake()
     {
@@ -58,6 +62,7 @@ public class RhythmManager : MonoBehaviour
 
                 if(timer >= 1)
                 {
+                    beatMarked = false;
                     beatCount++;
 
                     timer -= 1;
@@ -82,5 +87,15 @@ public class RhythmManager : MonoBehaviour
     public int GetBeatCount()
     {
         return beatCount;
+    }
+
+    public bool GetBeatMarked()
+    {
+        return beatMarked;
+    }
+
+    public void MarkBeat()
+    {
+        beatMarked = true;
     }
 }

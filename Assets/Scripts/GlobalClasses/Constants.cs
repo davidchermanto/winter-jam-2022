@@ -7,6 +7,8 @@ public static class Constants
     // The first tile is at layer X
     public static int initialTileLayer = 500;
 
+    public static int tileLayerLimit = 1000;
+
     public static int tileTopOffset = 5;
     public static int tileLeftOffset = 3;
     public static int tileRightOffset = 4;
@@ -26,6 +28,31 @@ public static class Constants
 
     public static int normalBiasReduction = 5;
     public static int normalTurnBiasIncrease = 5;
+
+    public static int maxLives = 3;
+
+    // How combo works
+    // If a move is perfect or good, the combo stays
+    // If a move is bad or miss, the combo disappears
+    // Miss = lose 1 life?
+    //
+    // Accuracy threshold for each move
+    public static string perfect = "PERFECT";
+    public static string good = "GOOD";
+    public static string bad = "BAD";
+    public static string miss = "MISS";
+
+    public static float perfectThreshold = 0.85f;
+    public static float goodThreshold = 0.7f;
+    public static float badThreshold = 0.5f;
+
+    public static int baseScore = 100;
+    
+    public static float perfectScoreMultiplier = 1.5f;
+    public static float goodScoreMultiplier = 1f;
+    public static float badScoreMultiplier = 0.5f;
+
+    public static float bonusComboMultiplier = 0.01f;
 
     // Animation settings of the tile
     public static float enterDistance = 3f;

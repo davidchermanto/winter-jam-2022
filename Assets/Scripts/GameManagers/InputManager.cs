@@ -82,7 +82,12 @@ public class InputManager : MonoBehaviour
 
     private void OnPressKey(string direction)
     {
-        playerManager.OnMove(direction);
+        if (!RhythmManager.Instance.GetBeatMarked())
+        {
+            playerManager.OnMove(direction);
+        }
+
+        RhythmManager.Instance.MarkBeat();
     }
 
     /// <summary>

@@ -170,6 +170,15 @@ public class TileBoardManager : MonoBehaviour
                 break;
         }
 
+        // Make sure the tile will never be above the player
+        if (previousTile.GetLayer() >= Constants.tileLayerLimit)
+        {
+            foreach(TileHandler existingHandler in activeTiles)
+            {
+                existingHandler.SetLayer(existingHandler.GetLayer() - (Constants.tileLayerLimit - Constants.initialTileLayer));
+            }
+        }
+
         // Going up or left means that the new generated tile will be behind the old tile visually
         if (newDirection.Equals("up") || newDirection.Equals("left"))
         {
@@ -326,7 +335,7 @@ public class TileBoardManager : MonoBehaviour
     /// </summary>
     public void OnPlayerMove(string direction)
     {
-        
+        playerTile = playerTile.GetNextTile();
 
         SpawnNextTile();
     }

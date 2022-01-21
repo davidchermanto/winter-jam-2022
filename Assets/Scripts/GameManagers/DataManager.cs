@@ -58,46 +58,46 @@ public class DataManager : MonoBehaviour
 
     }
 
-    public int HighScoreEasy
+    public int GetHighScoreEasy()
     {
-        get
-        {
-            return highScoreEasy;
-        }
+        return highScoreEasy;
     }
 
-    public int HighScoreNormal
+    public int GetHighScoreNormal()
     {
-        get
-        {
-            return highScoreNormal;
-        }
+        return highScoreNormal;
     }
 
-    public int HighScoreHard
+    public int GetHighScoreHard()
     {
-        get
-        {
-            return highScoreHard;
-        }
+        return highScoreHard;
     }
 
 
-    public int MaxCombo
+    public int GetMaxCombo()
     {
-        get
-        {
-            return maxCombo;
-        }
+        return maxCombo;
     }
 
 
-    public int FurthestDistance
+    public int GetFurthestDistance()
     {
-        get
-        {
-            return furthestDistance;
-        }
+        return furthestDistance;
+    }
+
+    public int GetCurrentCombo()
+    {
+        return currentCombo;
+    }
+
+    public int GetCurrentDistance()
+    {
+        return currentDistance;
+    }
+
+    public int GetScore()
+    {
+        return currentScore;
     }
 
     /// <summary>
@@ -165,9 +165,18 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    public void AddScore(int addAmount)
+    public void AddScore(int addAmount, string grade)
     {
         currentScore += addAmount;
+
+        if(grade.Equals(Constants.perfect) || grade.Equals(Constants.good))
+        {
+            currentCombo++;
+        }
+        else
+        {
+            currentCombo = 0;
+        }
     }
 
     public void ResetStageVariables()
