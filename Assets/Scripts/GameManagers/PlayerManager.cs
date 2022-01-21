@@ -7,6 +7,10 @@ public class PlayerManager : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private TileBoardManager tileBoardManager;
 
+    [Header("Visual")]
+    [SerializeField] private SpriteRenderer spriteMochi;
+    [SerializeField] private SpriteRenderer spriteShadow;
+
     private void Setup()
     {
 

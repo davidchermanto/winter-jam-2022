@@ -299,7 +299,7 @@ public class TileBoardManager : MonoBehaviour
             }
         }
 
-        Debug.Log("UP: " + upCount + "  DOWN: " + downCount + "  LEFT: " + leftCount + "  RIGHT: " + rightCount);
+        //Debug.Log("UP: " + upCount + "  DOWN: " + downCount + "  LEFT: " + leftCount + "  RIGHT: " + rightCount);
 
         //Debug.Log("Generated tile number " + tileNumber + ", facing direction "+newDirection);
 
