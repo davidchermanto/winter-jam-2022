@@ -7,16 +7,17 @@ public class DataManager : MonoBehaviour
 {
     public static DataManager instance;
 
-    [SerializeField] private int HighScoreEasy;
-    [SerializeField] private int HighScoreNormal;
-    [SerializeField] private int HighScoreHard;
-    [SerializeField] private int CurrentScore;
+    [SerializeField] private int currentScore;
+    [SerializeField] private int highScoreEasy;
+    [SerializeField] private int highScoreNormal;
+    [SerializeField] private int highScoreHard;
+   
 
-    [SerializeField] private int CurrentCombo;
-    [SerializeField] private int MaxCombo;
+    [SerializeField] private int currentCombo;
+    [SerializeField] private int maxCombo;
 
-    [SerializeField] private int FurthestDistance;
-    [SerializeField] private int CurrentDistance;
+    [SerializeField] private int furthestDistance;
+    [SerializeField] private int currentDistance;
 
 
     /// <summary>
@@ -26,28 +27,31 @@ public class DataManager : MonoBehaviour
     {
         instance = this;
 
-        if (PlayerPrefs.HasKey("HighScoreEasy"))
+        if (PlayerPrefs.HasKey("highScoreEasy"))
         {
-            PlayerPrefs.GetInt("HighScoreEasy", HighScoreEasy);
+            highScoreEasy = PlayerPrefs.GetInt("highScoreEasy", 0);
         }
-        else if (PlayerPrefs.HasKey("HighScoreNormal"))
+        
+        if (PlayerPrefs.HasKey("highScoreNormal"))
         {
-            PlayerPrefs.GetInt("HighScoreNormal", HighScoreNormal);
+            highScoreNormal = PlayerPrefs.GetInt("highScoreNormal", 0);
+
         }
-        else if (PlayerPrefs.HasKey("HighScoreHard"))
+        
+        if (PlayerPrefs.HasKey("highScoreHard"))
         {
-            PlayerPrefs.GetInt("HighScoreHard", HighScoreHard);
+            highScoreHard = PlayerPrefs.GetInt("highScoreHard", 0);
         }
 
 
-        if (PlayerPrefs.HasKey("MaxCombo"))
+        if (PlayerPrefs.HasKey("maxCombo"))
         {
-            PlayerPrefs.GetInt("MaxCombo", MaxCombo);
+            maxCombo = PlayerPrefs.GetInt("maxCombo", 0);
         }
 
-        if (PlayerPrefs.HasKey("FurthestDistance"))
+        if (PlayerPrefs.HasKey("furthestDistance"))
         {
-            PlayerPrefs.GetInt("FurthestDistance", FurthestDistance);
+            furthestDistance = PlayerPrefs.GetInt("furthestDistance", 0);
         }
 
     }
@@ -63,78 +67,96 @@ public class DataManager : MonoBehaviour
 
     }
 
-    public int HighScore_Easy
+    public int HighScoreEasy
     {
         get
         {
-            return HighScoreEasy;
+            return highScoreEasy;
         }
 
         set
         {
-            HighScoreEasy = CurrentScore;
-            PlayerPrefs.SetInt("HighScoreEasy", HighScoreEasy);
+            highScoreEasy = currentScore;
+            PlayerPrefs.SetInt("highScoreEasy", highScoreEasy);
         }
     }
 
-    public int HighScore_Normal
+    public int HighScoreNormal
     {
         get
         {
-            return HighScoreNormal;
+            return highScoreNormal;
         }
 
         set
         {
-            HighScoreNormal = CurrentScore;
-            PlayerPrefs.SetInt("HighScoreNormal", HighScoreNormal);
+            highScoreNormal = currentScore;
+            PlayerPrefs.SetInt("highScoreNormal", highScoreNormal);
         }
     }
 
-    public int HighScore_Hard
+    public int HighScoreHard
     {
         get
         {
-            return HighScoreHard;
+            return highScoreHard;
         }
 
         set
         {
-            HighScoreHard = CurrentScore;
-            PlayerPrefs.SetInt("HighScoreHard", HighScoreHard);
+            highScoreHard = currentScore;
+            PlayerPrefs.SetInt("highScoreHard", highScoreHard);
         }
     }
 
 
-    public int Max_Combo
+    public int MaxCombo
     {
         get
         {
-            return MaxCombo;
+            return maxCombo;
         }
 
         set
         {
-            MaxCombo = CurrentCombo;
-            PlayerPrefs.SetInt("MaxCombo", MaxCombo);
+            maxCombo = currentCombo;
+            PlayerPrefs.SetInt("maxCombo", maxCombo);
         }
     }
 
 
-    public int Furthest_Distance
+    public int FurthestDistance
     {
         get
         {
-            return FurthestDistance;
+            return furthestDistance;
         }
 
         set
         {
-            FurthestDistance = CurrentDistance;
-            PlayerPrefs.SetInt("FurthestDistance", FurthestDistance);
+            furthestDistance = currentDistance;
+            PlayerPrefs.SetInt("furthestDistance", furthestDistance);
         }
     }
 
+    public bool CheckHighScore(int score, int highscore)
+    {
+        if (score > highscore)
+        {
+            highscore = score;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
+    }
 
+    public int AddScores(int currentScore, int addAmount)
+    {
+        int newScore = currentScore + addAmount;
 
+        return newScore;
+    }
 }
