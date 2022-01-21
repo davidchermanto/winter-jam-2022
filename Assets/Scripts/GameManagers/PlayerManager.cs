@@ -28,7 +28,7 @@ public class PlayerManager : MonoBehaviour
 
             // Add score
             string grade = AccuracyToGrade(accuracy);
-            int score = CalculateScore(Constants.baseScore, grade, 1);
+            int score = CalculateScore(Constants.baseScore, grade, DataManager.Instance.GetCurrentCombo());
 
             DataManager.Instance.AddScore(score, grade);
 
@@ -40,7 +40,8 @@ public class PlayerManager : MonoBehaviour
             // Order tileboard to generate new tile and remove old one
             tileBoardManager.OnPlayerMove(direction);
 
-            Debug.Log("Direction: " + direction + " / Accuracy: " + System.Math.Round(accuracy * 100, 2) + "% / Grade: " + grade);
+            Debug.Log("Direction: " + direction + " / Accuracy: " + System.Math.Round(accuracy * 100, 2) + "% / Grade: " + grade
+                + " / Total Score: " + DataManager.Instance.GetScore() + " / BScore: " + score + " / Combo: " + DataManager.Instance.GetCurrentCombo());
         }
         else
         {
@@ -86,7 +87,7 @@ public class PlayerManager : MonoBehaviour
             multiplier = Constants.badScoreMultiplier;
         }
 
-        return Mathf.FloorToInt(baseScore * multiplier * (currentCombo * Constants.bonusComboMultiplier));
+        return Mathf.FloorToInt(baseScore * multiplier * ((100 + currentCombo) * Constants.bonusComboMultiplier));
     }
 
     private Vector3 CalculateTargetVector(string newDirection)

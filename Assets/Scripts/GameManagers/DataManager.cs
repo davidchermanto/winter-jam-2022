@@ -179,6 +179,11 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    public void BreakCombo()
+    {
+        currentCombo = 0;
+    }
+
     public void ResetStageVariables()
     {
         currentScore = 0;

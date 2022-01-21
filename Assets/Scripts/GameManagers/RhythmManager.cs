@@ -62,7 +62,15 @@ public class RhythmManager : MonoBehaviour
 
                 if(timer >= 1)
                 {
-                    beatMarked = false;
+                    if (!beatMarked)
+                    {
+                        DataManager.Instance.BreakCombo();
+                    }
+                    else
+                    {
+                        beatMarked = false;
+                    }
+
                     beatCount++;
 
                     timer -= 1;

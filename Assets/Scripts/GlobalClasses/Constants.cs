@@ -43,8 +43,8 @@ public static class Constants
     public static string miss = "MISS";
 
     public static float perfectThreshold = 0.85f;
-    public static float goodThreshold = 0.7f;
-    public static float badThreshold = 0.5f;
+    public static float goodThreshold = 0.6f;
+    public static float badThreshold = 0.35f;
 
     public static int baseScore = 100;
     
