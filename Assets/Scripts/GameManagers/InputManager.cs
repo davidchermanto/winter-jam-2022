@@ -89,7 +89,7 @@ public class InputManager : MonoBehaviour
 
         RhythmManager.Instance.MarkBeat();
     }
-
+                          
     /// <summary>
     /// Takes in a char and returns the corresponding KeyCodes.
     /// </summary>
@@ -149,12 +149,135 @@ public class InputManager : MonoBehaviour
                 return KeyCode.L;
             case 'P':
                 return KeyCode.P;
+            case '[':
+                return KeyCode.LeftBracket;
+            case ']':
+                return KeyCode.RightBracket;  
+            case '0':
+                return KeyCode.Alpha0;     
+            case '1' :
+                return KeyCode.Alpha1; 
+            case '2' :
+                return KeyCode.Alpha2;
+            case '3' :
+                return KeyCode.Alpha3;
+            case '4' :
+                return KeyCode.Alpha4;
+            case '5' :
+                return KeyCode.Alpha5;
+            case '6' :
+                return KeyCode.Alpha6;
+            case '7' :
+                return KeyCode.Alpha7;
+            case '8' :
+                return KeyCode.Alpha8;
+            case '9' :
+                return KeyCode.Alpha9;
+//             case '0':
+//                 return KeyCode.Keypad0;     
+//             case '1' :
+//                 return KeyCode.Keypad1; 
+//             case '2' :
+//                 return KeyCode.Keypad2;
+//             case '3' :
+//                 return KeyCode.Keypad3;
+//             case '4' :
+//                 return KeyCode.Keypad4;
+//             case '5' :
+//                 return KeyCode.Keypad5;
+//             case '6' :
+//                 return KeyCode.Keypad6;
+//             case '7' :
+//                 return KeyCode.Keypad7;
+//             case '8' :
+//                 return KeyCode.Keypad8;
+//             case '9' :
+//                 return KeyCode.Keypad9;
+            case '-'  :     
+                 return KeyCode.Minus; 
+
+             //   case '-'  :      
+            //    return KeyCode.KeypadMinus ;       
+            case '='  :
+                 return KeyCode.Equals;
+             //   case '-'  :      
+            //    return KeyCode.KeypadEquals ;   
+        
+                 
+            case ';':
+                 return KeyCode.Semicolon;
+            case '\'':
+                 return KeyCode.Quote;
+            case ',':
+                 return KeyCode.Comma;  
+            case '.':
+                 return KeyCode.Period;
+            case '\u005c' :
+                 return KeyCode.Backslash;
+            case '"':
+                 return KeyCode.DoubleQuote;
+            case '/':
+                 return KeyCode.Slash;
+            //   case '/'  :      
+            //    return KeyCode.KeypadDivide ;        
+            case '!':
+                 return  KeyCode.Exclaim;
+            case '@': 
+                 return  KeyCode.At;
+            case '#':
+                 return  KeyCode.Hash;
+            case '$':
+                 return KeyCode.Dollar;
+            case '%':
+                 return KeyCode.Percent;
+            case '^':
+                 return KeyCode.Caret;
+            case '&':
+                 return KeyCode.Ampersand;
+            case '*':
+                 return KeyCode.Asterisk;
+            //   case '*'  :      
+            //    return KeyCode.KeypadMultiply;      
+            case '(':
+                 return KeyCode.LeftParen;
+            case ')':
+                 return KeyCode.RightParen; 
+            case '_':
+                 return KeyCode.Underscore;
+            case '+':
+                 return KeyCode.Plus;
+                //   case '+'  :      
+            //    return KeyCode.KeypadPlus;     
+            case '`':
+                 return KeyCode.BackQuote; 
+            case '~':
+                 return KeyCode.Tilde;
+            case '{':
+                 return KeyCode.LeftCurlyBracket;
+            case '}':
+                  return KeyCode.RightCurlyBracket;   
+            case '|':
+                  return KeyCode.Pipe;
+            case ':':
+                  return KeyCode.Colon;    
+            case '<':
+                  return KeyCode.Less;      
+            case '>':
+                  return KeyCode.Greater;   
+            case '?':
+                   return KeyCode.Question;        
+            
+
+                                                                                         
+               
+
             default:
                 break;
         }
 
         return KeyCode.None;
     }
+
 
     public string GetCurrentInputs()
     {
