@@ -13,7 +13,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] private char leftKeycode = 'A';
     [SerializeField] private char rightKeycode = 'D';
 
-    private string possibleKeyCodes = "QAZWSXEDCRFVTGBYHNUJMIKOLP[]1234567890-=[];',./";
+    private string possibleKeyCodes = "QAZWSXEDCRFVTGBYHNUJMIKOLP1234567890-=[];',./";
 
     /// <summary>
     /// Initialize this class's default values here
@@ -149,10 +149,6 @@ public class InputManager : MonoBehaviour
                 return KeyCode.L;
             case 'P':
                 return KeyCode.P;
-            case '[':
-                return KeyCode.LeftBracket;
-            case ']':
-                return KeyCode.RightBracket;  
             case '0':
                 return KeyCode.Alpha0;     
             case '1' :
@@ -173,37 +169,14 @@ public class InputManager : MonoBehaviour
                 return KeyCode.Alpha8;
             case '9' :
                 return KeyCode.Alpha9;
-//             case '0':
-//                 return KeyCode.Keypad0;     
-//             case '1' :
-//                 return KeyCode.Keypad1; 
-//             case '2' :
-//                 return KeyCode.Keypad2;
-//             case '3' :
-//                 return KeyCode.Keypad3;
-//             case '4' :
-//                 return KeyCode.Keypad4;
-//             case '5' :
-//                 return KeyCode.Keypad5;
-//             case '6' :
-//                 return KeyCode.Keypad6;
-//             case '7' :
-//                 return KeyCode.Keypad7;
-//             case '8' :
-//                 return KeyCode.Keypad8;
-//             case '9' :
-//                 return KeyCode.Keypad9;
             case '-'  :     
-                 return KeyCode.Minus; 
-
-             //   case '-'  :      
-            //    return KeyCode.KeypadMinus ;       
+                 return KeyCode.Minus;     
             case '='  :
                  return KeyCode.Equals;
-             //   case '-'  :      
-            //    return KeyCode.KeypadEquals ;   
-        
-                 
+            case '[':
+                return KeyCode.LeftBracket;
+            case ']':
+                return KeyCode.RightBracket;
             case ';':
                  return KeyCode.Semicolon;
             case '\'':
@@ -212,10 +185,7 @@ public class InputManager : MonoBehaviour
                  return KeyCode.Comma;  
             case '.':
                  return KeyCode.Period;
-            //   case '.'  :      
-            //    return KeyCode.KeypadPeriod ;        
-            case '\u005c' :
-                 return KeyCode.Backslash;
+                /*
             case '"':
                  return KeyCode.DoubleQuote;
             case '/':
@@ -268,11 +238,7 @@ public class InputManager : MonoBehaviour
                   return KeyCode.Greater;   
             case '?':
                    return KeyCode.Question;        
-            
-
-                                                                                         
-               
-
+            */
             default:
                 break;
         }
