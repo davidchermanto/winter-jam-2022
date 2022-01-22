@@ -212,6 +212,8 @@ public class InputManager : MonoBehaviour
                  return KeyCode.Comma;  
             case '.':
                  return KeyCode.Period;
+            //   case '.'  :      
+            //    return KeyCode.KeypadPeriod ;        
             case '\u005c' :
                  return KeyCode.Backslash;
             case '"':
