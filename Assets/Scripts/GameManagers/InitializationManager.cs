@@ -10,6 +10,7 @@ public class InitializationManager : MonoBehaviour
     [SerializeField] private PlayerManager playerManager;
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private ColorThemeManager colorThemeManager;
+    [SerializeField] private CameraManager cameraManager;
 
     [Header("Constant Infos")]
     [SerializeField] Difficulty easy;
@@ -18,6 +19,7 @@ public class InitializationManager : MonoBehaviour
 
     void Start()
     {
+        cameraManager.Setup();
         dataManager.Setup();
         colorThemeManager.Setup();
         inputManager.Setup();
@@ -26,28 +28,26 @@ public class InitializationManager : MonoBehaviour
 
     public void PlayEasy()
     {
-        colorThemeManager.GenerateColorForDifficulty(easy);
-        tileBoardManager.SetDifficulty(easy);
-        tileBoardManager.StartGenerate();
-
-        RhythmManager.Instance.StartCount(easy.tempo, 4);
+        PlaySetup(easy);
     }
 
     public void PlayNormal()
     {
-        colorThemeManager.GenerateColorForDifficulty(normal);
-        tileBoardManager.SetDifficulty(normal);
-        tileBoardManager.StartGenerate();
-
-        RhythmManager.Instance.StartCount(normal.tempo, 4);
+        PlaySetup(normal);
     }
 
     public void PlayHard()
     {
-        colorThemeManager.GenerateColorForDifficulty(hard);
-        tileBoardManager.SetDifficulty(hard);
+        PlaySetup(hard);
+    }
+
+    public void PlaySetup(Difficulty difficulty)
+    {
+        colorThemeManager.GenerateColorForDifficulty(difficulty);
+        tileBoardManager.SetDifficulty(difficulty);
         tileBoardManager.StartGenerate();
 
-        RhythmManager.Instance.StartCount(hard.tempo, 4);
+        CameraManager.Instance.SetupGameCamera();
+        RhythmManager.Instance.StartCount(difficulty.tempo, 12);
     }
 }

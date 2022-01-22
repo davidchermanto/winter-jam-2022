@@ -61,4 +61,10 @@ public static class Constants
     // 
     public static int tileLimit = 10000000;
     public static int rangeLimit = 20;
+
+    // Default Camera Settings
+    public static float cameraNormalY = 0.5f;
+    public static float cameraIngameY = 0.25f;
+
+    public static float transitionTime = 1.5f;
 }
