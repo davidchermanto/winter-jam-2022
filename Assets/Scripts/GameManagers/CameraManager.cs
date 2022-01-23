@@ -36,23 +36,29 @@ public class CameraManager : MonoBehaviour
     {
         float timer = 0;
 
-        float initialValue = framingTransposer.m_ScreenY;
-        float targetValue;
+        float initialValueY = framingTransposer.m_ScreenY;
+        float targetValueY;
+
+        float initialValueDist = framingTransposer.m_CameraDistance;
+        float targetValueDist;
 
         if (up)
         {
-            targetValue = Constants.cameraNormalY;
+            targetValueY = Constants.cameraNormalY;
+            targetValueDist = Constants.cameraNormalDist;
         }
         else
         {
-            targetValue = Constants.cameraIngameY;
+            targetValueY = Constants.cameraIngameY;
+            targetValueDist = Constants.cameraInGameDist;
         }
 
         while(timer < 1)
         {
             timer += Time.deltaTime / Constants.transitionTime;
 
-            framingTransposer.m_ScreenY = Mathf.Lerp(initialValue, targetValue, timer);
+            framingTransposer.m_ScreenY = Mathf.Lerp(initialValueY, targetValueY, Mathf.SmoothStep(0, 1, timer));
+            framingTransposer.m_CameraDistance = Mathf.Lerp(initialValueDist, targetValueDist, Mathf.SmoothStep(0, 1, timer));
 
             yield return new WaitForEndOfFrame();
         }

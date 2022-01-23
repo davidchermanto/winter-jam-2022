@@ -20,14 +20,17 @@ public class ColorThemeManager : MonoBehaviour
     private ColorPack vanillaColorPack;
 
     [Header("Settings Variables")]
-    private const float easyHueShift = 0f;
-    private const float easyHueRandomFactor = 0.1f;
+    private const float neutralHue = 0f;
+    private const float neutralHueRandomFactor = 0.5f;
 
-    private const float normalHueShift = 0.25f;
+    private const float easyHueShift = 0f;
+    private const float easyHueRandomFactor = 0.15f;
+
+    private const float normalHueShift = 0.3f;
     private const float normalHueRandomFactor = 0.2f;
 
-    private const float hardHueShift = -0.25f;
-    private const float hardHueRandomFactor = 0.05f;
+    private const float hardHueShift = -0.3f;
+    private const float hardHueRandomFactor = 0.15f;
 
     [Header("Dynamic Variables")]
     private ColorPack ingameColorPack;
@@ -42,7 +45,10 @@ public class ColorThemeManager : MonoBehaviour
     {
         vanillaColorPack = new ColorPack(mainBright, secondBright, mainDark, secondDark, antaDark, antaLight);
 
+        // Randomizes initial colors
+        ingameColorPack = ShiftColorPack(vanillaColorPack, neutralHue, neutralHueRandomFactor);
 
+        previousColorPack = ingameColorPack;
     }
 
     /// <summary>
@@ -56,13 +62,13 @@ public class ColorThemeManager : MonoBehaviour
         switch (difficulty.name)
         {
             case "EASY":
-                ingameColorPack = ShiftColorPack(vanillaColorPack, easyHueShift, easyHueRandomFactor);
+                TweenToNewColorPack(ShiftColorPack(vanillaColorPack, easyHueShift, easyHueRandomFactor), Constants.colorChangeDuration);
                 break;
             case "NORMAL":
-                ingameColorPack = ShiftColorPack(vanillaColorPack, normalHueShift, normalHueRandomFactor);
+                TweenToNewColorPack(ShiftColorPack(vanillaColorPack, normalHueShift, normalHueRandomFactor), Constants.colorChangeDuration);
                 break;
             case "HARD":
-                ingameColorPack = ShiftColorPack(vanillaColorPack, hardHueShift, hardHueRandomFactor);
+                TweenToNewColorPack(ShiftColorPack(vanillaColorPack, hardHueShift, hardHueRandomFactor), Constants.colorChangeDuration);
                 break;
             default:
                 Debug.LogError("Tried to access unknown difficulty : "+difficulty.name);
@@ -73,7 +79,31 @@ public class ColorThemeManager : MonoBehaviour
 
     public void TweenToNewColorPack(ColorPack colorPack, float duration)
     {
+        StartCoroutine(ColorLerp(colorPack, duration));
+    }
 
+    private IEnumerator ColorLerp(ColorPack colorPack, float duration)
+    {
+        float timer = 0;
+
+        while(timer < 1)
+        {
+            timer += Time.deltaTime / duration;
+
+            ingameColorPack.brightOne = Color.Lerp(previousColorPack.brightOne, colorPack.brightOne, timer);
+            ingameColorPack.brightTwo = Color.Lerp(previousColorPack.brightTwo, colorPack.brightTwo, timer);
+            ingameColorPack.darkOne = Color.Lerp(previousColorPack.darkOne, colorPack.darkOne, timer);
+            ingameColorPack.darkTwo = Color.Lerp(previousColorPack.darkTwo, colorPack.darkTwo, timer);
+            ingameColorPack.antaOne = Color.Lerp(previousColorPack.antaOne, colorPack.antaOne, timer);
+            ingameColorPack.antaTwo = Color.Lerp(previousColorPack.antaOne, colorPack.antaTwo, timer);
+
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    public ColorPack GetColorPackVanilla()
+    {
+        return vanillaColorPack;
     }
 
     public ColorPack GetColorPack()

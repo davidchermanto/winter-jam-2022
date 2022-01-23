@@ -36,7 +36,7 @@ public class TileHandler : MonoBehaviour
         StartCoroutine(SpawnAnimation());
     }
 
-    private IEnumerator SpawnAnimation(float duration = 0.4f)
+    private IEnumerator SpawnAnimation(float duration = 0.8f)
     {
         float timer = 0;
 
@@ -49,11 +49,11 @@ public class TileHandler : MonoBehaviour
         {
             timer += Time.deltaTime / duration;
 
-            transform.position = Vector3.Lerp(spawnPosition, initialPosition, timer);
+            transform.position = Vector3.Lerp(spawnPosition, initialPosition, Mathf.SmoothStep(0, 1, timer));
 
-            tilePart_top.color = new Color(tilePart_top.color.r, tilePart_top.color.g, tilePart_top.color.b, timer);
-            tilePart_left.color = new Color(tilePart_left.color.r, tilePart_left.color.g, tilePart_left.color.b, timer);
-            tilePart_right.color = new Color(tilePart_right.color.r, tilePart_right.color.g, tilePart_right.color.b, timer);
+            tilePart_top.color = new Color(tilePart_top.color.r, tilePart_top.color.g, tilePart_top.color.b, Mathf.SmoothStep(0, 1, timer));
+            tilePart_left.color = new Color(tilePart_left.color.r, tilePart_left.color.g, tilePart_left.color.b, Mathf.SmoothStep(0, 1, timer));
+            tilePart_right.color = new Color(tilePart_right.color.r, tilePart_right.color.g, tilePart_right.color.b, Mathf.SmoothStep(0, 1, timer));
 
             yield return new WaitForEndOfFrame();
         }
@@ -67,7 +67,7 @@ public class TileHandler : MonoBehaviour
         StartCoroutine(DieAnimation());
     }
 
-    private IEnumerator DieAnimation(float duration = 0.5f)
+    private IEnumerator DieAnimation(float duration = 1.2f)
     {
         float timer = 0;
 
@@ -78,11 +78,11 @@ public class TileHandler : MonoBehaviour
         {
             timer += Time.deltaTime / duration;
 
-            transform.position = Vector3.Lerp(initialPosition, deathPosition, timer);
+            transform.position = Vector3.Lerp(initialPosition, deathPosition, Mathf.SmoothStep(0, 1, timer));
 
-            tilePart_top.color = new Color(tilePart_top.color.r, tilePart_top.color.g, tilePart_top.color.b, 1 - timer);
-            tilePart_left.color = new Color(tilePart_left.color.r, tilePart_left.color.g, tilePart_left.color.b, 1 - timer);
-            tilePart_right.color = new Color(tilePart_right.color.r, tilePart_right.color.g, tilePart_right.color.b, 1 - timer);
+            tilePart_top.color = new Color(tilePart_top.color.r, tilePart_top.color.g, tilePart_top.color.b, 1 - Mathf.SmoothStep(0, 1, timer));
+            tilePart_left.color = new Color(tilePart_left.color.r, tilePart_left.color.g, tilePart_left.color.b, 1 - Mathf.SmoothStep(0, 1, timer));
+            tilePart_right.color = new Color(tilePart_right.color.r, tilePart_right.color.g, tilePart_right.color.b, 1 - Mathf.SmoothStep(0, 1, timer));
 
             yield return new WaitForEndOfFrame();
         }
@@ -110,6 +110,16 @@ public class TileHandler : MonoBehaviour
         tilePart_top.color = top;
         tilePart_left.color = left;
         tilePart_right.color = right;
+
+        // TODO: Move invisible to tileboardmanager
+        Invisible();
+    }
+
+    public void Invisible()
+    {
+        tilePart_top.color = new Color(tilePart_top.color.r, tilePart_top.color.g, tilePart_top.color.b, 0);
+        tilePart_left.color = new Color(tilePart_left.color.r, tilePart_left.color.g, tilePart_left.color.b, 0);
+        tilePart_right.color = new Color(tilePart_right.color.r, tilePart_right.color.g, tilePart_right.color.b, 0);
     }
 
     public void SetLayer(int layer)

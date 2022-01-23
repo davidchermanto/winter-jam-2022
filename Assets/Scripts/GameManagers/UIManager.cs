@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject ingameGroup;
     [SerializeField] private GameObject rhythmGroup;
 
+    [SerializeField] private TileBoardManager tileBoardManager;
+
     [Header("Prefabs")]
     [SerializeField] private GameObject rhythmHitPrefab;
     [SerializeField] private GameObject gradeTextPrefab;
@@ -27,9 +29,12 @@ public class UIManager : MonoBehaviour
     [Header("Dynamic Elements")]
     [SerializeField] private TextMeshProUGUI score;
 
+    [Header("Single Objects")]
+    [SerializeField] private SpriteRenderer background;
+
     public void Setup()
     {
-
+        AdjustColor();
     }
 
     public void EnableRhythmBar()
@@ -44,6 +49,8 @@ public class UIManager : MonoBehaviour
 
         ingameGroup.SetActive(true);
         rhythmGroup.SetActive(true);
+
+        StartCoroutine(TweenColors(Constants.colorChangeDuration));
     }
 
     public void EnableMenuUI()
@@ -54,8 +61,39 @@ public class UIManager : MonoBehaviour
         rhythmGroup.SetActive(false);
     }
 
-    private IEnumerator TweenColors()
+    private IEnumerator TweenColors(float duration)
     {
-        yield return new WaitForEndOfFrame();
+        float timer = 0f;
+
+        while(timer < 1)
+        {
+            timer += Time.deltaTime;
+
+            AdjustColor();
+
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    private void AdjustColor(bool vanilla = false)
+    {
+        ColorPack colorPack;
+
+        if (vanilla)
+        {
+            colorPack = ColorThemeManager.Instance.GetColorPackVanilla();
+        }
+        else
+        {
+            colorPack = ColorThemeManager.Instance.GetColorPack();
+        }
+
+        List<TileHandler> activeTiles = tileBoardManager.GetActiveTiles();
+
+        foreach (TileHandler tileHandler in activeTiles)
+        {
+            tileHandler.SetColors(colorPack.brightOne, colorPack.brightTwo, colorPack.darkOne);
+            background.color = colorPack.antaOne;
+        }
     }
 }

@@ -37,6 +37,16 @@ public class PlayerManager : MonoBehaviour
 
             StartCoroutine(PlayJumpAnimation(targetCoord));
 
+            // Flip sprite if heading left or down
+            if (direction.Equals("left") || direction.Equals("down"))
+            {
+                spriteMochi.flipX = true;
+            }
+            else
+            {
+                spriteMochi.flipX = false;
+            }
+
             // Order tileboard to generate new tile and remove old one
             tileBoardManager.OnPlayerMove(direction);
 
@@ -120,9 +130,32 @@ public class PlayerManager : MonoBehaviour
 
     private IEnumerator PlayJumpAnimation(Vector3 targetCoord)
     {
-        // TODO: Actual animation
-        playerObject.transform.position = targetCoord;
+        Vector3 playerPos = playerObject.transform.position;
+        Vector3 mochiPos = spriteMochi.gameObject.transform.localPosition;
 
-        yield return new WaitForEndOfFrame();
+        Vector3 peakPoint = new Vector3(0, mochiPos.y + Constants.playerJumpHeight, 0);
+
+        float timer = 0;
+
+        while(timer < 0.5)
+        {
+            timer += Time.deltaTime / Constants.playerJumpDuration;
+
+            playerObject.transform.position = Vector3.Lerp(playerPos, targetCoord, timer);
+            spriteMochi.transform.localPosition = Vector3.Lerp(mochiPos, peakPoint, Mathf.SmoothStep(0, 1, timer * 2));
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        while (timer < 1)
+        {
+            timer += Time.deltaTime / Constants.playerJumpDuration;
+
+            playerObject.transform.position = Vector3.Lerp(playerPos, targetCoord, timer);
+            spriteMochi.transform.localPosition = Vector3.Lerp(peakPoint, mochiPos, (timer - 0.5f) * 2);
+
+            yield return new WaitForEndOfFrame();
+        }
+
     }
 }

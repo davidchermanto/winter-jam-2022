@@ -18,11 +18,15 @@ public class InitializationManager : MonoBehaviour
     [SerializeField] Difficulty normal;
     [SerializeField] Difficulty hard;
 
+    /// <summary>
+    /// Rule 1: Color must be before UI
+    /// </summary>
     void Start()
     {
+        colorThemeManager.Setup();
+
         cameraManager.Setup();
         dataManager.Setup();
-        colorThemeManager.Setup();
         inputManager.Setup();
         tileBoardManager.Setup();
         uiManager.Setup();

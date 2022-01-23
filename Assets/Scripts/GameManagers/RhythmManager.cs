@@ -89,7 +89,8 @@ public class RhythmManager : MonoBehaviour
 
     public float GetTimer()
     {
-        return timer;
+        return 1;
+        //return timer;
     }
 
     public int GetBeatCount()
