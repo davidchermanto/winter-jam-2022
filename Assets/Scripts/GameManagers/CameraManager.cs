@@ -32,6 +32,11 @@ public class CameraManager : MonoBehaviour
         StartCoroutine(CameraMoverY(true));
     }
 
+    public void Shake(float duration, float intensity)
+    {
+
+    }
+
     private IEnumerator CameraMoverY(bool up)
     {
         float timer = 0;

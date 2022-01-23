@@ -61,6 +61,16 @@ public class UIManager : MonoBehaviour
         rhythmGroup.SetActive(false);
     }
 
+    public void OnLifeLost()
+    {
+
+    }
+
+    public void OnGameOver()
+    {
+
+    }
+
     private IEnumerator TweenColors(float duration)
     {
         float timer = 0f;

@@ -17,6 +17,7 @@ public class RhythmManager : MonoBehaviour
     [SerializeField] private float secondsPerBeat;
 
     [Header("Dependencies")]
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private TileBoardManager tileBoardManager;
 
     [Header("Helpers")]
@@ -64,6 +65,8 @@ public class RhythmManager : MonoBehaviour
                 {
                     if (!beatMarked)
                     {
+                        gameManager.SubstractLife(true);
+
                         DataManager.Instance.BreakCombo();
                     }
                     else

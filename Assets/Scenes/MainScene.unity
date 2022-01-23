@@ -2144,6 +2144,7 @@ MonoBehaviour:
   timer: 0
   beatCount: 0
   secondsPerBeat: 0
+  gameManager: {fileID: 1662190596}
   tileBoardManager: {fileID: 1305305133}
   beatMarked: 0
 --- !u!114 &1245772062
@@ -2161,6 +2162,7 @@ MonoBehaviour:
   currentScore: 0
   currentDistance: 0
   currentCombo: 0
+  lifes: 0
   highScoreEasy: 0
   highScoreNormal: 0
   highScoreHard: 0
@@ -2540,6 +2542,8 @@ MonoBehaviour:
   tileTraces:
   - x: 0
     y: 0
+    id: 0
+    permanent: 0
   tilesFolder: {fileID: 609024135}
 --- !u!1 &1350302879
 GameObject:
@@ -2803,7 +2807,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99f2e8215855b6e4ebeadfb84ef013da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 1662190596}
   playerManager: {fileID: 906422278}
+  uiManager: {fileID: 1159544358}
   upKeycode: 87
   downKeycode: 83
   leftKeycode: 65
@@ -3335,7 +3341,7 @@ GameObject:
   - component: {fileID: 1662190595}
   - component: {fileID: 1662190596}
   m_Layer: 0
-  m_Name: InitalizationManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

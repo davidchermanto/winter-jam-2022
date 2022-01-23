@@ -348,6 +348,37 @@ public class TileBoardManager : MonoBehaviour
         SpawnNextTile();
     }
 
+    public Vector3 CalculateRealPosition(TileHandler tileHandler, string direction = null)
+    {
+        float distanceX = Constants.tileDistanceX;
+        float distanceY = Constants.tileDistanceY;
+
+        switch (direction)
+        {
+            case "up":
+                break;
+            case "down":
+                distanceX *= -1;
+                distanceY *= -1;
+                break;
+            case "left":
+                distanceX *= -1;
+                break;
+            case "right":
+                distanceY *= -1;
+                break;
+            default:
+                distanceX = 0;
+                distanceY = 0;
+                break;
+        }
+
+        float vectorX = tileHandler.GetCorrectPosition().x;
+        float vectorY = tileHandler.GetCorrectPosition().y;
+
+        return new Vector3(vectorX  + distanceX, vectorY + distanceY);
+    }
+
     private void RemoveTraces(int tracesID)
     {
         List<TileTrace> removeableTraces = new List<TileTrace>();

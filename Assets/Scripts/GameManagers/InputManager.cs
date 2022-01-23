@@ -5,7 +5,9 @@ using UnityEngine;
 public class InputManager : MonoBehaviour
 {
     [Header("Dependencies")]
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private UIManager uiManager;
 
     [Header("KeyCodes")]
     [SerializeField] private char upKeycode = 'W';
@@ -13,14 +15,28 @@ public class InputManager : MonoBehaviour
     [SerializeField] private char leftKeycode = 'A';
     [SerializeField] private char rightKeycode = 'D';
 
-    private string possibleKeyCodes = "QAZWSXEDCRFVTGBYHNUJMIKOLP1234567890-=[];',./";
+    private string possibleChar = "QAZWSXEDCRFVTGBYHNUJMIKOLP1234567890-=[];',./";
+    private List<KeyCode> possibleKeyCodes = new List<KeyCode>();
 
     /// <summary>
     /// Initialize this class's default values here
     /// </summary>
     public void Setup()
     {
+        foreach(char key in possibleChar)
+        {
+            possibleKeyCodes.Add(GetKeyCode(key));
+        }
+    }
 
+    public void RandomizeOneKey()
+    {
+        SetKeyCode(GetRandomKey(), GetRandomDirection());
+    }
+
+    public void RandomizeAllKey()
+    {
+        SetKeycodes(GetRandomKey(), GetRandomKey(), GetRandomKey(), GetRandomKey());
     }
 
     public void SetKeycodes(char up, char down, char left, char right)
@@ -47,35 +63,69 @@ public class InputManager : MonoBehaviour
             case "down":
                 downKeycode = keyCode;
                 break;
+            default:
+                Debug.LogError("Invalid direction: " + direction);
+                break;
         }
     }
+
+    public char GetKey(string direction)
+    {
+        switch (direction)
+        {
+            case "up":
+                return upKeycode;
+            case "left":
+                return leftKeycode;
+            case "right":
+                return rightKeycode;
+            case "down":
+                return downKeycode;
+            default:
+                Debug.LogError("Invalid direction: " + direction);
+                return '0';
+        }
+    }
+
 
     private void Update()
     {
         if (GameState.Instance.IsGameActive())
         {
-            if (Input.GetKeyDown(GetKeyCode(upKeycode)))
+            foreach (KeyCode pressedKey in possibleKeyCodes)
             {
-                //Debug.Log("You pressed " + upKeycode);
-                OnPressKey("up");
-            }
+                if (Input.GetKey(pressedKey))
+                {
+                    if (pressedKey == (GetKeyCode(upKeycode)))
+                    {
+                        //Debug.Log("You pressed " + upKeycode);
+                        OnPressKey("up");
+                    }
 
-            if (Input.GetKeyDown(GetKeyCode(downKeycode)))
-            {
-                //Debug.Log("You pressed " + downKeycode);
-                OnPressKey("down");
-            }
+                    if (pressedKey == (GetKeyCode(downKeycode)))
+                    {
+                        //Debug.Log("You pressed " + downKeycode);
+                        OnPressKey("down");
+                    }
 
-            if (Input.GetKeyDown(GetKeyCode(leftKeycode)))
-            {
-                //Debug.Log("You pressed " + leftKeycode);
-                OnPressKey("left");
-            }
+                    if (pressedKey == (GetKeyCode(leftKeycode)))
+                    {
+                        //Debug.Log("You pressed " + leftKeycode);
+                        OnPressKey("left");
+                    }
 
-            if (Input.GetKeyDown(GetKeyCode(rightKeycode)))
-            {
-                //Debug.Log("You pressed " + rightKeycode);
-                OnPressKey("right");
+                    if (pressedKey == (GetKeyCode(rightKeycode)))
+                    {
+                        //Debug.Log("You pressed " + rightKeycode);
+                        OnPressKey("right");
+                    }
+
+                    if (!GetCurrentKeyCodes().Contains(pressedKey))
+                    {
+                        Debug.Log("You pressed a wrong key: " + pressedKey.ToString());
+                        gameManager.SubstractLife(false);
+                    }
+                }
             }
         }
     }
@@ -88,6 +138,44 @@ public class InputManager : MonoBehaviour
         }
 
         RhythmManager.Instance.MarkBeat();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns>Returns an unused key</returns>
+    public char GetRandomKey()
+    {
+        char randomKey = possibleChar[Random.Range(0, possibleChar.Length)];
+
+        while (KeyExists(randomKey))
+        {
+            randomKey = possibleChar[Random.Range(0, possibleChar.Length)];
+        }
+
+        return randomKey;
+    }
+
+    public string GetRandomDirection()
+    {
+        int random = Random.Range(0, 3);
+
+        switch (random)
+        {
+            case 0:
+                return "up";
+            case 1:
+                return "down";
+            case 2:
+                return "left";
+            case 3:
+                return "right";
+            default:
+                Debug.LogWarning("Wrong random number: " + random);
+                break;
+        }
+
+        return null;
     }
                           
     /// <summary>
@@ -185,65 +273,16 @@ public class InputManager : MonoBehaviour
                  return KeyCode.Comma;  
             case '.':
                  return KeyCode.Period;
-                /*
-            case '"':
-                 return KeyCode.DoubleQuote;
-            case '/':
-                 return KeyCode.Slash;
-            //   case '/'  :      
-            //    return KeyCode.KeypadDivide ;        
-            case '!':
-                 return  KeyCode.Exclaim;
-            case '@': 
-                 return  KeyCode.At;
-            case '#':
-                 return  KeyCode.Hash;
-            case '$':
-                 return KeyCode.Dollar;
-            case '%':
-                 return KeyCode.Percent;
-            case '^':
-                 return KeyCode.Caret;
-            case '&':
-                 return KeyCode.Ampersand;
-            case '*':
-                 return KeyCode.Asterisk;
-            //   case '*'  :      
-            //    return KeyCode.KeypadMultiply;      
-            case '(':
-                 return KeyCode.LeftParen;
-            case ')':
-                 return KeyCode.RightParen; 
-            case '_':
-                 return KeyCode.Underscore;
-            case '+':
-                 return KeyCode.Plus;
-                //   case '+'  :      
-            //    return KeyCode.KeypadPlus;     
-            case '`':
-                 return KeyCode.BackQuote; 
-            case '~':
-                 return KeyCode.Tilde;
-            case '{':
-                 return KeyCode.LeftCurlyBracket;
-            case '}':
-                  return KeyCode.RightCurlyBracket;   
-            case '|':
-                  return KeyCode.Pipe;
-            case ':':
-                  return KeyCode.Colon;    
-            case '<':
-                  return KeyCode.Less;      
-            case '>':
-                  return KeyCode.Greater;   
-            case '?':
-                   return KeyCode.Question;        
-            */
             default:
                 break;
         }
 
         return KeyCode.None;
+    }
+
+    public bool KeyExists(char key)
+    {
+        return key == upKeycode || key == downKeycode || key == leftKeycode || key == rightKeycode;
     }
 
 
@@ -254,5 +293,18 @@ public class InputManager : MonoBehaviour
         newString += upKeycode + downKeycode + leftKeycode + rightKeycode;
 
         return newString;
+    }
+
+    public List<KeyCode> GetCurrentKeyCodes()
+    {
+        List<KeyCode> keyCodes = new List<KeyCode>
+        {
+            GetKeyCode(upKeycode),
+            GetKeyCode(downKeycode),
+            GetKeyCode(leftKeycode),
+            GetKeyCode(rightKeycode)
+        };
+
+        return keyCodes;
     }
 }

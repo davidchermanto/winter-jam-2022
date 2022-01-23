@@ -66,6 +66,8 @@ public static class Constants
     public static float hardScoreMultiplier = 3f;
 
     // Animation settings
+    public static float playerHeight = 5f;
+
     public static float enterDistance = 5f;
     public static float exitDistance = 5f;
 
@@ -75,6 +77,9 @@ public static class Constants
     // 
     public static int tileLimit = 10000000;
     public static int rangeLimit = 20;
+
+    public static float cameraShakeDuration = 0.1f;
+    public static float cameraShakeIntensity = 0.5f;
 
     // Default Camera Settings
     public static float cameraNormalY = 0.5f;

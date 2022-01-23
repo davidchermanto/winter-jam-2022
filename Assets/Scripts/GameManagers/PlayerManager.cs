@@ -33,7 +33,8 @@ public class PlayerManager : MonoBehaviour
             DataManager.Instance.AddScore(score, grade);
 
             // Move player
-            Vector3 targetCoord = CalculateTargetVector(direction);
+            Vector3 targetCoord = tileBoardManager.CalculateRealPosition(tileBoardManager.GetPlayerTile(), direction);
+            targetCoord.y += Constants.playerHeight;
 
             StartCoroutine(PlayJumpAnimation(targetCoord));
 
@@ -104,34 +105,6 @@ public class PlayerManager : MonoBehaviour
     {
         spriteMochi.sortingOrder = newLayer + Constants.playerSpriteOffset;
         spriteShadow.sortingOrder = newLayer + Constants.playerShadowOffset;
-    }
-
-    private Vector3 CalculateTargetVector(string newDirection)
-    {
-        float distanceX = Constants.tileDistanceX;
-        float distanceY = Constants.tileDistanceY;
-
-        switch (newDirection)
-        {
-            case "up":
-                break;
-            case "down":
-                distanceX *= -1;
-                distanceY *= -1;
-                break;
-            case "left":
-                distanceX *= -1;
-                break;
-            case "right":
-                distanceY *= -1;
-                break;
-            default:
-                break;
-        }
-
-        Vector3 targetVector = new Vector3(playerObject.transform.position.x + distanceX, playerObject.transform.position.y + distanceY);
-
-        return targetVector;
     }
 
     private IEnumerator PlayJumpAnimation(Vector3 targetCoord)

@@ -11,6 +11,7 @@ public class DataManager : MonoBehaviour
     [SerializeField] private int currentScore;
     [SerializeField] private int currentDistance;
     [SerializeField] private int currentCombo;
+    [SerializeField] private int lifes;
 
     [Header("Saved Data")]
     [SerializeField] private int highScoreEasy;
@@ -79,7 +80,6 @@ public class DataManager : MonoBehaviour
         return maxCombo;
     }
 
-
     public int GetFurthestDistance()
     {
         return furthestDistance;
@@ -98,6 +98,16 @@ public class DataManager : MonoBehaviour
     public int GetScore()
     {
         return currentScore;
+    }
+
+    public void SubstractLife()
+    {
+        lifes--;
+    }
+
+    public int GetLifes()
+    {
+        return lifes;
     }
 
     /// <summary>
@@ -189,5 +199,6 @@ public class DataManager : MonoBehaviour
         currentScore = 0;
         currentCombo = 0;
         currentDistance = 0;
+        lifes = Constants.maxLives;
     }
 }

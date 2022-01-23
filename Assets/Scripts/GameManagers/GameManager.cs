@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InitializationManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     [SerializeField] private DataManager dataManager;
     [SerializeField] private InputManager inputManager;
@@ -61,5 +61,23 @@ public class InitializationManager : MonoBehaviour
 
         CameraManager.Instance.SetupGameCamera();
         RhythmManager.Instance.StartCount(difficulty.tempo, 12);
+    }
+
+    /// <summary>
+    /// Does every effect for losing a life
+    /// </summary>
+    /// <param name="reasonMiss">Is the reason for losing the life missing a beat? If not then its wrong input</param>
+    public void SubstractLife(bool reasonMiss)
+    {
+        DataManager.Instance.SubstractLife();
+        CameraManager.Instance.Shake(Constants.cameraShakeDuration, Constants.cameraShakeIntensity);
+
+        uiManager.OnLifeLost();
+
+    }
+
+    public void Lose()
+    {
+
     }
 }
