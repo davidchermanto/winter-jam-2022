@@ -122,7 +122,9 @@ public class InputManager : MonoBehaviour
 
                     if (!GetCurrentKeyCodes().Contains(pressedKey))
                     {
-                        Debug.Log("You pressed a wrong key: " + pressedKey.ToString());
+                        //Debug.Log("You pressed a wrong key: " + pressedKey.ToString());
+
+                        DataManager.Instance.BreakCombo();
                         gameManager.SubstractLife(false);
                     }
                 }

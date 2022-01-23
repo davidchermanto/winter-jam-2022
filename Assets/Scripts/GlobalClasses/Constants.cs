@@ -67,6 +67,8 @@ public static class Constants
 
     // Animation settings
     public static float playerHeight = 5f;
+    public static float playerMochiHeight = -4.5f;
+    public static float playerShadowHeight = -4f;
 
     public static float enterDistance = 5f;
     public static float exitDistance = 5f;
@@ -83,10 +85,10 @@ public static class Constants
 
     // Default Camera Settings
     public static float cameraNormalY = 0.5f;
-    public static float cameraIngameY = 0.25f;
+    public static float cameraIngameY = 0.35f;
 
     public static float cameraNormalDist = 10f;
-    public static float cameraInGameDist = 14f;
+    public static float cameraInGameDist = 15f;
 
     public static float transitionTime = 1.5f;
 }

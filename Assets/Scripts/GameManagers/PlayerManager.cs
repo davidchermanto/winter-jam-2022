@@ -6,6 +6,7 @@ public class PlayerManager : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private TileBoardManager tileBoardManager;
+    [SerializeField] private GameManager gameManager;
 
     [SerializeField] private GameObject playerObject;
 
@@ -57,6 +58,8 @@ public class PlayerManager : MonoBehaviour
         else
         {
             // Lose a life
+            DataManager.Instance.BreakCombo();
+            gameManager.SubstractLife(false);
         }
     }
 
@@ -110,7 +113,7 @@ public class PlayerManager : MonoBehaviour
     private IEnumerator PlayJumpAnimation(Vector3 targetCoord)
     {
         Vector3 playerPos = playerObject.transform.position;
-        Vector3 mochiPos = spriteMochi.gameObject.transform.localPosition;
+        Vector3 mochiPos = new Vector3(0, Constants.playerMochiHeight, 0);
 
         Vector3 peakPoint = new Vector3(0, mochiPos.y + Constants.playerJumpHeight, 0);
 
