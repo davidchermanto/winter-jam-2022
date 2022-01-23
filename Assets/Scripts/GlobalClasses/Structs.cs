@@ -68,10 +68,15 @@ public struct TileTrace
 {
     public int x;
     public int y;
+    public int id;
+    public bool permanent;
 
-    public TileTrace(int x, int y)
+    public TileTrace(int x, int y, int id)
     {
         this.x = x;
         this.y = y;
+        this.id = id;
+
+        permanent = false;
     }
 }

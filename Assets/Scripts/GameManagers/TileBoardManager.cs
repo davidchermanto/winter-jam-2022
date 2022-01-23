@@ -111,6 +111,7 @@ public class TileBoardManager : MonoBehaviour
             //+ previousTile.GetDirectionBias().left+","+ previousTile.GetDirectionBias().right);
 
             tileTrace = previousTrace;
+            tileTrace.id = tileNumber;
 
             switch (newDirection)
             {
@@ -170,15 +171,6 @@ public class TileBoardManager : MonoBehaviour
                 break;
         }
 
-        // Make sure the tile will never be above the player
-        if (previousTile.GetLayer() >= Constants.tileLayerLimit)
-        {
-            foreach(TileHandler existingHandler in activeTiles)
-            {
-                existingHandler.SetLayer(existingHandler.GetLayer() - (Constants.tileLayerLimit - Constants.initialTileLayer));
-            }
-        }
-
         // Going up or left means that the new generated tile will be behind the old tile visually
         if (newDirection.Equals("up") || newDirection.Equals("left"))
         {
@@ -202,20 +194,20 @@ public class TileBoardManager : MonoBehaviour
         switch (newDirection)
         {
             case "up":
-                tileTraces.Add(new TileTrace(tileTrace.x + 1, tileTrace.y - 1));
-                tileTraces.Add(new TileTrace(tileTrace.x - 1, tileTrace.y - 1));
+                tileTraces.Add(new TileTrace(tileTrace.x + 1, tileTrace.y - 1, tileNumber));
+                tileTraces.Add(new TileTrace(tileTrace.x - 1, tileTrace.y - 1, tileNumber));
                 break;
             case "down":
-                tileTraces.Add(new TileTrace(tileTrace.x + 1, tileTrace.y + 1));
-                tileTraces.Add(new TileTrace(tileTrace.x - 1, tileTrace.y + 1));
+                tileTraces.Add(new TileTrace(tileTrace.x + 1, tileTrace.y + 1, tileNumber));
+                tileTraces.Add(new TileTrace(tileTrace.x - 1, tileTrace.y + 1, tileNumber));
                 break;
             case "left":
-                tileTraces.Add(new TileTrace(tileTrace.x + 1, tileTrace.y - 1));
-                tileTraces.Add(new TileTrace(tileTrace.x + 1, tileTrace.y + 1));
+                tileTraces.Add(new TileTrace(tileTrace.x + 1, tileTrace.y - 1, tileNumber));
+                tileTraces.Add(new TileTrace(tileTrace.x + 1, tileTrace.y + 1, tileNumber));
                 break;
             case "right":
-                tileTraces.Add(new TileTrace(tileTrace.x - 1, tileTrace.y - 1));
-                tileTraces.Add(new TileTrace(tileTrace.x - 1, tileTrace.y + 1));
+                tileTraces.Add(new TileTrace(tileTrace.x - 1, tileTrace.y - 1, tileNumber));
+                tileTraces.Add(new TileTrace(tileTrace.x - 1, tileTrace.y + 1, tileNumber));
                 break;
             default:
                 break;
@@ -223,6 +215,7 @@ public class TileBoardManager : MonoBehaviour
 
         ColorPack colorPack = ColorThemeManager.Instance.GetColorPack();
         tileHandler.SetColors(colorPack.brightOne, colorPack.brightTwo, colorPack.darkOne);
+        tileHandler.Invisible();
 
         // Links the previous tile to this one like a LinkedList
         previousTile.SetNextTile(tileHandler);
@@ -268,7 +261,8 @@ public class TileBoardManager : MonoBehaviour
             {
                 TileTrace newTrace = new TileTrace
                 {
-                    y = tileTrace.y
+                    y = tileTrace.y,
+                    id = tileNumber
                 };
 
                 if (tileTrace.x > closestTraceX.x)
@@ -291,7 +285,8 @@ public class TileBoardManager : MonoBehaviour
             {
                 TileTrace newTrace = new TileTrace
                 {
-                    x = tileTrace.x
+                    x = tileTrace.x,
+                    id = tileNumber
                 };
 
                 if (tileTrace.y > closestTraceY.y)
@@ -344,11 +339,34 @@ public class TileBoardManager : MonoBehaviour
         {
             activeTiles.Remove(deadTiles[0]);
 
+            RemoveTraces(deadTiles[0].GetTileNumber());
+
             deadTiles.RemoveAt(0);
             deadTiles[0].OnDie();
         }
 
         SpawnNextTile();
+    }
+
+    private void RemoveTraces(int tracesID)
+    {
+        List<TileTrace> removeableTraces = new List<TileTrace>();
+
+        foreach(TileTrace tileTrace in tileTraces)
+        {
+            if(tileTrace.id == tracesID && !tileTrace.permanent)
+            {
+                removeableTraces.Add(tileTrace);
+            }
+        }
+
+        foreach(TileTrace tileTrace in removeableTraces)
+        {
+            if (tileTraces.Contains(tileTrace))
+            {
+                tileTraces.Remove(tileTrace);
+            }
+        }
     }
 
     public void SetDifficulty(Difficulty difficulty)

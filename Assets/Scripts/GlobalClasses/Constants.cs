@@ -9,6 +9,9 @@ public static class Constants
 
     public static int tileLayerLimit = 1000;
 
+    public static int playerSpriteOffset = 8;
+    public static int playerShadowOffset = 7;
+
     public static int tileTopOffset = 5;
     public static int tileLeftOffset = 3;
     public static int tileRightOffset = 4;
@@ -57,6 +60,10 @@ public static class Constants
     public static float badScoreMultiplier = 0.5f;
 
     public static float bonusComboMultiplier = 0.01f;
+
+    public static float easyScoreMultiplier = 1f;
+    public static float normalScoreMultiplier = 2f;
+    public static float hardScoreMultiplier = 3f;
 
     // Animation settings
     public static float enterDistance = 5f;

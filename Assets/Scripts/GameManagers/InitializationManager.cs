@@ -20,6 +20,7 @@ public class InitializationManager : MonoBehaviour
 
     /// <summary>
     /// Rule 1: Color must be before UI
+    /// Rule 2: Player must be after TileBoard
     /// </summary>
     void Start()
     {
@@ -28,7 +29,10 @@ public class InitializationManager : MonoBehaviour
         cameraManager.Setup();
         dataManager.Setup();
         inputManager.Setup();
+
         tileBoardManager.Setup();
+        playerManager.Setup();
+
         uiManager.Setup();
     }
 

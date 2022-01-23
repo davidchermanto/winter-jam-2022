@@ -110,9 +110,6 @@ public class TileHandler : MonoBehaviour
         tilePart_top.color = top;
         tilePart_left.color = left;
         tilePart_right.color = right;
-
-        // TODO: Move invisible to tileboardmanager
-        Invisible();
     }
 
     public void Invisible()

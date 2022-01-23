@@ -13,9 +13,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteMochi;
     [SerializeField] private SpriteRenderer spriteShadow;
 
-    private void Setup()
+    public void Setup()
     {
-
+        SetLayer(tileBoardManager.GetPlayerTile().GetLayer());
     }
 
     public void OnMove(string direction)
@@ -100,6 +100,12 @@ public class PlayerManager : MonoBehaviour
         return Mathf.FloorToInt(baseScore * multiplier * ((100 + currentCombo) * Constants.bonusComboMultiplier));
     }
 
+    private void SetLayer(int newLayer)
+    {
+        spriteMochi.sortingOrder = newLayer + Constants.playerSpriteOffset;
+        spriteShadow.sortingOrder = newLayer + Constants.playerShadowOffset;
+    }
+
     private Vector3 CalculateTargetVector(string newDirection)
     {
         float distanceX = Constants.tileDistanceX;
@@ -157,5 +163,6 @@ public class PlayerManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
+        SetLayer(tileBoardManager.GetPlayerTile().GetLayer());
     }
 }
