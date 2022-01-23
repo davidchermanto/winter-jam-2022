@@ -335,7 +335,18 @@ public class TileBoardManager : MonoBehaviour
     /// </summary>
     public void OnPlayerMove(string direction)
     {
+        deadTiles.Add(playerTile);
+
         playerTile = playerTile.GetNextTile();
+
+        // If the dead tiles reach a certain amount, destroy them.
+        if (deadTiles.Count > Constants.deadTilesLimit)
+        {
+            activeTiles.Remove(deadTiles[0]);
+
+            deadTiles.RemoveAt(0);
+            deadTiles[0].OnDie();
+        }
 
         SpawnNextTile();
     }
@@ -358,5 +369,10 @@ public class TileBoardManager : MonoBehaviour
     public TileHandler GetPreviousTile()
     {
         return previousTile;
+    }
+
+    public List<TileHandler> GetActiveTiles()
+    {
+        return activeTiles;
     }
 }

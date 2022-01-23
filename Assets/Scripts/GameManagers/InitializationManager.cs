@@ -11,6 +11,7 @@ public class InitializationManager : MonoBehaviour
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private ColorThemeManager colorThemeManager;
     [SerializeField] private CameraManager cameraManager;
+    [SerializeField] private UIManager uiManager;
 
     [Header("Constant Infos")]
     [SerializeField] Difficulty easy;
@@ -24,6 +25,7 @@ public class InitializationManager : MonoBehaviour
         colorThemeManager.Setup();
         inputManager.Setup();
         tileBoardManager.Setup();
+        uiManager.Setup();
     }
 
     public void PlayEasy()
@@ -46,6 +48,8 @@ public class InitializationManager : MonoBehaviour
         colorThemeManager.GenerateColorForDifficulty(difficulty);
         tileBoardManager.SetDifficulty(difficulty);
         tileBoardManager.StartGenerate();
+
+        uiManager.EnableInGameUI();
 
         CameraManager.Instance.SetupGameCamera();
         RhythmManager.Instance.StartCount(difficulty.tempo, 12);

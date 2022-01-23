@@ -31,6 +31,7 @@ public class ColorThemeManager : MonoBehaviour
 
     [Header("Dynamic Variables")]
     private ColorPack ingameColorPack;
+    private ColorPack previousColorPack;
 
     private void Awake()
     {
@@ -40,6 +41,8 @@ public class ColorThemeManager : MonoBehaviour
     public void Setup()
     {
         vanillaColorPack = new ColorPack(mainBright, secondBright, mainDark, secondDark, antaDark, antaLight);
+
+
     }
 
     /// <summary>
@@ -66,6 +69,11 @@ public class ColorThemeManager : MonoBehaviour
                 ingameColorPack = vanillaColorPack;
                 break;
         }
+    }
+
+    public void TweenToNewColorPack(ColorPack colorPack, float duration)
+    {
+
     }
 
     public ColorPack GetColorPack()

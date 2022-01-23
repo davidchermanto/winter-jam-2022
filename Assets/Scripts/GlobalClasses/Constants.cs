@@ -21,7 +21,7 @@ public static class Constants
     public static float tileDistanceY = 1f;
 
     // Initial game settings
-    public static int initialTileSpawnCount = 5;
+    public static int initialTileSpawnCount = 7;
 
     public static int normalBias = 200;
     public static int normalTurnBias = 20;
@@ -29,7 +29,9 @@ public static class Constants
     public static int normalBiasReduction = 5;
     public static int normalTurnBiasIncrease = 5;
 
-    public static int maxLives = 3;
+    public static int maxLives = 5;
+
+    public static int deadTilesLimit = 5;
 
     // How combo works
     // If a move is perfect or good, the combo stays

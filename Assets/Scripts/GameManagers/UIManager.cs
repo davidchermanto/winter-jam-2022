@@ -27,6 +27,11 @@ public class UIManager : MonoBehaviour
     [Header("Dynamic Elements")]
     [SerializeField] private TextMeshProUGUI score;
 
+    public void Setup()
+    {
+
+    }
+
     public void EnableRhythmBar()
     {
         rhythmGroup.SetActive(true);
@@ -49,5 +54,8 @@ public class UIManager : MonoBehaviour
         rhythmGroup.SetActive(false);
     }
 
-
+    private IEnumerator TweenColors()
+    {
+        yield return new WaitForEndOfFrame();
+    }
 }

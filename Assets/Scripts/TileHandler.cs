@@ -57,8 +57,6 @@ public class TileHandler : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
-
-        
     }
 
     /// <summary>
@@ -71,7 +69,25 @@ public class TileHandler : MonoBehaviour
 
     private IEnumerator DieAnimation(float duration = 0.5f)
     {
-        yield return new WaitForSeconds(0.016f);
+        float timer = 0;
+
+        Vector3 initialPosition = transform.position;
+        Vector3 deathPosition = new Vector3(initialPosition.x, initialPosition.y - Constants.enterDistance, initialPosition.z);
+
+        while (timer < 1)
+        {
+            timer += Time.deltaTime / duration;
+
+            transform.position = Vector3.Lerp(initialPosition, deathPosition, timer);
+
+            tilePart_top.color = new Color(tilePart_top.color.r, tilePart_top.color.g, tilePart_top.color.b, 1 - timer);
+            tilePart_left.color = new Color(tilePart_left.color.r, tilePart_left.color.g, tilePart_left.color.b, 1 - timer);
+            tilePart_right.color = new Color(tilePart_right.color.r, tilePart_right.color.g, tilePart_right.color.b, 1 - timer);
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        Destroy(gameObject);
     }
 
     public TileHandler GetNextTile()
