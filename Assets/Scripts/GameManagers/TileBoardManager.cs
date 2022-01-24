@@ -102,11 +102,28 @@ public class TileBoardManager : MonoBehaviour
 
         bool isValid = true;
 
+        List<string> directions = new List<string>();
+        directions.Add("up");
+        directions.Add("down");
+        directions.Add("left");
+        directions.Add("right");
+
         do
         {
             // Picks a direction for the tile to connect to the previous tile
             newDirection = Directions.Instance.GetRandomDirectionWeighed(previousTile.GetDirectionBias());
 
+
+            while (!(directions.Contains(newDirection)))
+            {
+                newDirection = Directions.Instance.GetRandomDirectionWeighed(previousTile.GetDirectionBias());
+            }
+            directions.Remove(newDirection);
+
+            if(directions.Count == 0)
+            {
+                break;
+            }
             //Debug.Log(newDirection + "("+ previousTile.GetDirectionBias().up+","+previousTile.GetDirectionBias().down+","
             //+ previousTile.GetDirectionBias().left+","+ previousTile.GetDirectionBias().right);
 
