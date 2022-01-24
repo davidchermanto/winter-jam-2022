@@ -90,11 +90,11 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameState.Instance.IsGameActive())
+        if (GameState.Instance.IsGameActive() && !RhythmManager.Instance.GetBeatMarked())
         {
             foreach (KeyCode pressedKey in possibleKeyCodes)
             {
-                if (Input.GetKey(pressedKey))
+                if (Input.GetKeyDown(pressedKey))
                 {
                     if (pressedKey == (GetKeyCode(upKeycode)))
                     {
