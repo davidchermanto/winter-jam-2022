@@ -23,8 +23,6 @@ public struct DirectionBias
 public struct Difficulty
 {
     public string name;
-
-    public AudioClip theme;
     public float tempo;
 
     // How many beats before an item appears
@@ -32,6 +30,10 @@ public struct Difficulty
     
     // Higher means more turning around 
     public int biasModifier;
+
+    public float scoreMultiplier;
+
+    public float offset;
 }
 
 [System.Serializable]

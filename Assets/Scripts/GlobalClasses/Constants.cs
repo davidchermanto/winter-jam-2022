@@ -38,6 +38,8 @@ public static class Constants
 
     public static float colorChangeDuration = 2f;
 
+    public static float initialDelay = 5f;
+
     // How combo works
     // If a move is perfect or good, the combo stays
     // If a move is bad or miss, the combo disappears
@@ -49,9 +51,9 @@ public static class Constants
     public static string bad = "BAD";
     public static string miss = "MISS";
 
-    public static float perfectThreshold = 0.85f;
-    public static float goodThreshold = 0.6f;
-    public static float badThreshold = 0.3f;
+    public static float perfectThreshold = 0.7f;
+    public static float goodThreshold = 0.4f;
+    public static float badThreshold = 0.2f;
 
     public static int baseScore = 100;
     
@@ -85,7 +87,7 @@ public static class Constants
 
     // Default Camera Settings
     public static float cameraNormalY = 0.5f;
-    public static float cameraIngameY = 0.35f;
+    public static float cameraIngameY = 0.37f;
 
     public static float cameraNormalDist = 10f;
     public static float cameraInGameDist = 15f;

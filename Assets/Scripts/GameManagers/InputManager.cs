@@ -87,7 +87,6 @@ public class InputManager : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
         if (GameState.Instance.IsGameActive() && !RhythmManager.Instance.GetBeatMarked())

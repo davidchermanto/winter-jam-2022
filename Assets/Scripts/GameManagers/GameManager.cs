@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] Difficulty normal;
     [SerializeField] Difficulty hard;
 
+    private Difficulty difficulty;
+
     /// <summary>
     /// Rule 1: Color must be before UI
     /// Rule 2: Player must be after TileBoard
@@ -25,6 +27,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         colorThemeManager.Setup();
+        audioManager.Setup();
 
         cameraManager.Setup();
         dataManager.Setup();
@@ -53,14 +56,32 @@ public class GameManager : MonoBehaviour
 
     public void PlaySetup(Difficulty difficulty)
     {
+        this.difficulty = difficulty;
+
         colorThemeManager.GenerateColorForDifficulty(difficulty);
         tileBoardManager.SetDifficulty(difficulty);
         tileBoardManager.StartGenerate();
 
+        uiManager.ResetVariables();
         uiManager.EnableInGameUI();
 
         CameraManager.Instance.SetupGameCamera();
-        RhythmManager.Instance.StartCount(difficulty.tempo, 12);
+        AudioManager.Instance.PlaySoundtrack(difficulty.name);
+        RhythmManager.Instance.StartCount(difficulty.tempo, Constants.initialDelay);
+    }
+
+    public void AddScore(int score, string grade)
+    {
+        DataManager.Instance.AddScore(score, grade);
+
+        uiManager.SpawnGradeEffect(grade);
+        uiManager.OnAddScore();
+        uiManager.OnModifyComboCount();
+    }
+
+    public Difficulty GetDifficulty()
+    {
+        return difficulty;
     }
 
     /// <summary>
@@ -69,11 +90,11 @@ public class GameManager : MonoBehaviour
     /// <param name="reasonMiss">Is the reason for losing the life missing a beat? If not then its wrong input</param>
     public void SubstractLife(bool reasonMiss)
     {
+        DataManager.Instance.BreakCombo();
+        uiManager.SpawnGradeEffect(Constants.miss);
+        uiManager.OnModifyComboCount();
+
         DataManager.Instance.SubstractLife();
-        CameraManager.Instance.Shake(Constants.cameraShakeDuration, Constants.cameraShakeIntensity);
-
-        uiManager.OnLifeLost();
-
     }
 
     public void Lose()

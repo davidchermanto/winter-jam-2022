@@ -7,6 +7,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private TileBoardManager tileBoardManager;
     [SerializeField] private GameManager gameManager;
+    [SerializeField] private UIManager uiManager;
 
     [SerializeField] private GameObject playerObject;
 
@@ -29,9 +30,9 @@ public class PlayerManager : MonoBehaviour
 
             // Add score
             string grade = AccuracyToGrade(accuracy);
-            int score = CalculateScore(Constants.baseScore, grade, DataManager.Instance.GetCurrentCombo());
+            int score = CalculateScore(Constants.baseScore, grade, DataManager.Instance.GetCurrentCombo(), gameManager.GetDifficulty());
 
-            DataManager.Instance.AddScore(score, grade);
+            gameManager.AddScore(score, grade);
 
             // Move player
             Vector3 targetCoord = tileBoardManager.CalculateRealPosition(tileBoardManager.GetPlayerTile(), direction);
@@ -58,7 +59,6 @@ public class PlayerManager : MonoBehaviour
         else
         {
             // Lose a life
-            DataManager.Instance.BreakCombo();
             gameManager.SubstractLife(false);
         }
     }
@@ -83,7 +83,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private int CalculateScore(int baseScore, string grade, int currentCombo)
+    private int CalculateScore(int baseScore, string grade, int currentCombo, Difficulty difficulty)
     {
         float multiplier;
 
@@ -101,7 +101,7 @@ public class PlayerManager : MonoBehaviour
             multiplier = Constants.badScoreMultiplier;
         }
 
-        return Mathf.FloorToInt(baseScore * multiplier * ((100 + currentCombo) * Constants.bonusComboMultiplier));
+        return Mathf.FloorToInt(baseScore * multiplier * ((100 + currentCombo) * Constants.bonusComboMultiplier) * difficulty.scoreMultiplier);
     }
 
     private void SetLayer(int newLayer)

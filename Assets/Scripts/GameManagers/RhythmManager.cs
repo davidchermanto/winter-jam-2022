@@ -38,18 +38,20 @@ public class RhythmManager : MonoBehaviour
     /// Starts the process of counting beats within the coroutine
     /// </summary>
     /// <param name="bps">Beats per second</param>
-    /// <param name="beatDelay">How many beats before the timer actually starts</param>
-    public void StartCount(float bps, float beatDelay)
+    /// <param name="initialDelay">How long  before the timer actually starts</param>
+    public void StartCount(float bps, float initialDelay)
     {
         // 60 in music tempo equals to 1 second, use this to normalize BPS
         secondsPerBeat = 60 / bps;
 
-        StartCoroutine(Count(beatDelay));
+        StartCoroutine(Count(initialDelay));
     }
 
-    private IEnumerator Count(float beatDelay)
+    private IEnumerator Count(float initialDelay)
     {
-        yield return new WaitForSeconds(secondsPerBeat * beatDelay);
+        yield return new WaitForSeconds(initialDelay);
+
+        float previousValue = 0;
 
         // The game starts here
         // Putting this code here is pretty yuck but eh its a game jam
@@ -59,15 +61,14 @@ public class RhythmManager : MonoBehaviour
         {
             if (!GameState.Instance.IsPaused())
             {
-                timer += Time.deltaTime / secondsPerBeat;
+                // Timer is song in beat x where x is timer
+                timer = ((float)AudioSettings.dspTime - AudioManager.Instance.GetSoundtrackStartTime() - secondsPerBeat * gameManager.GetDifficulty().offset) / secondsPerBeat % 1;
 
-                if(timer >= 1)
+                if(timer < previousValue)
                 {
                     if (!beatMarked)
                     {
                         gameManager.SubstractLife(true);
-
-                        DataManager.Instance.BreakCombo();
                     }
                     else
                     {
@@ -78,6 +79,8 @@ public class RhythmManager : MonoBehaviour
 
                     timer -= 1;
                 }
+
+                previousValue = timer;
 
                 yield return new WaitForEndOfFrame();
             }
@@ -92,8 +95,8 @@ public class RhythmManager : MonoBehaviour
 
     public float GetTimer()
     {
-        return 1;
-        //return timer;
+        //return 1;
+        return timer;
     }
 
     public int GetBeatCount()
