@@ -24,7 +24,7 @@ public static class Constants
     public static float tileDistanceY = 1f;
 
     // Initial game settings
-    public static int initialTileSpawnCount = 5;
+    public static int initialTileSpawnCount = 12;
 
     public static int normalBias = 200;
     public static int normalTurnBias = 20;
@@ -34,7 +34,7 @@ public static class Constants
 
     public static int maxLives = 3;
 
-    public static int deadTilesLimit = 5;
+    public static int deadTilesLimit = 8;
 
     public static float colorChangeDuration = 2f;
 
@@ -43,6 +43,7 @@ public static class Constants
 
     public static float rhythmWait = 2f;
     public static float maxVolume = 0.5f;
+    public static float maxVolumeWeather = 0.7f;
 
     // How combo works
     // If a move is perfect or good, the combo stays

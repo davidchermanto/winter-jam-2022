@@ -16,6 +16,9 @@ public class ObstacleKeyChange : MonoBehaviour
     [SerializeField] private GameObject rightArrow;
     [SerializeField] private GameObject downArrow;
 
+    [SerializeField] private ParticleSystem black;
+    [SerializeField] private ParticleSystem gray;
+
     public void Setup(string direction, char key)
     {
         this.direction = direction;
@@ -48,6 +51,13 @@ public class ObstacleKeyChange : MonoBehaviour
 
         string keyString = "" + key;
         text.SetText(keyString);
+
+        StartCoroutine(Shift(true));
+    }
+
+    private void Update()
+    {
+        
     }
 
     public void SetLayer(int newLayer)
@@ -58,6 +68,9 @@ public class ObstacleKeyChange : MonoBehaviour
         leftArrow.GetComponent<SpriteRenderer>().sortingOrder = newLayer + Constants.playerSpriteOffset;
         rightArrow.GetComponent<SpriteRenderer>().sortingOrder = newLayer + Constants.playerSpriteOffset;
         downArrow.GetComponent<SpriteRenderer>().sortingOrder = newLayer + Constants.playerSpriteOffset;
+
+        black.GetComponent<ParticleSystemRenderer>().sortingOrder = newLayer + Constants.playerShadowOffset;
+        gray.GetComponent<ParticleSystemRenderer>().sortingOrder = newLayer + Constants.playerShadowOffset;
     }
 
     public void SyncPosition(TileHandler tileHandler)
@@ -69,7 +82,8 @@ public class ObstacleKeyChange : MonoBehaviour
 
     public void Take()
     {
-        // disappear animation
+        StartCoroutine(Shift(false));
+        
     }
 
     public char GetKey()
@@ -82,15 +96,57 @@ public class ObstacleKeyChange : MonoBehaviour
         return direction;
     }
 
-    private IEnumerator Appear()
+    private IEnumerator Shift(bool appear, float appearTime = 1f)
     {
+        float timer = 0;
 
-        yield return new WaitForEndOfFrame();
-    }
+        Color target;
+        Color initial;
 
-    private IEnumerator Disappear()
-    {
+        if (appear)
+        {
+            target = text.color;
+            initial = new Color(target.r, target.g, target.b, 0);
+        }
+        else
+        {
+            initial = text.color;
+            target = new Color(initial.r, initial.g, initial.b, 0);
+        }
 
-        yield return new WaitForEndOfFrame();
+        while (timer < 1)
+        {
+            timer += Time.deltaTime / appearTime;
+
+            text.color = Color.Lerp(initial, target, timer);
+
+            if (upArrow.activeInHierarchy)
+            {
+                upArrow.GetComponent<SpriteRenderer>().color = Color.Lerp(initial, target, timer);
+            }
+            else if (downArrow.activeInHierarchy)
+            {
+                downArrow.GetComponent<SpriteRenderer>().color = Color.Lerp(initial, target, timer);
+            }
+            else if (leftArrow.activeInHierarchy)
+            {
+                leftArrow.GetComponent<SpriteRenderer>().color = Color.Lerp(initial, target, timer);
+            }
+            else if (rightArrow.activeInHierarchy)
+            {
+                rightArrow.GetComponent<SpriteRenderer>().color = Color.Lerp(initial, target, timer);
+            }
+            else
+            {
+                Debug.LogError("How did we get here? No arrow found active");
+            }
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (!appear)
+        {
+            Destroy(gameObject);
+        }
     }
 }

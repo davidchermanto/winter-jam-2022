@@ -60,6 +60,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject heartTwo;
     [SerializeField] private GameObject heartOne;
 
+    [Header("Controls")]
+    [SerializeField] private TextMeshProUGUI upKey;
+    [SerializeField] private TextMeshProUGUI downKey;
+    [SerializeField] private TextMeshProUGUI leftKey;
+    [SerializeField] private TextMeshProUGUI rightKey;
+
     [Header("Temporary")]
     [SerializeField] private GameObject leftHit;
     [SerializeField] private GameObject rightHit;
@@ -103,7 +109,26 @@ public class UIManager : MonoBehaviour
 
     public void UpdateKey(string direction, char newKey)
     {
+        string newString = "" + newKey;
 
+        switch (direction)
+        {
+            case "up":
+                upKey.SetText(newString);
+                break;
+            case "down":
+                downKey.SetText(newString);
+                break;
+            case "left":
+                leftKey.SetText(newString);
+                break;
+            case "right":
+                rightKey.SetText(newString);
+                break;
+            default:
+                Debug.Log("Weird direction: " + direction);
+                break;
+        }
     }
 
     public void SpawnGradeEffect(string grade)

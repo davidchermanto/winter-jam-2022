@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
         playerManager.Setup();
 
         uiManager.Setup();
+
+        audioManager.PlayWeather("wind");
     }
 
     public void PlayEasy()
@@ -61,6 +63,11 @@ public class GameManager : MonoBehaviour
     {
         this.difficulty = difficulty;
 
+        audioManager.PlayOneShot("woosh");
+
+        audioManager.StopSoundtrack();
+        audioManager.StopWeather();
+
         DataManager.Instance.ResetStageVariables();
 
         colorThemeManager.GenerateColorForDifficulty(difficulty);
@@ -80,7 +87,9 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(Constants.rhythmWait);
 
-        AudioManager.Instance.PlaySoundtrack(difficulty.name);
+        audioManager.PlaySoundtrack(difficulty.name);
+        audioManager.StopWeather();
+
         RhythmManager.Instance.StartCount(difficulty.tempo, Constants.beatDelay);
     }
 
@@ -120,6 +129,13 @@ public class GameManager : MonoBehaviour
         if (dataManager.GetLifes() == 0)
         {
             // lose
+            GameState.Instance.SetPlaying(false);
+            //ui
+            //tiles
+            tileBoardManager.ResetVariables();
+            //input
+            inputManager.ResetVariables();
+            //
         }
     }
 

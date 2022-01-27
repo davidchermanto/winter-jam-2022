@@ -7,6 +7,7 @@ public class TileBoardManager : MonoBehaviour
     [Header("Dependency")]
     [SerializeField] private PlayerVisualManager playerManager;
     [SerializeField] private InputManager inputManager;
+    [SerializeField] private UIManager uiManager;
 
     [Header("Game Settings")]
     [SerializeField] private Difficulty difficulty;
@@ -326,7 +327,7 @@ public class TileBoardManager : MonoBehaviour
 
         //Debug.Log("Generated tile number " + tileNumber + ", facing direction "+newDirection);
 
-        /*
+        
         if(tileNumber % difficulty.obstacleSpawnDelay == 0)
         {
             char randomKey = inputManager.GetRandomKey();
@@ -340,7 +341,7 @@ public class TileBoardManager : MonoBehaviour
             obstacleKey.SyncPosition(tileHandler);
 
             tileHandler.AddObstacle(newObstacle);
-        }*/
+        }
 
         if(tileNumber % 3 == 0)
         {
@@ -386,18 +387,18 @@ public class TileBoardManager : MonoBehaviour
     /// </summary>
     public void OnPlayerMove(string direction)
     {
-        GameObject obstacle = playerTile.GetObstacle();
+        GameObject obstacle = playerTile.GetNextTile().GetObstacle();
 
         if (obstacle != null)
         {
-            // change controls
             ObstacleKeyChange obstacleKeyChange = obstacle.GetComponent<ObstacleKeyChange>();
+            obstacleKeyChange.Take();
 
             char newKey = obstacleKeyChange.GetKey();
             string newDirection = obstacleKeyChange.GetDirection();
 
             inputManager.SetKeyCode(newKey, newDirection);
-            // TODO: change UI
+            uiManager.UpdateKey(newDirection, newKey);
         }
 
         deadTiles.Add(playerTile);
@@ -473,8 +474,16 @@ public class TileBoardManager : MonoBehaviour
     public void ResetVariables()
     {
         // destroy active tiles
+        foreach(TileHandler tileHandler in activeTiles)
+        {
+            tileHandler.OnDie();
+        }
 
         // destroy dead tiles
+        foreach (TileHandler tileHandler in deadTiles)
+        {
+            tileHandler.OnDie();
+        }
 
         // destroy tile traces
         tileTraces = new List<TileTrace>();
@@ -483,6 +492,8 @@ public class TileBoardManager : MonoBehaviour
         tileNumber = 0;
 
         // generate initial player tile;
+        GameObject newTile = Instantiate(tile);
+        TileHandler newTileHanler = newTile.GetComponent<TileHandler>();
 
     }
 

@@ -47,13 +47,13 @@ public class AudioManager : MonoBehaviour
         switch (audio)
         {
             case "thunder":
-                soundtrack = easy;
+                soundtrack = thunder;
                 break;
-            case "NORMAL":
-                soundtrack = medium;
+            case "tap":
+                soundtrack = tap;
                 break;
-            case "HARD":
-                soundtrack = hard;
+            case "woosh":
+                soundtrack = woosh;
                 break;
             default:
                 Debug.LogError("No soundtrack found of title: " + audio);
@@ -101,14 +101,32 @@ public class AudioManager : MonoBehaviour
         StartCoroutine(LerpOSTVolume(0, 2));
     }
 
-    public void PlayWeather(string title)
+    public void PlayWeather(string title, bool overrideDefault = false)
     {
+        AudioClip soundtrack = null;
+        Debug.Log(title);
 
+        switch (title)
+        {
+            case "rain":
+                soundtrack = rainy;
+                break;
+            case "wind":
+                soundtrack = windy;
+                break;
+        }
+
+        wthPlayer.volume = 0;
+
+        StartCoroutine(LerpWTHVolume(Constants.maxVolumeWeather, 2));
+
+        wthPlayer.clip = soundtrack;
+        wthPlayer.Play();
     }
 
     public void StopWeather()
     {
-
+        StartCoroutine(LerpWTHVolume(0, 1f));
     }
 
     public IEnumerator LerpOSTVolume(float targetVolume, float duration)
@@ -119,7 +137,7 @@ public class AudioManager : MonoBehaviour
 
         while(timer < 1)
         {
-            timer += Time.deltaTime / targetVolume;
+            timer += Time.deltaTime / duration;
 
             ostPlayer.volume = Mathf.Lerp(currentVolume, targetVolume, timer);
 
@@ -129,6 +147,27 @@ public class AudioManager : MonoBehaviour
         if(targetVolume == 0)
         {
             ostPlayer.Stop();
+        }
+    }
+
+    public IEnumerator LerpWTHVolume(float targetVolume, float duration)
+    {
+        float timer = 0;
+
+        float currentVolume = wthPlayer.volume;
+
+        while (timer < 1)
+        {
+            timer += Time.deltaTime / duration;
+
+            wthPlayer.volume = Mathf.Lerp(currentVolume, targetVolume, timer);
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        if (targetVolume == 0)
+        {
+            wthPlayer.Stop();
         }
     }
 }

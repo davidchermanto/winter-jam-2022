@@ -15,7 +15,8 @@ public class InputManager : MonoBehaviour
     [SerializeField] private char leftKeycode = 'A';
     [SerializeField] private char rightKeycode = 'D';
 
-    private string possibleChar = "QAZWSXEDCRFVTGBYHNUJMIKOLP1234567890-=[];',./";
+    //private string possibleChar = "QAZWSXEDCRFVTGBYHNUJMIKOLP1234567890-=[];',./";
+    private string possibleChar = "QAZWSXEDC";
     private List<KeyCode> possibleKeyCodes = new List<KeyCode>();
 
     /// <summary>
@@ -199,6 +200,8 @@ public class InputManager : MonoBehaviour
                 return KeyCode.E;
             case 'Z':
                 return KeyCode.Z;
+            case 'X':
+                return KeyCode.X;
             case 'C':
                 return KeyCode.C;
             case 'R':
