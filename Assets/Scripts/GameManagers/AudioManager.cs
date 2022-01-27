@@ -42,6 +42,24 @@ public class AudioManager : MonoBehaviour
 
     public void PlayOneShot(string audio)
     {
+        AudioClip soundtrack = null;
+
+        switch (audio)
+        {
+            case "thunder":
+                soundtrack = easy;
+                break;
+            case "NORMAL":
+                soundtrack = medium;
+                break;
+            case "HARD":
+                soundtrack = hard;
+                break;
+            default:
+                Debug.LogError("No soundtrack found of title: " + audio);
+                break;
+        }
+
 
     }
 
@@ -69,6 +87,8 @@ public class AudioManager : MonoBehaviour
 
         ostPlayer.clip = soundtrack;
         ostPlayer.Play();
+
+        ostPlayer.volume = Constants.maxVolume;
     }
 
     public float GetSoundtrackStartTime()
@@ -78,10 +98,10 @@ public class AudioManager : MonoBehaviour
 
     public void StopSoundtrack()
     {
-
+        StartCoroutine(LerpOSTVolume(0, 2));
     }
 
-    public void PlayWeather()
+    public void PlayWeather(string title)
     {
 
     }
@@ -89,5 +109,26 @@ public class AudioManager : MonoBehaviour
     public void StopWeather()
     {
 
+    }
+
+    public IEnumerator LerpOSTVolume(float targetVolume, float duration)
+    {
+        float timer = 0;
+
+        float currentVolume = ostPlayer.volume;
+
+        while(timer < 1)
+        {
+            timer += Time.deltaTime / targetVolume;
+
+            ostPlayer.volume = Mathf.Lerp(currentVolume, targetVolume, timer);
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        if(targetVolume == 0)
+        {
+            ostPlayer.Stop();
+        }
     }
 }

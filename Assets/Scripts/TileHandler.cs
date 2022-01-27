@@ -18,6 +18,8 @@ public class TileHandler : MonoBehaviour
 
     [SerializeField] private DirectionBias directionBias;
 
+    [SerializeField] private GameObject obstacle;
+
     [Header("Identification")]
     [SerializeField] private int tileNumber;
     [SerializeField] private TileTrace tileTrace;
@@ -88,6 +90,16 @@ public class TileHandler : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    public void AddObstacle(GameObject obstacle)
+    {
+        this.obstacle = obstacle;
+    }
+
+    public GameObject GetObstacle()
+    {
+        return obstacle;
     }
 
     public TileHandler GetNextTile()

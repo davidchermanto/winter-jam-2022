@@ -26,8 +26,8 @@ public class ColorThemeManager : MonoBehaviour
     private const float easyHueShift = 0f;
     private const float easyHueRandomFactor = 0.15f;
 
-    private const float normalHueShift = 0.3f;
-    private const float normalHueRandomFactor = 0.2f;
+    private const float normalHueShift = 0.4f;
+    private const float normalHueRandomFactor = 0.15f;
 
     private const float hardHueShift = -0.3f;
     private const float hardHueRandomFactor = 0.15f;

@@ -32,13 +32,17 @@ public static class Constants
     public static int normalBiasReduction = 5;
     public static int normalTurnBiasIncrease = 5;
 
-    public static int maxLives = 5;
+    public static int maxLives = 3;
 
     public static int deadTilesLimit = 5;
 
     public static float colorChangeDuration = 2f;
 
-    public static float initialDelay = 5f;
+    // Must be a value more than 8!
+    public static int beatDelay = 8;
+
+    public static float rhythmWait = 2f;
+    public static float maxVolume = 0.5f;
 
     // How combo works
     // If a move is perfect or good, the combo stays

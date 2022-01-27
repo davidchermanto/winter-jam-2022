@@ -6,7 +6,7 @@ public class InputManager : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private GameManager gameManager;
-    [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private PlayerVisualManager playerManager;
     [SerializeField] private UIManager uiManager;
 
     [Header("KeyCodes")]
@@ -133,10 +133,7 @@ public class InputManager : MonoBehaviour
 
     private void OnPressKey(string direction)
     {
-        if (!RhythmManager.Instance.GetBeatMarked())
-        {
-            playerManager.OnMove(direction);
-        }
+        playerManager.OnMove(direction);
 
         RhythmManager.Instance.MarkBeat();
     }
@@ -307,5 +304,13 @@ public class InputManager : MonoBehaviour
         };
 
         return keyCodes;
+    }
+
+    public void ResetVariables()
+    {
+        upKeycode = 'W';
+        downKeycode = 'S';
+        leftKeycode = 'A';
+        rightKeycode = 'D';
     }
 }

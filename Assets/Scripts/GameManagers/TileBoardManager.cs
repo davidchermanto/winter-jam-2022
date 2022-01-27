@@ -5,13 +5,15 @@ using UnityEngine;
 public class TileBoardManager : MonoBehaviour
 {
     [Header("Dependency")]
-    [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private PlayerVisualManager playerManager;
+    [SerializeField] private InputManager inputManager;
 
     [Header("Game Settings")]
     [SerializeField] private Difficulty difficulty;
 
     [Header("Prefab")]
     [SerializeField] private GameObject tile;
+    [SerializeField] private GameObject obstacleKeyChange;
 
     [Header("Dynamic Variables")]
     [SerializeField] private int tileNumber;
@@ -324,6 +326,27 @@ public class TileBoardManager : MonoBehaviour
 
         //Debug.Log("Generated tile number " + tileNumber + ", facing direction "+newDirection);
 
+        /*
+        if(tileNumber % difficulty.obstacleSpawnDelay == 0)
+        {
+            char randomKey = inputManager.GetRandomKey();
+            string randomDirection = inputManager.GetRandomDirection();
+
+            GameObject newObstacle = Instantiate(obstacleKeyChange);
+            ObstacleKeyChange obstacleKey = newObstacle.GetComponent<ObstacleKeyChange>();
+
+            obstacleKey.Setup(randomDirection, randomKey);
+            obstacleKey.SetLayer(tileHandler.GetLayer());
+            obstacleKey.SyncPosition(tileHandler);
+
+            tileHandler.AddObstacle(newObstacle);
+        }*/
+
+        if(tileNumber % 3 == 0)
+        {
+            SpawnTreeTile();
+        }
+
         previousTile = tileHandler;
     }
 
@@ -342,11 +365,41 @@ public class TileBoardManager : MonoBehaviour
         return true;
     }
 
+    public void SpawnTreeTile()
+    {
+        // get current position
+        TileTrace tileTrace = playerTile.GetTrace();
+
+        // select a random tile within 10 tile
+
+        // check traces
+        if (!tileTraces.Contains(tileTrace))
+        {
+            // generate a tile with a tree on top of it
+        }
+
+        // profit?
+    }
+
     /// <summary>
     /// When player moves to a new tile, do this to the board
     /// </summary>
     public void OnPlayerMove(string direction)
     {
+        GameObject obstacle = playerTile.GetObstacle();
+
+        if (obstacle != null)
+        {
+            // change controls
+            ObstacleKeyChange obstacleKeyChange = obstacle.GetComponent<ObstacleKeyChange>();
+
+            char newKey = obstacleKeyChange.GetKey();
+            string newDirection = obstacleKeyChange.GetDirection();
+
+            inputManager.SetKeyCode(newKey, newDirection);
+            // TODO: change UI
+        }
+
         deadTiles.Add(playerTile);
 
         playerTile = playerTile.GetNextTile();
@@ -415,6 +468,22 @@ public class TileBoardManager : MonoBehaviour
                 tileTraces.Remove(tileTrace);
             }
         }
+    }
+
+    public void ResetVariables()
+    {
+        // destroy active tiles
+
+        // destroy dead tiles
+
+        // destroy tile traces
+        tileTraces = new List<TileTrace>();
+
+        // reset tile count
+        tileNumber = 0;
+
+        // generate initial player tile;
+
     }
 
     public void SetDifficulty(Difficulty difficulty)

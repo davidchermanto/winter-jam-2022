@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private DataManager dataManager;
     [SerializeField] private InputManager inputManager;
     [SerializeField] private TileBoardManager tileBoardManager;
-    [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private PlayerVisualManager playerManager;
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private ColorThemeManager colorThemeManager;
     [SerializeField] private CameraManager cameraManager;
@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] Difficulty hard;
 
     private Difficulty difficulty;
+
+    // Helper
+    private bool hasLifeBeenSubstracted;
 
     /// <summary>
     /// Rule 1: Color must be before UI
@@ -58,16 +61,27 @@ public class GameManager : MonoBehaviour
     {
         this.difficulty = difficulty;
 
+        DataManager.Instance.ResetStageVariables();
+
         colorThemeManager.GenerateColorForDifficulty(difficulty);
         tileBoardManager.SetDifficulty(difficulty);
         tileBoardManager.StartGenerate();
 
         uiManager.ResetVariables();
         uiManager.EnableInGameUI();
+        uiManager.ChangeBackground(difficulty);
 
         CameraManager.Instance.SetupGameCamera();
+
+        StartCoroutine(DelayedPlaySetup(difficulty));
+    }
+
+    private IEnumerator DelayedPlaySetup(Difficulty difficulty)
+    {
+        yield return new WaitForSeconds(Constants.rhythmWait);
+
         AudioManager.Instance.PlaySoundtrack(difficulty.name);
-        RhythmManager.Instance.StartCount(difficulty.tempo, Constants.initialDelay);
+        RhythmManager.Instance.StartCount(difficulty.tempo, Constants.beatDelay);
     }
 
     public void AddScore(int score, string grade)
@@ -94,11 +108,48 @@ public class GameManager : MonoBehaviour
         uiManager.SpawnGradeEffect(Constants.miss);
         uiManager.OnModifyComboCount();
 
-        DataManager.Instance.SubstractLife();
+        if (!hasLifeBeenSubstracted)
+        {
+            DataManager.Instance.SubstractLife();
+            uiManager.SetHeart(DataManager.Instance.GetLifes());
+            hasLifeBeenSubstracted = true;
+
+            StartCoroutine(LifeLostCooldown());
+        }
+
+        if (dataManager.GetLifes() == 0)
+        {
+            // lose
+        }
+    }
+
+    private IEnumerator LifeLostCooldown()
+    {
+        yield return new WaitForSeconds(1);
+
+        hasLifeBeenSubstracted = false;
     }
 
     public void Lose()
     {
+        DataManager.Instance.EvaluateScore(difficulty);
+        DataManager.Instance.EvaluateMiscellaneous();
 
+        ResetGame();
+    }
+
+    private void ResetGame()
+    {
+        GameState.Instance.SetPlaying(false);
+
+        uiManager.ResetVariables();
+        tileBoardManager.ResetVariables();
+        inputManager.ResetVariables();
+        dataManager.ResetStageVariables();
+
+        audioManager.StopSoundtrack();
+        audioManager.StopWeather();
+
+        // background manager
     }
 }

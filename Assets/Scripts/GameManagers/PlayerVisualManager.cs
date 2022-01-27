@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerVisualManager : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private TileBoardManager tileBoardManager;
@@ -24,37 +24,42 @@ public class PlayerManager : MonoBehaviour
     {
         float accuracy = RhythmManager.Instance.GetTimer();
 
+        uiManager.SendHitEnd();
+
         if (tileBoardManager.GetPlayerTile().GetNextTile().GetCorrectDirection().Equals(direction) && accuracy > Constants.badThreshold)
         {
-            // Successful movement
-
-            // Add score
-            string grade = AccuracyToGrade(accuracy);
-            int score = CalculateScore(Constants.baseScore, grade, DataManager.Instance.GetCurrentCombo(), gameManager.GetDifficulty());
-
-            gameManager.AddScore(score, grade);
-
-            // Move player
-            Vector3 targetCoord = tileBoardManager.CalculateRealPosition(tileBoardManager.GetPlayerTile(), direction);
-            targetCoord.y += Constants.playerHeight;
-
-            StartCoroutine(PlayJumpAnimation(targetCoord));
-
-            // Flip sprite if heading left or down
-            if (direction.Equals("left") || direction.Equals("down"))
+            if (!RhythmManager.Instance.GetBeatMarked())
             {
-                spriteMochi.flipX = true;
-            }
-            else
-            {
-                spriteMochi.flipX = false;
-            }
+                // Successful movement
 
-            // Order tileboard to generate new tile and remove old one
-            tileBoardManager.OnPlayerMove(direction);
+                // Add score
+                string grade = AccuracyToGrade(accuracy);
+                int score = CalculateScore(Constants.baseScore, grade, DataManager.Instance.GetCurrentCombo(), gameManager.GetDifficulty());
 
-            Debug.Log("Direction: " + direction + " / Accuracy: " + System.Math.Round(accuracy * 100, 2) + "% / Grade: " + grade
-                + " / Total Score: " + DataManager.Instance.GetScore() + " / BScore: " + score + " / Combo: " + DataManager.Instance.GetCurrentCombo());
+                gameManager.AddScore(score, grade);
+
+                // Move player
+                Vector3 targetCoord = tileBoardManager.CalculateRealPosition(tileBoardManager.GetPlayerTile(), direction);
+                targetCoord.y += Constants.playerHeight;
+
+                StartCoroutine(PlayJumpAnimation(targetCoord));
+
+                // Flip sprite if heading left or down
+                if (direction.Equals("left") || direction.Equals("down"))
+                {
+                    spriteMochi.flipX = true;
+                }
+                else
+                {
+                    spriteMochi.flipX = false;
+                }
+
+                // Order tileboard to generate new tile and remove old one
+                tileBoardManager.OnPlayerMove(direction);
+
+                Debug.Log("Direction: " + direction + " / Accuracy: " + System.Math.Round(accuracy * 100, 2) + "% / Grade: " + grade
+                    + " / Total Score: " + DataManager.Instance.GetScore() + " / BScore: " + score + " / Combo: " + DataManager.Instance.GetCurrentCombo());
+            }
         }
         else
         {

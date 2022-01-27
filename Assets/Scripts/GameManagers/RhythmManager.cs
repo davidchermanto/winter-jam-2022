@@ -19,6 +19,7 @@ public class RhythmManager : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private GameManager gameManager;
     [SerializeField] private TileBoardManager tileBoardManager;
+    [SerializeField] private UIManager uiManager;
 
     [Header("Helpers")]
     // If a beat is marked, the player cannot move again on this beat.
@@ -38,20 +39,55 @@ public class RhythmManager : MonoBehaviour
     /// Starts the process of counting beats within the coroutine
     /// </summary>
     /// <param name="bps">Beats per second</param>
-    /// <param name="initialDelay">How long  before the timer actually starts</param>
-    public void StartCount(float bps, float initialDelay)
+    /// <param name="beatsDelay">How long  before the timer actually starts</param>
+    public void StartCount(float bps, int beatsDelay)
     {
         // 60 in music tempo equals to 1 second, use this to normalize BPS
         secondsPerBeat = 60 / bps;
 
-        StartCoroutine(Count(initialDelay));
+        StartCoroutine(Count(beatsDelay));
     }
 
-    private IEnumerator Count(float initialDelay)
+    private IEnumerator Count(int beatsDelay)
     {
-        yield return new WaitForSeconds(initialDelay);
 
         float previousValue = 0;
+        bool sentRhythmHit = false;
+
+        while (beatsDelay > 0)
+        {
+            timer = ((float)AudioSettings.dspTime - AudioManager.Instance.GetSoundtrackStartTime() - secondsPerBeat * gameManager.GetDifficulty().offset) / secondsPerBeat % 1;
+
+            if (timer < previousValue)
+            {
+                if (beatsDelay == 8)
+                {
+                    uiManager.CountDown(3);
+                }
+                else if (beatsDelay == 6)
+                {
+                    uiManager.CountDown(2);
+                }
+                else if (beatsDelay == 4)
+                {
+                    uiManager.CountDown(1);
+                }
+                else if (beatsDelay == 2)
+                {
+                    uiManager.CountDown(0);
+                }
+                else if(beatsDelay == 0)
+                {
+                    uiManager.SendRhythmHit(secondsPerBeat);
+                }
+
+                beatsDelay--;
+            }
+
+            previousValue = timer;
+
+            yield return new WaitForEndOfFrame();
+        }
 
         // The game starts here
         // Putting this code here is pretty yuck but eh its a game jam
@@ -61,12 +97,19 @@ public class RhythmManager : MonoBehaviour
         {
             if (!GameState.Instance.IsPaused())
             {
+                if (!sentRhythmHit)
+                {
+                    uiManager.SendRhythmHit(secondsPerBeat);
+                    sentRhythmHit = true;
+                }
+
                 // Timer is song in beat x where x is timer
                 timer = ((float)AudioSettings.dspTime - AudioManager.Instance.GetSoundtrackStartTime() - secondsPerBeat * gameManager.GetDifficulty().offset) / secondsPerBeat % 1;
 
                 if(timer < previousValue)
                 {
-                    if (!beatMarked)
+                    // If score is 0, spare them from losing lifes
+                    if (!beatMarked && DataManager.Instance.GetScore() != 0)
                     {
                         gameManager.SubstractLife(true);
                     }
@@ -78,6 +121,7 @@ public class RhythmManager : MonoBehaviour
                     beatCount++;
 
                     timer -= 1;
+                    sentRhythmHit = false;
                 }
 
                 previousValue = timer;

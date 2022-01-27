@@ -56,7 +56,6 @@ public class DataManager : MonoBehaviour
         {
             furthestDistance = PlayerPrefs.GetInt("furthestDistance", 0);
         }
-
     }
 
     public int GetHighScoreEasy()
