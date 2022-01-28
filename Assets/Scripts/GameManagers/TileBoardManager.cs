@@ -14,6 +14,8 @@ public class TileBoardManager : MonoBehaviour
 
     [Header("Prefab")]
     [SerializeField] private GameObject tile;
+    [SerializeField] private GameObject treeTile;
+
     [SerializeField] private GameObject obstacleKeyChange;
 
     [Header("Dynamic Variables")]
@@ -107,17 +109,18 @@ public class TileBoardManager : MonoBehaviour
 
         bool isValid = true;
 
-        List<string> directions = new List<string>();
-        directions.Add("up");
-        directions.Add("down");
-        directions.Add("left");
-        directions.Add("right");
+        List<string> directions = new List<string>
+        {
+            "up",
+            "down",
+            "left",
+            "right"
+        };
 
         do
         {
             // Picks a direction for the tile to connect to the previous tile
             newDirection = Directions.Instance.GetRandomDirectionWeighed(previousTile.GetDirectionBias());
-
 
             while (!(directions.Contains(newDirection)))
             {
@@ -155,14 +158,6 @@ public class TileBoardManager : MonoBehaviour
 
             // Check 1: Has there been a tile here before?
             isValid = CheckTraceValidity(tileTrace);
-
-            generationAttempt++;
-
-            if(generationAttempt > 100)
-            {
-                // Give up
-                break;
-            }
         }
         while (!isValid);
 
@@ -345,9 +340,12 @@ public class TileBoardManager : MonoBehaviour
             tileHandler.AddObstacle(newObstacle);
         }
 
-        if(tileNumber % 3 == 0)
+        if(tileNumber % Constants.treeSpawnDelay - Mathf.Max(Mathf.FloorToInt(tileNumber / Constants.treeSpawnDelayReductionDelay), 1) == 0 && tileNumber > 5)
         {
-            SpawnTreeTile();
+            for(int i = 0; i < Random.Range(1, 3); i++)
+            {
+                SpawnTreeTile();
+            }
         }
 
         previousTile = tileHandler;
@@ -368,20 +366,68 @@ public class TileBoardManager : MonoBehaviour
         return true;
     }
 
+    // Checks but based on active tiles and dead tiles instead
+    private bool CheckTileValidity(TileTrace tileTrace)
+    {
+        foreach(TileHandler tileHandler in activeTiles)
+        {
+            if(tileTrace.x == tileHandler.GetTrace().x && tileTrace.x == tileHandler.GetTrace().y)
+            {
+                return false;
+            }
+        }
+
+        foreach (TileHandler tileHandler in deadTiles)
+        {
+            if (tileTrace.x == tileHandler.GetTrace().x && tileTrace.x == tileHandler.GetTrace().y)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public void SpawnTreeTile()
     {
         // get current position
         TileTrace tileTrace = playerTile.GetTrace();
 
-        // select a random tile within 10 tile
+        // select a random tile within 20 tile
+        tileTrace.x = Random.Range(tileTrace.x - Constants.treeSpawnDistance, tileTrace.x + Constants.treeSpawnDistance);
+        tileTrace.y = Random.Range(tileTrace.y - Constants.treeSpawnDistance, tileTrace.y + Constants.treeSpawnDistance);
 
         // check traces
-        if (!tileTraces.Contains(tileTrace))
+        if (CheckTraceValidity(tileTrace))
         {
             // generate a tile with a tree on top of it
-        }
+            GameObject treeTile = Instantiate(this.treeTile);
 
-        // profit?
+            treeTile.transform.SetParent(tilesFolder.transform);
+
+            // Calculate layer where it should be
+            // I hate vectors, the next two lines was harder than the procedural algorithm
+            int layer = Constants.initialTileLayer - (tileTrace.y + -tileTrace.x) * Constants.tileLayerSize;
+
+            Vector3 correctPos = new Vector3((tileTrace.y + tileTrace.x) * Constants.tileDistanceX, ((tileTrace.y - tileTrace.x) * Constants.tileDistanceY) - 5);
+
+            TileHandler newTileHandler = treeTile.GetComponent<TileHandler>();
+            newTileHandler.Setup(null, tileNumber, new DirectionBias(), correctPos, tileTrace, true);
+
+            ColorPack colorPack = ColorThemeManager.Instance.GetColorPack();
+            newTileHandler.SetColors(colorPack.brightOne, colorPack.brightTwo, colorPack.darkOne);
+            newTileHandler.Invisible();
+
+            newTileHandler.SetLayer(layer);
+
+            tileTraces.Add(tileTrace);
+
+            activeTiles.Add(newTileHandler);
+
+            // tree module?
+            TreeModule treeModule = treeTile.GetComponent<TreeModule>();
+            treeModule.Setup(layer);
+        }
     }
 
     /// <summary>
@@ -389,7 +435,22 @@ public class TileBoardManager : MonoBehaviour
     /// </summary>
     public void OnPlayerMove(string direction)
     {
-        GameObject obstacle = playerTile.GetNextTile().GetObstacle();
+        deadTiles.Add(playerTile);
+
+        playerTile = playerTile.GetNextTile();
+
+        // If the dead tiles reach a certain amount, destroy them.
+        if (deadTiles.Count > Constants.deadTilesLimit)
+        {
+            activeTiles.Remove(deadTiles[0]);
+
+            RemoveTraces(deadTiles[0].GetTileNumber());
+
+            deadTiles.RemoveAt(0);
+            deadTiles[0].OnDie();
+        }
+
+        GameObject obstacle = playerTile.GetObstacle();
 
         if (obstacle != null)
         {
@@ -404,21 +465,6 @@ public class TileBoardManager : MonoBehaviour
 
             ColorThemeManager.Instance.GenerateColorForDifficulty(difficulty);
             uiManager.TweenColors();
-        }
-
-        deadTiles.Add(playerTile);
-
-        playerTile = playerTile.GetNextTile();
-
-        // If the dead tiles reach a certain amount, destroy them.
-        if (deadTiles.Count > Constants.deadTilesLimit)
-        {
-            activeTiles.Remove(deadTiles[0]);
-
-            RemoveTraces(deadTiles[0].GetTileNumber());
-
-            deadTiles.RemoveAt(0);
-            deadTiles[0].OnDie();
         }
 
         SpawnNextTile();

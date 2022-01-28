@@ -80,6 +80,13 @@ public class TileHandler : MonoBehaviour
         Vector3 initialPosition = transform.position;
         Vector3 deathPosition = new Vector3(initialPosition.x, initialPosition.y - Constants.enterDistance, initialPosition.z);
 
+
+        TreeModule testTree = GetComponent<TreeModule>();
+        if(testTree != null)
+        {
+            testTree.OnTileDie();
+        }
+
         while (timer < 1)
         {
             timer += Time.deltaTime / duration;

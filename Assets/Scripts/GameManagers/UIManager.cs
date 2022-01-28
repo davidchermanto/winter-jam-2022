@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject rhythmGroup;
 
     [SerializeField] private GameObject gameOverGroup;
+    [SerializeField] private GameObject controlUI;
 
     [SerializeField] private TileBoardManager tileBoardManager;
 
@@ -123,7 +124,22 @@ public class UIManager : MonoBehaviour
         score.SetText("0");
         combo.SetText("0");
 
-        // TODO: Black screen
+        UpdateKey("up", 'W');
+        UpdateKey("down", 'S');
+        UpdateKey("left", 'A');
+        UpdateKey("right", 'D');
+    }
+
+    public void EnableControlsUI()
+    {
+        AudioManager.Instance.PlayOneShot("woosh");
+        controlUI.SetActive(true);
+    }
+
+    public void DisableControlsUI()
+    {
+        AudioManager.Instance.PlayOneShot("woosh");
+        controlUI.SetActive(false);
     }
 
     public void EnableGameOverUI(bool newHighscore)
@@ -341,6 +357,7 @@ public class UIManager : MonoBehaviour
         };
 
         dynamicBackground.transform.SetParent(cameraFolder.transform);
+        dynamicBackground.transform.localPosition = new Vector3(0, 0, 0);
     }
 
     public void SendRhythmHit(float time)

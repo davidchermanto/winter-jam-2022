@@ -34,7 +34,7 @@ public static class Constants
 
     public static int maxLives = 3;
 
-    public static int deadTilesLimit = 8;
+    public static int deadTilesLimit = 4;
 
     public static float colorChangeDuration = 2f;
 
@@ -44,6 +44,10 @@ public static class Constants
     public static float rhythmWait = 2f;
     public static float maxVolume = 0.5f;
     public static float maxVolumeWeather = 0.4f;
+
+    public static int treeSpawnDelay = 5;
+    public static int treeSpawnDelayReductionDelay = 30;
+    public static int treeSpawnDistance = 4;
 
     // How combo works
     // If a move is perfect or good, the combo stays

@@ -14,6 +14,10 @@ public class PlayerVisualManager : MonoBehaviour
     [Header("Visual")]
     [SerializeField] private SpriteRenderer spriteMochi;
     [SerializeField] private SpriteRenderer spriteShadow;
+    private int currentLayer;
+
+    [Header("Prefab")]
+    [SerializeField] private GameObject particleStepPrefab;
 
     private Vector3 defaultPos;
 
@@ -114,6 +118,8 @@ public class PlayerVisualManager : MonoBehaviour
 
     public void SetLayer(int newLayer)
     {
+        currentLayer = newLayer;
+
         spriteMochi.sortingOrder = newLayer + Constants.playerSpriteOffset;
         spriteShadow.sortingOrder = newLayer + Constants.playerShadowOffset;
     }
@@ -153,5 +159,9 @@ public class PlayerVisualManager : MonoBehaviour
         }
 
         SetLayer(tileBoardManager.GetPlayerTile().GetLayer());
+
+        GameObject particle = Instantiate(particleStepPrefab);
+        particle.GetComponent<ParticleSystem>().GetComponent<ParticleSystemRenderer>().sortingOrder = currentLayer;
+        particle.transform.position = spriteMochi.transform.position;
     }
 }
