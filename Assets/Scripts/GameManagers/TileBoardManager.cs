@@ -34,6 +34,8 @@ public class TileBoardManager : MonoBehaviour
     [Header("Constants")]
     [SerializeField] private GameObject tilesFolder;
 
+    private Vector3 initialPos;
+
     [Header("Debug")]
     private int upCount;
     private int downCount;
@@ -42,7 +44,7 @@ public class TileBoardManager : MonoBehaviour
 
     public void Setup()
     {
-            
+        initialPos = activeTiles[0].transform.position;
     }
 
     public void StartGenerate()
@@ -399,6 +401,9 @@ public class TileBoardManager : MonoBehaviour
 
             inputManager.SetKeyCode(newKey, newDirection);
             uiManager.UpdateKey(newDirection, newKey);
+
+            ColorThemeManager.Instance.GenerateColorForDifficulty(difficulty);
+            uiManager.TweenColors();
         }
 
         deadTiles.Add(playerTile);
@@ -476,14 +481,24 @@ public class TileBoardManager : MonoBehaviour
         // destroy active tiles
         foreach(TileHandler tileHandler in activeTiles)
         {
-            tileHandler.OnDie();
+            if(tileHandler != null)
+            {
+                tileHandler.OnDie();
+            }
         }
+
+        activeTiles = new List<TileHandler>();
 
         // destroy dead tiles
         foreach (TileHandler tileHandler in deadTiles)
         {
-            tileHandler.OnDie();
+            if (tileHandler != null)
+            {
+                tileHandler.OnDie();
+            }
         }
+
+        deadTiles = new List<TileHandler>();
 
         // destroy tile traces
         tileTraces = new List<TileTrace>();
@@ -493,8 +508,18 @@ public class TileBoardManager : MonoBehaviour
 
         // generate initial player tile;
         GameObject newTile = Instantiate(tile);
-        TileHandler newTileHanler = newTile.GetComponent<TileHandler>();
+        newTile.transform.position = initialPos;
+        newTile.transform.SetParent(tilesFolder.transform);
 
+        TileHandler newTileHandler = newTile.GetComponent<TileHandler>();
+        newTileHandler.Setup("up", tileNumber, new DirectionBias(200, 200, 200, 200), initialPos, new TileTrace(0, 0, tileNumber), false);
+        newTileHandler.SetLayer(Constants.initialTileLayer);
+
+        playerTile = newTileHandler;
+        previousTile = newTileHandler;
+
+        activeTiles.Add(newTileHandler);
+        deadTiles.Add(newTileHandler);
     }
 
     public void SetDifficulty(Difficulty difficulty)

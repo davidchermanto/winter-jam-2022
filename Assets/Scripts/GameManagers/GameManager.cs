@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
     {
         this.difficulty = difficulty;
 
-        audioManager.PlayOneShot("woosh");
+        audioManager.PlayOneShot("tap");
 
         audioManager.StopSoundtrack();
         audioManager.StopWeather();
@@ -119,6 +119,8 @@ public class GameManager : MonoBehaviour
 
         if (!hasLifeBeenSubstracted)
         {
+            audioManager.PlayOneShot("miss");
+
             DataManager.Instance.SubstractLife();
             uiManager.SetHeart(DataManager.Instance.GetLifes());
             hasLifeBeenSubstracted = true;
@@ -128,15 +130,45 @@ public class GameManager : MonoBehaviour
 
         if (dataManager.GetLifes() == 0)
         {
-            // lose
-            GameState.Instance.SetPlaying(false);
-            //ui
-            //tiles
-            tileBoardManager.ResetVariables();
-            //input
-            inputManager.ResetVariables();
-            //
+            OnLose();
         }
+    }
+
+    private void OnLose()
+    {
+        audioManager.PlayOneShot("thunder");
+
+        cameraManager.SetupMenuCamera();
+
+        bool newHighscore = DataManager.Instance.EvaluateScore(difficulty);
+        DataManager.Instance.EvaluateMiscellaneous();
+
+        GameState.Instance.SetPlaying(false);
+
+        uiManager.EnableGameOverUI(newHighscore);
+        uiManager.ChangeBackground(new Difficulty());
+
+        tileBoardManager.ResetVariables();
+
+        inputManager.ResetVariables();
+
+        playerManager.SetLayer(Constants.initialTileLayer);
+        playerManager.StopAllCoroutines();
+        playerManager.ResetPos();
+
+        // RESET COLOR
+        Difficulty menu = new Difficulty
+        {
+            name = "menu"
+        };
+        colorThemeManager.GenerateColorForDifficulty(menu);
+        uiManager.TweenColors();
+
+        audioManager.StopSoundtrack();
+
+        audioManager.PlayWeather("wind");
+
+        DataManager.Instance.ResetStageVariables();
     }
 
     private IEnumerator LifeLostCooldown()
@@ -144,28 +176,5 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         hasLifeBeenSubstracted = false;
-    }
-
-    public void Lose()
-    {
-        DataManager.Instance.EvaluateScore(difficulty);
-        DataManager.Instance.EvaluateMiscellaneous();
-
-        ResetGame();
-    }
-
-    private void ResetGame()
-    {
-        GameState.Instance.SetPlaying(false);
-
-        uiManager.ResetVariables();
-        tileBoardManager.ResetVariables();
-        inputManager.ResetVariables();
-        dataManager.ResetStageVariables();
-
-        audioManager.StopSoundtrack();
-        audioManager.StopWeather();
-
-        // background manager
     }
 }

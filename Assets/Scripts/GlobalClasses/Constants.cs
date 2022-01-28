@@ -43,7 +43,7 @@ public static class Constants
 
     public static float rhythmWait = 2f;
     public static float maxVolume = 0.5f;
-    public static float maxVolumeWeather = 0.7f;
+    public static float maxVolumeWeather = 0.4f;
 
     // How combo works
     // If a move is perfect or good, the combo stays

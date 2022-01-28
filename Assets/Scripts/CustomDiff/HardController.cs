@@ -12,7 +12,7 @@ public class HardController : MonoBehaviour
 
     private IEnumerator Weather()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
 
         AudioManager.Instance.PlayWeather("rain", true);
     }

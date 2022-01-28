@@ -59,6 +59,8 @@ public class ColorThemeManager : MonoBehaviour
     /// </summary>
     public void GenerateColorForDifficulty(Difficulty difficulty)
     {
+        previousColorPack = ingameColorPack;
+
         switch (difficulty.name)
         {
             case "EASY":
@@ -69,6 +71,9 @@ public class ColorThemeManager : MonoBehaviour
                 break;
             case "HARD":
                 TweenToNewColorPack(ShiftColorPack(vanillaColorPack, hardHueShift, hardHueRandomFactor), Constants.colorChangeDuration);
+                break;
+            case "menu":
+                TweenToNewColorPack(ShiftColorPack(vanillaColorPack, neutralHue, neutralHueRandomFactor), Constants.colorChangeDuration);
                 break;
             default:
                 Debug.LogError("Tried to access unknown difficulty : "+difficulty.name);

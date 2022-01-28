@@ -13,7 +13,7 @@ public class AudioManager : MonoBehaviour
 
     [Header("SFX Clips")]
     [SerializeField] private AudioClip tap;
-    [SerializeField] private AudioClip chirp;
+    [SerializeField] private AudioClip miss;
     [SerializeField] private AudioClip woosh;
     [SerializeField] private AudioClip thunder;
 
@@ -42,25 +42,29 @@ public class AudioManager : MonoBehaviour
 
     public void PlayOneShot(string audio)
     {
-        AudioClip soundtrack = null;
+        AudioClip sound = null;
 
         switch (audio)
         {
             case "thunder":
-                soundtrack = thunder;
+                sound = thunder;
                 break;
             case "tap":
-                soundtrack = tap;
+                sound = tap;
                 break;
             case "woosh":
-                soundtrack = woosh;
+                sound = woosh;
+                break;
+            case "miss":
+                sound = miss;
                 break;
             default:
                 Debug.LogError("No soundtrack found of title: " + audio);
                 break;
         }
 
-
+        sfxPlayer.clip = sound;
+        sfxPlayer.PlayOneShot(sound);
     }
 
     public void PlaySoundtrack(string title)
@@ -104,7 +108,6 @@ public class AudioManager : MonoBehaviour
     public void PlayWeather(string title, bool overrideDefault = false)
     {
         AudioClip soundtrack = null;
-        Debug.Log(title);
 
         switch (title)
         {

@@ -24,7 +24,7 @@ public class TileHandler : MonoBehaviour
     [SerializeField] private int tileNumber;
     [SerializeField] private TileTrace tileTrace;
 
-    public void Setup(string correctDirection, int tileNumber, DirectionBias directionBias, Vector3 correctPosition, TileTrace tileTrace)
+    public void Setup(string correctDirection, int tileNumber, DirectionBias directionBias, Vector3 correctPosition, TileTrace tileTrace, bool animate = true)
     {
         this.correctDirection = correctDirection;
         this.directionBias = directionBias;
@@ -35,7 +35,11 @@ public class TileHandler : MonoBehaviour
 
         this.tileTrace = tileTrace;
 
-        StartCoroutine(SpawnAnimation());
+        if (animate)
+        {
+            StartCoroutine(SpawnAnimation());
+        }
+
     }
 
     private IEnumerator SpawnAnimation(float duration = 0.8f)

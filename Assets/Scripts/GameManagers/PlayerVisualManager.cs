@@ -15,8 +15,11 @@ public class PlayerVisualManager : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteMochi;
     [SerializeField] private SpriteRenderer spriteShadow;
 
+    private Vector3 defaultPos;
+
     public void Setup()
     {
+        playerObject.transform.position = defaultPos;
         SetLayer(tileBoardManager.GetPlayerTile().GetLayer());
     }
 
@@ -57,8 +60,8 @@ public class PlayerVisualManager : MonoBehaviour
                 // Order tileboard to generate new tile and remove old one
                 tileBoardManager.OnPlayerMove(direction);
 
-                Debug.Log("Direction: " + direction + " / Accuracy: " + System.Math.Round(accuracy * 100, 2) + "% / Grade: " + grade
-                    + " / Total Score: " + DataManager.Instance.GetScore() + " / BScore: " + score + " / Combo: " + DataManager.Instance.GetCurrentCombo());
+                //Debug.Log("Direction: " + direction + " / Accuracy: " + System.Math.Round(accuracy * 100, 2) + "% / Grade: " + grade
+                //    + " / Total Score: " + DataManager.Instance.GetScore() + " / BScore: " + score + " / Combo: " + DataManager.Instance.GetCurrentCombo());
             }
         }
         else
@@ -109,10 +112,15 @@ public class PlayerVisualManager : MonoBehaviour
         return Mathf.FloorToInt(baseScore * multiplier * ((100 + currentCombo) * Constants.bonusComboMultiplier) * difficulty.scoreMultiplier);
     }
 
-    private void SetLayer(int newLayer)
+    public void SetLayer(int newLayer)
     {
         spriteMochi.sortingOrder = newLayer + Constants.playerSpriteOffset;
         spriteShadow.sortingOrder = newLayer + Constants.playerShadowOffset;
+    }
+
+    public void ResetPos()
+    {
+        playerObject.transform.position = defaultPos;
     }
 
     private IEnumerator PlayJumpAnimation(Vector3 targetCoord)

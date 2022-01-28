@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject ingameGroup;
     [SerializeField] private GameObject rhythmGroup;
 
+    [SerializeField] private GameObject gameOverGroup;
+
     [SerializeField] private TileBoardManager tileBoardManager;
 
     [Header("Prefabs")]
@@ -43,6 +45,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI score;
     [SerializeField] private TextMeshProUGUI combo;
     [SerializeField] private TextMeshProUGUI comboDesc;
+
+    [SerializeField] private TextMeshProUGUI gameEndScore;
+    [SerializeField] private TextMeshProUGUI highscoreText;
+
+    [SerializeField] private TextMeshProUGUI highscoreEasy;
+    [SerializeField] private TextMeshProUGUI highscoreNormal;
+    [SerializeField] private TextMeshProUGUI highscoreHard;
 
     [Header("Single Objects")]
     [SerializeField] private SpriteRenderer background;
@@ -73,6 +82,7 @@ public class UIManager : MonoBehaviour
     public void Setup()
     {
         AdjustColor();
+        UpdateHighScore();
     }
 
     public void EnableRhythmBar()
@@ -84,10 +94,18 @@ public class UIManager : MonoBehaviour
     {
         // TODO: Animate
         menuGroup.SetActive(false);
+        gameOverGroup.SetActive(false);
 
         ingameGroup.SetActive(true);
         rhythmGroup.SetActive(true);
 
+        SetHeart(Constants.maxLives);
+
+        StartCoroutine(TweenColors(Constants.colorChangeDuration));
+    }
+
+    public void TweenColors()
+    {
         StartCoroutine(TweenColors(Constants.colorChangeDuration));
     }
 
@@ -97,6 +115,7 @@ public class UIManager : MonoBehaviour
 
         ingameGroup.SetActive(false);
         rhythmGroup.SetActive(false);
+        gameOverGroup.SetActive(false);
     }
 
     public void ResetVariables()
@@ -105,6 +124,89 @@ public class UIManager : MonoBehaviour
         combo.SetText("0");
 
         // TODO: Black screen
+    }
+
+    public void EnableGameOverUI(bool newHighscore)
+    {
+        gameOverGroup.SetActive(true);
+
+        CanvasGroup canvasGroup = gameOverGroup.GetComponent<CanvasGroup>();
+        canvasGroup.alpha = 0;
+
+        StartCoroutine(VisualizeCanvasGroup(canvasGroup, 1));
+        rhythmGroup.SetActive(false);
+
+        gameEndScore.SetText(DataManager.Instance.GetScore().ToString());
+
+        if (newHighscore)
+        {
+            highscoreText.SetText("NEW HIGHSCORE!");
+        }
+        else
+        {
+            highscoreText.SetText("SCORE");
+        }
+    }
+
+    public void BackToMainMenu()
+    {
+        AudioManager.Instance.PlayOneShot("woosh");
+        ingameGroup.SetActive(false);
+        StartCoroutine(ReopenMainMenu(gameOverGroup.GetComponent<CanvasGroup>(), menuGroup.GetComponent<CanvasGroup>()));
+    }
+
+    private IEnumerator VisualizeCanvasGroup(CanvasGroup endScreen, float targetOpacity)
+    {
+        float timer = 0;
+        float targetTime = 1f;
+
+        float currentOpacity = endScreen.alpha;
+
+        while(timer < 1)
+        {
+            timer += Time.deltaTime / targetTime;
+
+            endScreen.alpha = Mathf.Lerp(currentOpacity, targetOpacity, timer);
+
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    private IEnumerator ReopenMainMenu(CanvasGroup endScreen, CanvasGroup mainMenu)
+    {
+        float timer = 0;
+        float targetTime = 1f;
+
+        while (timer < 1)
+        {
+            timer += Time.deltaTime / targetTime;
+
+            endScreen.alpha = Mathf.Lerp(1, 0, timer);
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        UpdateHighScore();
+
+        mainMenu.alpha = 0;
+        mainMenu.gameObject.SetActive(true);
+        timer = 0;
+
+        while (timer < 1)
+        {
+            timer += Time.deltaTime / targetTime;
+
+            mainMenu.alpha = Mathf.Lerp(0, 1, timer);
+
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    public void UpdateHighScore()
+    {
+        highscoreEasy.SetText("HIGHSCORE - " + DataManager.Instance.GetHighScoreEasy().ToString());
+        highscoreNormal.SetText("HIGHSCORE - " + DataManager.Instance.GetHighScoreNormal().ToString());
+        highscoreHard.SetText("HIGHSCORE - " + DataManager.Instance.GetHighScoreHard().ToString());
     }
 
     public void UpdateKey(string direction, char newKey)
