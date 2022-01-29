@@ -38,6 +38,9 @@ public class TileBoardManager : MonoBehaviour
 
     private Vector3 initialPos;
 
+    private char nextChar;
+    private string nextDirection;
+
     [Header("Debug")]
     private int upCount;
     private int downCount;
@@ -435,6 +438,14 @@ public class TileBoardManager : MonoBehaviour
     /// </summary>
     public void OnPlayerMove(string direction)
     {
+        if(nextDirection != null)
+        {
+            inputManager.SetKeyCode(nextChar, nextDirection);
+            uiManager.UpdateKey(nextDirection, nextChar);
+
+            nextDirection = null;
+        }
+
         deadTiles.Add(playerTile);
 
         playerTile = playerTile.GetNextTile();
@@ -460,8 +471,8 @@ public class TileBoardManager : MonoBehaviour
             char newKey = obstacleKeyChange.GetKey();
             string newDirection = obstacleKeyChange.GetDirection();
 
-            inputManager.SetKeyCode(newKey, newDirection);
-            uiManager.UpdateKey(newDirection, newKey);
+            nextChar = newKey;
+            nextDirection = newDirection;
 
             ColorThemeManager.Instance.GenerateColorForDifficulty(difficulty);
             uiManager.TweenColors();

@@ -17,17 +17,17 @@ public class TreeModule : MonoBehaviour
 
     public void Setup(int layer)
     {
-        branchNo = Random.Range(0, 1);
+        branchNo = Random.Range(0, 2);
         leavesNo = Random.Range(0, 4);
 
-        int flip = Random.Range(0, 1);
+        int flip = Random.Range(0, 2);
         if(flip == 1)
         {
             flipped = true;
         }
 
         branch.flipX = flipped;
-        leaves.flipY = flipped;
+        leaves.flipX = flipped;
 
         branch.sprite = TreeManager.Instance.GetBranch(branchNo);
         leaves.sprite = TreeManager.Instance.GetLeaf(branchNo, leavesNo);

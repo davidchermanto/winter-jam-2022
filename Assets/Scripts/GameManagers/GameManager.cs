@@ -107,6 +107,11 @@ public class GameManager : MonoBehaviour
         return difficulty;
     }
 
+    public void OnQuit()
+    {
+        Application.Quit();
+    }
+
     /// <summary>
     /// Does every effect for losing a life
     /// </summary>

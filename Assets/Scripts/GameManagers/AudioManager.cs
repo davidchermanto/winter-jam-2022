@@ -102,7 +102,8 @@ public class AudioManager : MonoBehaviour
 
     public void StopSoundtrack()
     {
-        StartCoroutine(LerpOSTVolume(0, 2));
+        ostPlayer.volume = 0;
+        ostPlayer.Stop();
     }
 
     public void PlayWeather(string title, bool overrideDefault = false)
@@ -130,27 +131,6 @@ public class AudioManager : MonoBehaviour
     public void StopWeather()
     {
         StartCoroutine(LerpWTHVolume(0, 1f));
-    }
-
-    public IEnumerator LerpOSTVolume(float targetVolume, float duration)
-    {
-        float timer = 0;
-
-        float currentVolume = ostPlayer.volume;
-
-        while(timer < 1)
-        {
-            timer += Time.deltaTime / duration;
-
-            ostPlayer.volume = Mathf.Lerp(currentVolume, targetVolume, timer);
-
-            yield return new WaitForEndOfFrame();
-        }
-
-        if(targetVolume == 0)
-        {
-            ostPlayer.Stop();
-        }
     }
 
     public IEnumerator LerpWTHVolume(float targetVolume, float duration)
