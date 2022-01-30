@@ -6,10 +6,17 @@ The game itself is a simple Rhythm Game where you play as a Mochi / Nature Spiri
 If this sounds like something you'd be interested in, leave a star on this repository!
 
 ## Releases
-Download link coming soon.
+You can play the Game Jam build of this game right [here](https://edenmystery.itch.io/mystical-valley)!
 
 ## Credits
-Coming soon.
+### David Hermanto
+Project Lead, Gameplay Programmer, UI and Particles, Soundtrack and Sound Effect Programmer. [Github](https://github.com/davidchermanto)
+### Ailyn Lam
+Character Design, Generation Algorithm Optimization, Input System, Data System, Sound Effects. [Github](https://github.com/ailyn00)
+Github: 
+### Darren Christoper
+Contribution in Particle System and Input system. [Github](https://github.com/darrenchristoper)
+Github: 
 
 ## Unique Systems
 This game has unique systems build for this game and this game only.
@@ -30,4 +37,4 @@ When you follow a beat correctly, you might be awarded with the Perfect! or Good
 All of the systems above are coded in-house within the time limit! The only plugins used in this project are Cinemachine and GitHub, for convenience.
 
 ## Afterword
-All in all, thank you for playing and/or downloading this game. If you can spare the time, leave a comment or rate it at the itch.io page over here too! [Link Coming Soon]
+All in all, thank you for playing and/or downloading this game. If you can spare the time, leave a comment or rate it at the [itch.io page](https://edenmystery.itch.io/mystical-valley) over here too!
