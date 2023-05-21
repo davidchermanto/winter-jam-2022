@@ -100,6 +100,11 @@ public class TileHandler : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
+        if(obstacle != null)
+        {
+            Destroy(obstacle);
+        }
+
         Destroy(gameObject);
     }
 
