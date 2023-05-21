@@ -79,6 +79,8 @@ public class UIManager : MonoBehaviour
     [Header("Temporary")]
     [SerializeField] private GameObject leftHit;
     [SerializeField] private GameObject rightHit;
+    [SerializeField] private float hitTime;
+    [SerializeField] private Coroutine moveBars;
 
     public void Setup()
     {
@@ -373,10 +375,10 @@ public class UIManager : MonoBehaviour
         leftHit.transform.SetParent(rhythmGroup.transform);
         rightHit.transform.SetParent(rhythmGroup.transform);
 
-        leftHit.transform.localPosition = new Vector3(-6, 0);
-        rightHit.transform.localPosition = new Vector3(6, 0);
+        leftHit.transform.localPosition = new Vector3(-7.5f, 0);
+        rightHit.transform.localPosition = new Vector3(7.5f, 0);
 
-        StartCoroutine(MoveRhythmHit(leftHit, rightHit, time));
+        moveBars = StartCoroutine(MoveRhythmHit(leftHit, rightHit, time));
     }
 
     public void SendHitEnd()
@@ -394,6 +396,9 @@ public class UIManager : MonoBehaviour
         Vector3 initialPositionLeft = leftHit.transform.localPosition;
         Vector3 initialPositionRight = rightHit.transform.localPosition;
 
+        SpriteRenderer leftSprite = leftHit.GetComponent<SpriteRenderer>();
+        SpriteRenderer rightSprite = leftHit.GetComponent<SpriteRenderer>();
+
         Vector3 target = new Vector3(0, 0, 0);
 
         while(timer < 1)
@@ -402,13 +407,20 @@ public class UIManager : MonoBehaviour
 
             if(leftHit != null && rightHit != null)
             {
-                leftHit.transform.localPosition = Vector3.Lerp(initialPositionLeft, target, timer);
-                rightHit.transform.localPosition = Vector3.Lerp(initialPositionRight, target, timer);
+                leftHit.transform.localPosition = Vector3.Lerp(initialPositionLeft, target, RhythmManager.Instance.GetAccuracy());
+                rightHit.transform.localPosition = Vector3.Lerp(initialPositionRight, target, RhythmManager.Instance.GetAccuracy());
+
+                Color col = new Color(1, 1, 1, 1 - timer);
+                leftSprite.color = col;
+                rightSprite.color = col;
             }
             else { break; }
 
             yield return new WaitForEndOfFrame();
         }
+
+        leftHit.transform.localPosition = Vector3.Lerp(initialPositionLeft, target, 1);
+        rightHit.transform.localPosition = Vector3.Lerp(initialPositionRight, target, 1);
     }
 
     private IEnumerator FadeRhythmHit(GameObject leftHit, GameObject rightHit)
@@ -423,6 +435,8 @@ public class UIManager : MonoBehaviour
 
         Vector3 initialSize = new Vector3(10, 100);
         Vector3 largeSize = new Vector3(initialSize.x * expansionRateX, initialSize.y * expansionRateY, initialSize.z);
+
+        StopCoroutine(moveBars);
 
         while (timer < 1)
         {

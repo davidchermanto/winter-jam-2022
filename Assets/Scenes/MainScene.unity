@@ -2546,7 +2546,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MYSTICAL FOREST
+  m_text: MYSTICAL VALLEY
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 373f9436c545bb94585ae939840982c6, type: 2}
   m_sharedMaterial: {fileID: 2052263498663782755, guid: 373f9436c545bb94585ae939840982c6, type: 2}
@@ -4653,7 +4653,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1084015319}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6, y: 0, z: 0}
+  m_LocalPosition: {x: -7.5, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 60, z: 1}
   m_Children: []
   m_Father: {fileID: 1397419990}
@@ -4938,6 +4938,7 @@ MonoBehaviour:
   rightKey: {fileID: 2029172186}
   leftHit: {fileID: 0}
   rightHit: {fileID: 0}
+  hitTime: 0
 --- !u!1 &1197925811
 GameObject:
   m_ObjectHideFlags: 0
@@ -5261,12 +5262,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 0
+  currentAccuracy: 0
   beatCount: 0
   secondsPerBeat: 0
   gameManager: {fileID: 1662190596}
   tileBoardManager: {fileID: 1305305133}
   uiManager: {fileID: 1159544358}
-  beatMarked: 0
+  previousBeatHit: 0
+  currentBeatHit: 0
+  tookLastDamage: 0
 --- !u!114 &1245772062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7008,7 +7012,7 @@ Transform:
   m_GameObject: {fileID: 1595107998}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1200, y: 10, z: 1}
+  m_LocalScale: {x: 1500, y: 10, z: 1}
   m_Children: []
   m_Father: {fileID: 1689154355}
   m_RootOrder: 1
@@ -9171,7 +9175,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2144532528}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 6, y: 0, z: 0}
+  m_LocalPosition: {x: 7.5, y: 0, z: 0}
   m_LocalScale: {x: 10, y: 60, z: 1}
   m_Children: []
   m_Father: {fileID: 1397419990}
