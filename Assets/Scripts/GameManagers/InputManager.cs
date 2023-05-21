@@ -90,7 +90,7 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        if (GameState.Instance.IsGameActive() && !RhythmManager.Instance.GetBeatMarked())
+        if (GameState.Instance.IsGameActive() && RhythmManager.Instance.CanMove())
         {
             foreach (KeyCode pressedKey in possibleKeyCodes)
             {
@@ -98,6 +98,7 @@ public class InputManager : MonoBehaviour
                 {
                     if (pressedKey == (GetKeyCode(upKeycode)))
                     {
+                        Debug.Log("Input " + RhythmManager.Instance.GetAccuracy());
                         //Debug.Log("You pressed " + upKeycode);
                         OnPressKey("up");
                     }
@@ -135,8 +136,7 @@ public class InputManager : MonoBehaviour
     private void OnPressKey(string direction)
     {
         playerManager.OnMove(direction);
-
-        RhythmManager.Instance.MarkBeat();
+        RhythmManager.Instance.MoveNow();
     }
 
     /// <summary>

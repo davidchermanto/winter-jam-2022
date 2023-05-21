@@ -12,6 +12,7 @@ public class RhythmManager : MonoBehaviour
     /// If you call
     /// </summary>
     [SerializeField] private float timer;
+    [SerializeField] private float currentAccuracy;
     [SerializeField] private int beatCount;
 
     [SerializeField] private float secondsPerBeat;
@@ -23,7 +24,11 @@ public class RhythmManager : MonoBehaviour
 
     [Header("Helpers")]
     // If a beat is marked, the player cannot move again on this beat.
-    [SerializeField] private bool beatMarked;
+    //[SerializeField] private bool beatMarked;
+    //[SerializeField] private bool earlyMark;
+
+    [SerializeField] private bool previousBeatHit;
+    [SerializeField] private bool currentBeatHit;
 
     private void Awake()
     {
@@ -51,14 +56,14 @@ public class RhythmManager : MonoBehaviour
     private IEnumerator Count(int beatsDelay)
     {
 
-        float previousValue = 0;
+        float previousHitTimingInBeat = 0;
         bool sentRhythmHit = false;
 
         while (beatsDelay > 0)
         {
             timer = ((float)AudioSettings.dspTime - AudioManager.Instance.GetSoundtrackStartTime() - secondsPerBeat * gameManager.GetDifficulty().offset) / secondsPerBeat % 1;
 
-            if (timer < previousValue)
+            if (timer < previousHitTimingInBeat)
             {
                 if (beatsDelay == 8)
                 {
@@ -84,7 +89,7 @@ public class RhythmManager : MonoBehaviour
                 beatsDelay--;
             }
 
-            previousValue = timer;
+            previousHitTimingInBeat = timer;
 
             yield return new WaitForEndOfFrame();
         }
@@ -92,6 +97,7 @@ public class RhythmManager : MonoBehaviour
         // The game starts here
         // Putting this code here is pretty yuck but eh its a game jam
         GameState.Instance.SetPlaying(true);
+        float prevTimer = 0;
 
         while (GameState.Instance.IsPlaying())
         {
@@ -105,26 +111,64 @@ public class RhythmManager : MonoBehaviour
 
                 // Timer is song in beat x where x is timer
                 timer = ((float)AudioSettings.dspTime - AudioManager.Instance.GetSoundtrackStartTime() - secondsPerBeat * gameManager.GetDifficulty().offset) / secondsPerBeat % 1;
+                currentAccuracy = SetCurrentAccuracy();
 
-                if(timer < previousValue)
+                // Timer is a value 1 going down to 0.
+                // If timer < 0.4, then check if previous beat has been hit. If it hasnt, previousBeatHit = true. If hit fails, substract life.
+                // If timer > 0.6, check next beat, currentBeatHit = true
+                // when timer reaches 1, if currentBeatHit = true, previousBeatHit becomes true, else it becomes false.
+                if(timer < Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold)
+                { 
+
+                }
+                else if (timer > 1 - (Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold))
                 {
-                    // If score is 0, spare them from losing lifes
-                    if (!beatMarked && DataManager.Instance.GetScore() != 0)
+
+                }
+
+                if(timer < prevTimer)
+                {
+                    if (previousBeatHit)
                     {
-                        gameManager.SubstractLife(true);
+                        previousBeatHit = false;
                     }
-                    else
+                    
+                    if(currentBeatHit)
                     {
-                        beatMarked = false;
+                        previousBeatHit = true;
+                        currentBeatHit = false;
                     }
 
                     beatCount++;
-
-                    timer -= 1;
                     sentRhythmHit = false;
                 }
 
-                previousValue = timer;
+                prevTimer = timer;
+
+                // If the next bar is reached...
+                //if(timer < previousHitTimingInBeat)
+                //{
+                //    // If score is 0, spare them from losing lifes
+                //    if (!earlyMark && !beatMarked && DataManager.Instance.GetScore() != 0)
+                //    {
+                //        gameManager.SubstractLife(true);
+                //    }
+
+                //    if (earlyMark)
+                //    {
+                //        beatMarked = true;
+                //    }
+                //    else
+                //    {
+                //        beatMarked = false;
+                //    }
+
+                //    beatCount++;
+
+                //    sentRhythmHit = false;
+                //}
+
+                //previousHitTimingInBeat = timer;
 
                 yield return new WaitForEndOfFrame();
             }
@@ -137,10 +181,32 @@ public class RhythmManager : MonoBehaviour
         beatCount = 0;
     }
 
-    public float GetTimer()
+    public float GetAccuracy()
     {
-        //return 1;
+        return currentAccuracy;
+    }
+
+    public float GetLiteral()
+    {
         return timer;
+    }
+
+    public float SetCurrentAccuracy()
+    {
+        if (timer < (Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold))
+        {
+            return ((Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold) - timer) 
+                / (Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold);
+        }
+        else if (timer > (1 - (Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold)))
+        {
+            return (timer - (Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold))
+                / (Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold);
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public int GetBeatCount()
@@ -148,13 +214,45 @@ public class RhythmManager : MonoBehaviour
         return beatCount;
     }
 
-    public bool GetBeatMarked()
+    public bool CanMove()
     {
-        return beatMarked;
+        if (timer < Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold && !previousBeatHit)
+        {
+            return true;
+        }
+        else if (timer > 1 - (Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold) && !currentBeatHit)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    public void MarkBeat()
+    public void MoveNow()
     {
-        beatMarked = true;
+        if (timer < Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold)
+        {
+            if (previousBeatHit)
+            {
+                gameManager.SubstractLife(true);
+            }
+            else
+            {
+                previousBeatHit = true;
+            }
+        }
+        else if (timer > 1 - (Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold) && !currentBeatHit)
+        {
+            if (currentBeatHit)
+            {
+                gameManager.SubstractLife(true);
+            }
+            else
+            {
+                currentBeatHit = true;
+            }
+        }
     }
 }

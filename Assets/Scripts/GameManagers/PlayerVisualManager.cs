@@ -29,13 +29,13 @@ public class PlayerVisualManager : MonoBehaviour
 
     public void OnMove(string direction)
     {
-        float accuracy = RhythmManager.Instance.GetTimer();
+        float accuracy = RhythmManager.Instance.GetAccuracy();
 
         uiManager.SendHitEnd();
 
         if (tileBoardManager.GetPlayerTile().GetNextTile().GetCorrectDirection().Equals(direction) && accuracy > Constants.badThreshold)
         {
-            if (!RhythmManager.Instance.GetBeatMarked())
+            if (RhythmManager.Instance.CanMove())
             {
                 // Successful movement
 
@@ -64,14 +64,17 @@ public class PlayerVisualManager : MonoBehaviour
                 // Order tileboard to generate new tile and remove old one
                 tileBoardManager.OnPlayerMove(direction);
 
-                //Debug.Log("Direction: " + direction + " / Accuracy: " + System.Math.Round(accuracy * 100, 2) + "% / Grade: " + grade
-                //    + " / Total Score: " + DataManager.Instance.GetScore() + " / BScore: " + score + " / Combo: " + DataManager.Instance.GetCurrentCombo());
+                Debug.Log("Direction: " + direction + " / Accuracy: " + System.Math.Round(accuracy * 100, 2) + "% / Grade: " + grade
+                    + " / Total Score: " + DataManager.Instance.GetScore() + " / BScore: " + score + " / Combo: " + DataManager.Instance.GetCurrentCombo() 
+                    + " / L: " + RhythmManager.Instance.GetLiteral());
             }
         }
         else
         {
             // Lose a life
             gameManager.SubstractLife(false);
+
+            Debug.Log("Direction: " + direction + " / Accuracy: " + System.Math.Round(accuracy * 100, 2) + " / MISSED / L: " + RhythmManager.Instance.GetLiteral());
         }
     }
 
