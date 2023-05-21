@@ -29,6 +29,8 @@ public class RhythmManager : MonoBehaviour
 
     [SerializeField] private bool previousBeatHit;
     [SerializeField] private bool currentBeatHit;
+    // Took damage on the last beat
+    [SerializeField] private bool tookLastDamage;
 
     private void Awake()
     {
@@ -117,14 +119,6 @@ public class RhythmManager : MonoBehaviour
                 // If timer < 0.4, then check if previous beat has been hit. If it hasnt, previousBeatHit = true. If hit fails, substract life.
                 // If timer > 0.6, check next beat, currentBeatHit = true
                 // when timer reaches 1, if currentBeatHit = true, previousBeatHit becomes true, else it becomes false.
-                if(timer < Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold)
-                { 
-
-                }
-                else if (timer > 1 - (Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold))
-                {
-
-                }
 
                 if(timer < prevTimer)
                 {
@@ -141,34 +135,17 @@ public class RhythmManager : MonoBehaviour
 
                     beatCount++;
                     sentRhythmHit = false;
+                    tookLastDamage = false;
                 }
 
-                prevTimer = timer;
+                if(timer > (Constants.perfectThreshold + Constants.goodThreshold + Constants.badThreshold) 
+                    && !previousBeatHit && !tookLastDamage && DataManager.Instance.GetScore() != 0)
+                {
+                    gameManager.SubstractLife(true);
+                    tookLastDamage = true;
+                }
 
-                // If the next bar is reached...
-                //if(timer < previousHitTimingInBeat)
-                //{
-                //    // If score is 0, spare them from losing lifes
-                //    if (!earlyMark && !beatMarked && DataManager.Instance.GetScore() != 0)
-                //    {
-                //        gameManager.SubstractLife(true);
-                //    }
-
-                //    if (earlyMark)
-                //    {
-                //        beatMarked = true;
-                //    }
-                //    else
-                //    {
-                //        beatMarked = false;
-                //    }
-
-                //    beatCount++;
-
-                //    sentRhythmHit = false;
-                //}
-
-                //previousHitTimingInBeat = timer;
+                    prevTimer = timer;
 
                 yield return new WaitForEndOfFrame();
             }
