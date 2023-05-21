@@ -98,32 +98,33 @@ public class InputManager : MonoBehaviour
                 {
                     if (pressedKey == (GetKeyCode(upKeycode)))
                     {
-                        Debug.Log("Input " + RhythmManager.Instance.GetAccuracy());
-                        //Debug.Log("You pressed " + upKeycode);
+                        uiManager.NewInput(GetKeyCode(upKeycode));
                         OnPressKey("up");
                     }
 
                     if (pressedKey == (GetKeyCode(downKeycode)))
                     {
-                        //Debug.Log("You pressed " + downKeycode);
+                        uiManager.NewInput(GetKeyCode(downKeycode));
                         OnPressKey("down");
                     }
 
                     if (pressedKey == (GetKeyCode(leftKeycode)))
                     {
-                        //Debug.Log("You pressed " + leftKeycode);
+                        uiManager.NewInput(GetKeyCode(leftKeycode));
                         OnPressKey("left");
                     }
 
                     if (pressedKey == (GetKeyCode(rightKeycode)))
                     {
-                        //Debug.Log("You pressed " + rightKeycode);
+                        uiManager.NewInput(GetKeyCode(rightKeycode));
                         OnPressKey("right");
                     }
 
                     if (!GetCurrentKeyCodes().Contains(pressedKey))
                     {
                         //Debug.Log("You pressed a wrong key: " + pressedKey.ToString());
+
+                        uiManager.NewInput(pressedKey);
 
                         DataManager.Instance.BreakCombo();
                         gameManager.SubstractLife(false);

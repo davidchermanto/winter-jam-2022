@@ -76,6 +76,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI leftKey;
     [SerializeField] private TextMeshProUGUI rightKey;
 
+    [Header("Input History")]
+    [SerializeField] private TextMeshProUGUI inputOne;
+    [SerializeField] private TextMeshProUGUI inputTwo;
+    [SerializeField] private TextMeshProUGUI inputThree;
+
     [Header("Temporary")]
     [SerializeField] private GameObject leftHit;
     [SerializeField] private GameObject rightHit;
@@ -95,7 +100,6 @@ public class UIManager : MonoBehaviour
 
     public void EnableInGameUI()
     {
-        // TODO: Animate
         menuGroup.SetActive(false);
         gameOverGroup.SetActive(false);
 
@@ -103,6 +107,10 @@ public class UIManager : MonoBehaviour
         rhythmGroup.SetActive(true);
 
         SetHeart(Constants.maxLives);
+
+        inputOne.text = "";
+        inputTwo.text = "";
+        inputThree.text = "";
 
         StartCoroutine(TweenColors(Constants.colorChangeDuration));
     }
@@ -360,6 +368,13 @@ public class UIManager : MonoBehaviour
 
         dynamicBackground.transform.SetParent(cameraFolder.transform);
         dynamicBackground.transform.localPosition = new Vector3(0, 0, 0);
+    }
+
+    public void NewInput(KeyCode input)
+    {
+        inputThree.text = inputTwo.text;
+        inputTwo.text = inputOne.text;
+        inputOne.text = input.ToString();
     }
 
     public void SendRhythmHit(float time)
