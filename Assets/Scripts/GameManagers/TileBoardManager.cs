@@ -440,8 +440,6 @@ public class TileBoardManager : MonoBehaviour
     {
         if(nextDirection != null)
         {
-            inputManager.SetKeyCode(nextChar, nextDirection);
-            uiManager.UpdateKey(nextDirection, nextChar);
 
             nextDirection = null;
         }
@@ -473,6 +471,9 @@ public class TileBoardManager : MonoBehaviour
 
             nextChar = newKey;
             nextDirection = newDirection;
+
+            inputManager.SetKeyCode(nextChar, nextDirection);
+            uiManager.UpdateKey(nextDirection, nextChar);
 
             ColorThemeManager.Instance.GenerateColorForDifficulty(difficulty);
             uiManager.TweenColors();

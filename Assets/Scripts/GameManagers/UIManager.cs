@@ -390,8 +390,8 @@ public class UIManager : MonoBehaviour
         leftHit.transform.SetParent(rhythmGroup.transform);
         rightHit.transform.SetParent(rhythmGroup.transform);
 
-        leftHit.transform.localPosition = new Vector3(-7.5f, 0);
-        rightHit.transform.localPosition = new Vector3(7.5f, 0);
+        leftHit.transform.localPosition = new Vector3(-6f, 0);
+        rightHit.transform.localPosition = new Vector3(6f, 0);
 
         moveBars = StartCoroutine(MoveRhythmHit(leftHit, rightHit, time));
     }
