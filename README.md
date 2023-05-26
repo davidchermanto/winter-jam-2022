@@ -5,18 +5,37 @@ The game is a simple Rhythm Game where you play as a Mochi / Nature Spirit who i
 
 If this sounds like something you'd be interested in, leave a star on this repository!
 
+![](https://github.com/davidchermanto/winter-jam-2022/blob/master/GIF/MysticalValley.gif)
+
 ## Releases
 You can play the Game Jam build of this game right [here](https://edenmystery.itch.io/mystical-valley). It is downloadable on Windows, but you can play it via the website too if you prefer!
 
+Attached is a Gameplay Demo uploaded to YouTube.
+
+[![YouTube Video](http://img.youtube.com/vi/uF7HpDu4Sdk/0.jpg)](http://www.youtube.com/watch?v=uF7HpDu4Sdk "Mystical Valley Gameplay - Winter Game Jam 2022")
+
 ## Credits
-### David Hermanto
-Project Lead, Gameplay Programmer, UI and Particles, Soundtrack and Sound Effect Programmer. [Github](https://github.com/davidchermanto)
-### Ailyn Lam
-Character Design, Generation Algorithm Optimization, Input System, Data System, Sound Effects. [Github](https://github.com/ailyn00)
+### [David Hermanto](https://github.com/davidchermanto)
+* Project Lead
+* Gameplay Programmer
+* Art Assets
+* Soundtrack Composer and Sound Effects
+* Soundtrack and Sound Effect Programmer
+### [Ailyn Lam](https://github.com/ailyn00)
+* Character Design
+* Generation Algorithm Optimization
+* Save System
+* Sound Effects
 Github: 
-### Darren Christoper
-Contribution in Particle System and Input system. [Github](https://github.com/darrenchristoper)
-Github: 
+### [Darren Christoper](https://github.com/darrenchristoper)
+* Initial Particle System 
+* Initial Input system
+
+### Initial Concept Art
+
+I (David) drew up the initial concept art for the game during the first day of the jam. It surprisingly does not look far off from the final result!
+
+![](https://github.com/davidchermanto/winter-jam-2022/blob/master/GIF/InitConcept.jpg)
 
 ## Unique Features
 This game has unique systems built for this game and this game only.
