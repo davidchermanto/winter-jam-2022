@@ -8,7 +8,7 @@ If this sounds like something you'd be interested in, leave a star on this repos
 ![](https://github.com/davidchermanto/winter-jam-2022/blob/master/GIF/MysticalValley.gif)
 
 ## Releases
-You can play the Game Jam build of this game right [here](https://edenmystery.itch.io/mystical-valley). It is playable and tested on Windows.
+You can play the latest build of this game right [here](https://edenmystery.itch.io/mystical-valley). It is playable and tested on Windows.
 
 Attached is a HARD Difficulty Gameplay Demo uploaded to YouTube.
 
@@ -54,7 +54,6 @@ All in all, thank you for playing and/or downloading this game. If you can spare
 * Generation Algorithm Optimization
 * Save System
 * Sound Effects
-Github: 
 ### [Darren Christoper](https://github.com/darrenchristoper)
 * Initial Particle System 
 * Initial Input system
